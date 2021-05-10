@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:four_one/four_one/ui/pay_schedule/pay_options_dropdown.dart';
+import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
-import 'package:four_one/four_one/ui/pay_schedule/pay_schedule_widget.dart';
+
 
 class CreateEntryWidget extends StatelessWidget {
   const CreateEntryWidget({Key? key}) : super(key: key);
@@ -43,7 +45,8 @@ class CreateEntryWidget extends StatelessWidget {
             ),
             SizedBox(height: 10,),
             DatePickerForm(),
-            PayScheduleWidget(sum: 1000000.0,),
+            SizedBox(height: 10,),
+            PaymentEditWidget(),
           ],
         ),
       ),
