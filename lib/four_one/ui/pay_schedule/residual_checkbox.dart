@@ -24,8 +24,11 @@ class ResidualCheckbox extends ConsumerWidget {
 
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text('Остаток'),
+          SizedBox(height: 12.0),
           Checkbox(
               value: value,
               onChanged: (bool? newValue) {

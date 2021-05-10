@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:four_one/four_one/ui/pay_schedule/cash_payment_textform.dart';
-import 'package:four_one/four_one/ui/pay_schedule/percentage_payment_textform.dart';
 import 'package:four_one/four_one/ui/pay_schedule/residual_checkbox.dart';
 
 class PaymentEditWidget extends StatelessWidget {
@@ -13,8 +12,10 @@ class PaymentEditWidget extends StatelessWidget {
     return Container(
       child: Row(
         children: [
-          PercentagePaymentTextForm(),
-          CashPaymentTextForm(),
+          PaymentTextForm.cash(),
+          SizedBox(width: 20.0),
+          PaymentTextForm.percentage(),
+          SizedBox(width: 20.0),
           ResidualCheckbox(),
         ],
       ),
