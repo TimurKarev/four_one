@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/payment_edit_widget_model.dart';
 
@@ -41,7 +42,7 @@ class PaymentTextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final readProvider = context.read(paymentEditWidgetModelProvider);
+    final paymentModel = context.read(paymentEditWidgetModelProvider);
 
     return Container(
       child: Column(
@@ -54,17 +55,20 @@ class PaymentTextForm extends StatelessWidget {
                 child: Focus(
                   onFocusChange: (bool focus) {
                     if (!focus) {
-                      _saveValue(readProvider);
+                      _updateTextFormValues(paymentModel);
                     }
                   },
                   child: TextFormField(
-                    controller: _getControllerByType(readProvider),
+                    controller: _getControllerByType(paymentModel),
                     onChanged: (String? str) {
-                      readProvider.onHandPayment();
+                      paymentModel.setNewCheckboxValue(false);
                     },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'(^\d*\.?\d*)')),
+                    ],
                     onEditingComplete: () {
-                      // TODO: сделать возможным ввод запятой
-                      _saveValue(readProvider);
+                      _updateTextFormValues(paymentModel);
                     },
                   ),
                 ),
@@ -77,16 +81,21 @@ class PaymentTextForm extends StatelessWidget {
     );
   }
 
-  void _saveValue(final read) {
-    //read.cash = double.parse(_controller.text);
+  TextEditingController _getControllerByType(PaymentEditWidgetModel model) {
+    if (type == PaymentTextFormType.cash) {
+      return model.cashTextEditCtrl;
+    } else {
+      return model.percentageTextEditCtrl;
+    }
   }
 
-  TextEditingController _getControllerByType(
-      PaymentEditWidgetModel readProvider) {
+  void _updateTextFormValues(PaymentEditWidgetModel model) {
     if (type == PaymentTextFormType.cash) {
-      return readProvider.cashTextEditCtrl;
+      model.updateTextFormValuesFromCash(
+          double.parse(_getControllerByType(model).text));
     } else {
-      return readProvider.percentageTextEditCtrl;
+      model.updateTextFormValuesFromPercentage(
+          double.parse(_getControllerByType(model).text));
     }
   }
 }
