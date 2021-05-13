@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_edit_widget_model.dart';
+import 'package:four_one/four_one/viewmodels/payment_input_viewmodel.dart';
 
 enum PaymentTextFormType {
   percentage,
@@ -42,7 +42,7 @@ class PaymentTextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final paymentModel = context.read(paymentEditWidgetModelProvider);
+    final paymentModel = context.read(paymentInputViewModelProvider);
 
     return Container(
       child: Column(
@@ -81,7 +81,7 @@ class PaymentTextForm extends StatelessWidget {
     );
   }
 
-  TextEditingController _getControllerByType(PaymentEditWidgetModel model) {
+  TextEditingController _getControllerByType(PaymentInputViewModel model) {
     if (type == PaymentTextFormType.cash) {
       return model.cashTextEditCtrl;
     } else {
@@ -89,13 +89,18 @@ class PaymentTextForm extends StatelessWidget {
     }
   }
 
-  void _updateTextFormValues(PaymentEditWidgetModel model) {
+  void _updateTextFormValues(PaymentInputViewModel model) {
+    late final String text;
     if (type == PaymentTextFormType.cash) {
-      model.updateTextFormValuesFromCash(
-          double.parse(_getControllerByType(model).text));
+      text = _getControllerByType(model).text;
+      if (text.length > 0) {
+        model.updateTextFormValuesFromCash(double.parse(text));
+      }
     } else {
-      model.updateTextFormValuesFromPercentage(
-          double.parse(_getControllerByType(model).text));
+      text = _getControllerByType(model).text;
+      if (text.length > 0) {
+        model.updateTextFormValuesFromPercentage(double.parse(text));
+      }
     }
   }
 }

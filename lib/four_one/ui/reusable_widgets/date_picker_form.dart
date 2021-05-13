@@ -15,15 +15,6 @@ class _DatePickerFormState extends State<DatePickerForm> {
     return Container(
       child: Row(
         children: [
-          Text(
-            "Готовность",
-            style: TextStyle(
-              fontSize: 16.0,
-            ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
           Text(_formatDate(_dateTime),
             style: TextStyle(
               fontSize: 16.0,

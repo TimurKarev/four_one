@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_edit_widget_model.dart';
+import 'package:four_one/four_one/viewmodels/payment_input_viewmodel.dart';
 
 final residualCheckboxProvider =
     ChangeNotifierProvider((ref) => ResidualCheckboxNotifier());
@@ -20,7 +20,7 @@ class ResidualCheckbox extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
      watch(residualCheckboxProvider);
-     final value = context.read(paymentEditWidgetModelProvider).checkBoxValue;
+     final value = context.read(paymentInputViewModelProvider).checkBoxValue;
 
     return Container(
       child: Column(
@@ -32,7 +32,7 @@ class ResidualCheckbox extends ConsumerWidget {
           Checkbox(
               value: value,
               onChanged: (bool? newValue) {
-                context.read(paymentEditWidgetModelProvider).setNewCheckboxValue(newValue!);
+                context.read(paymentInputViewModelProvider).setNewCheckboxValue(newValue!);
               }),
         ],
       ),

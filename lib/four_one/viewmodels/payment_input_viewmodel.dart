@@ -2,14 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/ui/pay_schedule/payment_textform.dart';
 import 'package:four_one/four_one/ui/pay_schedule/residual_checkbox.dart';
 
-final paymentEditWidgetModelProvider =
-    Provider((ref) => PaymentEditWidgetModel(ref.read));
+final paymentInputViewModelProvider =
+    Provider((ref) => PaymentInputViewModel(ref.read));
 
-class PaymentEditWidgetModel {
-  PaymentEditWidgetModel(this.reader);
+class PaymentInputViewModel {
+  PaymentInputViewModel(this.reader);
 
   final reader;
 

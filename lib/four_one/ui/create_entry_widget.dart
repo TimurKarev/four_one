@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:four_one/four_one/ui/pay_schedule/pay_options_dropdown.dart';
 import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
 
@@ -44,7 +43,20 @@ class CreateEntryWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10,),
-            DatePickerForm(),
+            Row(
+              children: [
+                Text(
+                  "Готовность",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                DatePickerForm(),
+              ],
+            ),
             SizedBox(height: 10,),
             PaymentEditWidget(),
           ],
