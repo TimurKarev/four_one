@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
 class DatePickerForm extends StatefulWidget {
-  const DatePickerForm({Key? key}) : super(key: key);
+  DateTime? dateTime;
+
+  DatePickerForm({Key? key, this.dateTime}) : super(key: key) {
+    if (dateTime == null) {
+      dateTime = DateTime(1996);
+    }
+  }
 
   @override
   _DatePickerFormState createState() => _DatePickerFormState();
 }
 
 class _DatePickerFormState extends State<DatePickerForm> {
-  DateTime _dateTime = DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Row(
         children: [
-          Text(_formatDate(_dateTime),
+          Text(
+            _formatDate(widget.dateTime!),
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
@@ -28,11 +35,13 @@ class _DatePickerFormState extends State<DatePickerForm> {
             onPressed: () {
               showDatePicker(
                 context: context,
-                initialDate: _dateTime,
+                initialDate: widget.dateTime!,
                 firstDate: DateTime(2019),
                 lastDate: DateTime(2022),
               ).then((value) => setState(() {
-                    _dateTime = value!;
+                    if (value != null) {
+                      context.read(paymentEditProvider.notifier).state.date = value;
+                    }
                   }));
             },
             child: Icon(Icons.date_range),
