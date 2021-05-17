@@ -10,9 +10,9 @@ enum PaymentOptionValues {
 
 extension ParseToString on PaymentOptionValues {
   String toStr() {
-    switch(this){
+    switch (this) {
       case PaymentOptionValues.prepayment:
-        return 'Предоплата';
+        return 'Аванс';
       case PaymentOptionValues.notification:
         return 'Оповещение';
       case PaymentOptionValues.completed:
@@ -23,15 +23,15 @@ extension ParseToString on PaymentOptionValues {
         return 'Отгрузка';
     }
   }
-  List<String> toLst() {
-    return [
-        'Предоплата',
-        'Оповещение',
-        'По завершению',
-        'Фиксированная дата',
-        'Отгрузка',
-    ];
-  }
+// List<String> toLst() {
+//   return [
+//       'Предоплата',
+//       'Оповещение',
+//       'По завершению',
+//       'Фиксированная дата',
+//       'Отгрузка',
+//   ];
+// }
 }
 
 final paymentEditProvider =
@@ -43,6 +43,9 @@ class PaymentEditModel {
   late DateTime _date;
   late PaymentOptionValues _paymentOptions;
 
+  double percentage = 0.0;
+  double cash = 0.0;
+
   DateTime get date => _date;
 
   PaymentOptionValues get paymentOptions => _paymentOptions;
@@ -52,7 +55,7 @@ class PaymentEditModel {
     return this;
   }
 
-  PaymentEditModel setOption(PaymentOptionValues newOption){
+  PaymentEditModel setOption(PaymentOptionValues newOption) {
     _paymentOptions = newOption;
     return this;
   }
@@ -67,6 +70,7 @@ class PaymentEditModel {
 
 class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
   final Reader read;
+  bool saveButtonEnable = false;
 
   PaymentEditViewModel(this.read) : super(PaymentEditModel()) {
     state.init(
@@ -80,8 +84,8 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
 
   set option(String newOption) {
     late final PaymentOptionValues newValue;
-    switch(newOption){
-      case 'Предоплата':
+    switch (newOption) {
+      case 'Аванс':
         newValue = PaymentOptionValues.prepayment;
         break;
       case 'Оповещение':
@@ -98,5 +102,15 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
         break;
     }
     state = state.setOption(newValue);
+  }
+
+  set percentage(double newVal) {
+    state.percentage = newVal;
+    state = state;
+  }
+
+  set cash(double newVal) {
+    state.cash = newVal;
+    state = state;
   }
 }

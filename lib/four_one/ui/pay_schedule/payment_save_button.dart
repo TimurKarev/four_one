@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
-class PaymentSaveButton extends StatelessWidget {
-  const PaymentSaveButton({Key? key}) : super(key: key);
+class PaymentSaveButton extends ConsumerWidget {
+  PaymentSaveButton({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final editModel = watch(paymentEditProvider);
+    print('button');
     return Container(
       child: Column(
         children: [
@@ -13,12 +17,19 @@ class PaymentSaveButton extends StatelessWidget {
           SizedBox(
             width: 40.0,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: _isEnabled(editModel)?() {}: null,
               child: Icon(Icons.add),
             ),
           ),
         ],
       ),
     );
+  }
+
+  bool _isEnabled(PaymentEditModel model) {
+    if (model.cash == 0.0 || model.percentage == 0.0) {
+      return false;
+    }
+    return true;
   }
 }

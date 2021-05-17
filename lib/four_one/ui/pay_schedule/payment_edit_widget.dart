@@ -12,10 +12,11 @@ class PaymentEditWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 20.0),
+          SizedBox(height: 25.0),
           PaymentStringWidget(),
-          SizedBox(height: 10.0),
+          SizedBox(height: 15.0),
           Row(
             children: [
               PaymentOptionDropdown(),

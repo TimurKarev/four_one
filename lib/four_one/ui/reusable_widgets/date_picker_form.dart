@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
 class DatePickerForm extends StatefulWidget {
@@ -22,7 +23,7 @@ class _DatePickerFormState extends State<DatePickerForm> {
       child: Row(
         children: [
           Text(
-            _formatDate(widget.dateTime!),
+            formatDate(widget.dateTime!),
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
@@ -49,9 +50,5 @@ class _DatePickerFormState extends State<DatePickerForm> {
         ],
       ),
     );
-  }
-
-  String _formatDate(DateTime dt) {
-    return '${dt.day}.${dt.month}.${dt.year}';
   }
 }
