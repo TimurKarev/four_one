@@ -40,7 +40,7 @@ class _DatePickerFormState extends State<DatePickerForm> {
                 lastDate: DateTime(2022),
               ).then((value) => setState(() {
                     if (value != null) {
-                      context.read(paymentEditProvider.notifier).state.date = value;
+                      context.read(paymentEditProvider.notifier).date = value;
                     }
                   }));
             },

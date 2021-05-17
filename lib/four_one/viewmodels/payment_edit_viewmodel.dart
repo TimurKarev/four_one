@@ -20,7 +20,6 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
   }
 
   set date(DateTime newDate) {
-    print('dfklskdf;lfks;dlfk;');
     state = state.init(initDate: newDate);
   }
 }
