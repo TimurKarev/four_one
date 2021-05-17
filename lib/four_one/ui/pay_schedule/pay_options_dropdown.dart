@@ -1,44 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
+import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
-class PayOptionValues {
-  static final values = {
-    'prepayment': 'аванс',
-    'notification': "уведомление",
-    'completed': 'готовность',
-    'date': 'фиксированная дата',
-    'shipment': 'отгрузка',
-  };
-}
 
-class PayOptionsDropdownNotifier extends StateNotifier<String?> {
-  PayOptionsDropdownNotifier() : super(PayOptionValues.values['notification']);
+class PaymentOptionDropdown extends ConsumerWidget {
+  PaymentOptionDropdown({Key? key}) : super(key: key);
 
-  String getValue() => state!;
+  final _optionsValue = Provider<PaymentOptionValues>((ref) {
+    return ref.watch(paymentEditProvider).paymentOptions;
+  });
 
-  void setState(String str) {
-    state = str;
-  }
-}
-
-final payOptionsDropdownProvider =
-    StateNotifierProvider<PayOptionsDropdownNotifier, String?>(
-        (ref) => PayOptionsDropdownNotifier());
-
-class PayOptionsDropdown extends ConsumerWidget {
-  const PayOptionsDropdown({Key? key}) : super(key: key);
-
-  //String _value = PayOptionValues.values['prepayment']!;
   @override
   Widget build(BuildContext context, ScopedReader watch) {
+    final option = watch(_optionsValue);
     return Container(
       child: Column(
         children: [
           Text("Тип платежа"),
           SizedBox(height: 16.0),
           DropdownButton<String>(
-            value: watch(payOptionsDropdownProvider),
+            value: option.toStr(),
             icon: const Icon(Icons.arrow_downward),
             iconSize: 24,
             elevation: 16,
@@ -48,15 +29,15 @@ class PayOptionsDropdown extends ConsumerWidget {
               color: Colors.deepPurpleAccent,
             ),
             onChanged: (String? newValue) {
-              context
-                  .read(payOptionsDropdownProvider.notifier)
-                  .setState(newValue!);
+              if (newValue != null) {
+                context.read(paymentEditProvider.notifier).option = newValue;
+              }
             },
-            items: PayOptionValues.values.entries
-                .map<DropdownMenuItem<String>>((m) {
+            items: PaymentOptionValues.values
+                .map<DropdownMenuItem<String>>((value) {
               return DropdownMenuItem<String>(
-                value: m.value,
-                child: Text(m.value),
+                value: value.toStr(),
+                child: Text(value.toStr()),
               );
             }).toList(),
           ),

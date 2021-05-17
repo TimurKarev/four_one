@@ -18,7 +18,7 @@ class PaymentEditWidget extends StatelessWidget {
           SizedBox(height: 10.0),
           Row(
             children: [
-              PayOptionsDropdown(),
+              PaymentOptionDropdown(),
               SizedBox(width: 50.0),
               PaymentInputWidget(),
               SizedBox(width: 50.0),
