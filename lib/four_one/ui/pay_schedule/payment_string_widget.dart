@@ -24,7 +24,7 @@ class PaymentStringWidget extends ConsumerWidget {
   String _getStringByEditModel(PaymentEditModel model) {
     late String str;
     final String valueStr =
-        'в размере ${model.cash} руб. (${model.percentage} %) не позднее ${formatDate(model.date)}';
+        'в размере ${model.cash} руб. (${model.percentage} %) не позднее ${formatDate(model.date)}г.';
     switch (model.paymentOptions) {
       case PaymentOptionValues.prepayment:
         str = 'Авансовый платеж ' + valueStr;
