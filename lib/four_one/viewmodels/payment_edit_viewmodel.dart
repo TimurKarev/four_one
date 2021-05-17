@@ -14,7 +14,7 @@ extension ParseToString on PaymentOptionValues {
       case PaymentOptionValues.prepayment:
         return 'Аванс';
       case PaymentOptionValues.notification:
-        return 'Оповещение';
+        return 'Уведомление';
       case PaymentOptionValues.completed:
         return 'По завершению';
       case PaymentOptionValues.date:
@@ -88,7 +88,7 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
       case 'Аванс':
         newValue = PaymentOptionValues.prepayment;
         break;
-      case 'Оповещение':
+      case 'Уведомление':
         newValue = PaymentOptionValues.notification;
         break;
       case 'По завершению':
