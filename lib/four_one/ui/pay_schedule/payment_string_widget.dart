@@ -21,7 +21,7 @@ class PaymentStringWidget extends ConsumerWidget {
     );
   }
 
-  String _getStringByEditModel(PaymentEditModel model) {
+  String _getStringByEditModel(PaymentModel model) {
     late String str;
     final String valueStr =
         'в размере ${model.cash} руб. (${model.percentage} %) не позднее ${formatDate(model.date)}г.';

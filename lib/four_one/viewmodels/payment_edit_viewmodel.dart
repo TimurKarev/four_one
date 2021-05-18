@@ -35,11 +35,11 @@ extension ParseToString on PaymentOptionValues {
 }
 
 final paymentEditProvider =
-    StateNotifierProvider<PaymentEditViewModel, PaymentEditModel>((ref) {
+    StateNotifierProvider<PaymentEditViewModel, PaymentModel>((ref) {
   return PaymentEditViewModel(ref.read);
 });
 
-class PaymentEditModel {
+class PaymentModel {
   late DateTime _date;
   late PaymentOptionValues _paymentOptions;
 
@@ -50,12 +50,12 @@ class PaymentEditModel {
 
   PaymentOptionValues get paymentOptions => _paymentOptions;
 
-  PaymentEditModel setDate(DateTime date) {
+  PaymentModel setDate(DateTime date) {
     _date = date;
     return this;
   }
 
-  PaymentEditModel setOption(PaymentOptionValues newOption) {
+  PaymentModel setOption(PaymentOptionValues newOption) {
     _paymentOptions = newOption;
     return this;
   }
@@ -68,11 +68,11 @@ class PaymentEditModel {
   }
 }
 
-class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
+class PaymentEditViewModel extends StateNotifier<PaymentModel> {
   final Reader read;
   bool saveButtonEnable = false;
 
-  PaymentEditViewModel(this.read) : super(PaymentEditModel()) {
+  PaymentEditViewModel(this.read) : super(PaymentModel()) {
     state.init(
       initDate: DateTime(2019),
     );

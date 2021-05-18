@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/models/entry_model.dart';
 import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
+import 'package:four_one/four_one/ui/reusable_widgets/EntryTextFormField.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
-
 
 class CreateEntryWidget extends StatelessWidget {
   const CreateEntryWidget({Key? key}) : super(key: key);
@@ -17,32 +19,33 @@ class CreateEntryWidget extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Column(
           children: [
-            TextFormField(
-              decoration: const InputDecoration(
+            EntryTextFormField(
                 labelText: 'Заказчик',
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
+                controller: context
+                    .read(createEntryProvider.notifier)
+                    .clientController),
+            EntryTextFormField(
                 labelText: 'Объект',
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
+                controller: context
+                    .read(createEntryProvider.notifier)
+                    .objectController),
+            EntryTextFormField(
                 labelText: 'Заказ',
-              ),
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
+                controller:
+                    context.read(createEntryProvider.notifier).orderController),
+            EntryTextFormField(
                 labelText: 'Договор',
-              ),
+                controller: context
+                    .read(createEntryProvider.notifier)
+                    .contractController),
+            EntryTextFormField(
+                isNumeric: true,
+                labelText: 'Сумма, руб.',
+                controller:
+                    context.read(createEntryProvider.notifier).sumController),
+            SizedBox(
+              height: 10,
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Сумма',
-              ),
-            ),
-            SizedBox(height: 10,),
             Row(
               children: [
                 Text(
@@ -57,7 +60,9 @@ class CreateEntryWidget extends StatelessWidget {
                 DatePickerForm(),
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             PaymentEditWidget(),
           ],
         ),

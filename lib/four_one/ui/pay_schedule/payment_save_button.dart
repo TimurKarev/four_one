@@ -26,7 +26,7 @@ class PaymentSaveButton extends ConsumerWidget {
     );
   }
 
-  bool _isEnabled(PaymentEditModel model) {
+  bool _isEnabled(PaymentModel model) {
     if (model.cash == 0.0 || model.percentage == 0.0) {
       return false;
     }
