@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/utils/date_formatter.dart';
-import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
-class DatePickerForm extends StatefulWidget {
-  DateTime? dateTime;
+class DatePickerForm extends ConsumerWidget {
+  final Provider<DateTime> provider;
+  final Function(BuildContext context, DateTime newValue)? setDate;
 
-  DatePickerForm({Key? key, this.dateTime}) : super(key: key) {
-    if (dateTime == null) {
-      dateTime = DateTime(1996);
-    }
-  }
+  DatePickerForm({Key? key, required this.provider, required this.setDate})
+      : super(key: key);
 
   @override
-  _DatePickerFormState createState() => _DatePickerFormState();
-}
-
-class _DatePickerFormState extends State<DatePickerForm> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final date = watch(provider);
     return Container(
       child: Row(
         children: [
           Text(
-            formatDate(widget.dateTime!),
+            formatDate(date),
             style: TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
@@ -36,14 +29,14 @@ class _DatePickerFormState extends State<DatePickerForm> {
             onPressed: () {
               showDatePicker(
                 context: context,
-                initialDate: widget.dateTime!,
+                initialDate: date,
                 firstDate: DateTime(2019),
                 lastDate: DateTime(2022),
-              ).then((value) => setState(() {
-                    if (value != null) {
-                      context.read(paymentEditProvider.notifier).date = value;
-                    }
-                  }));
+              ).then((value) {
+                if (value != null) {
+                  setDate!(context, value);
+                }
+              });
             },
             child: Icon(Icons.date_range),
           ),

@@ -1,80 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-enum PaymentOptionValues {
-  prepayment,
-  notification,
-  completed,
-  date,
-  shipment,
-}
-
-extension ParseToString on PaymentOptionValues {
-  String toStr() {
-    switch (this) {
-      case PaymentOptionValues.prepayment:
-        return 'Аванс';
-      case PaymentOptionValues.notification:
-        return 'Уведомление';
-      case PaymentOptionValues.completed:
-        return 'По завершению';
-      case PaymentOptionValues.date:
-        return 'Фиксированная дата';
-      case PaymentOptionValues.shipment:
-        return 'Отгрузка';
-    }
-  }
-// List<String> toLst() {
-//   return [
-//       'Предоплата',
-//       'Оповещение',
-//       'По завершению',
-//       'Фиксированная дата',
-//       'Отгрузка',
-//   ];
-// }
-}
+import 'package:four_one/four_one/models/payment_model.dart';
+import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
 
 final paymentEditProvider =
     StateNotifierProvider<PaymentEditViewModel, PaymentModel>((ref) {
-  return PaymentEditViewModel(ref.read);
+  return PaymentEditViewModel(ref);
 });
 
-class PaymentModel {
-  late DateTime _date;
-  late PaymentOptionValues _paymentOptions;
-
-  double percentage = 0.0;
-  double cash = 0.0;
-
-  DateTime get date => _date;
-
-  PaymentOptionValues get paymentOptions => _paymentOptions;
-
-  PaymentModel setDate(DateTime date) {
-    _date = date;
-    return this;
-  }
-
-  PaymentModel setOption(PaymentOptionValues newOption) {
-    _paymentOptions = newOption;
-    return this;
-  }
-
-  void init({
-    required DateTime initDate,
-  }) {
-    _date = initDate;
-    _paymentOptions = PaymentOptionValues.prepayment;
-  }
-}
-
 class PaymentEditViewModel extends StateNotifier<PaymentModel> {
-  final Reader read;
+  late final Reader read;
+  final ProviderReference ref;
   bool saveButtonEnable = false;
 
-  PaymentEditViewModel(this.read) : super(PaymentModel()) {
+  PaymentEditViewModel(this.ref) : super(PaymentModel()) {
+    print('init inti');
+    read = ref.read;
     state.init(
-      initDate: DateTime(2019),
+      initDate: read(createEntryProvider).finishDate,
+    );
+    _getStream();
+  }
+
+  void _getStream() {
+    final AsyncValue<double> async = ref.read(sumStream);
+
+    async.when(
+      data: (d) => print(d),
+      loading: () {},
+      error: (e,_) => print(e.toString()),
     );
   }
 
@@ -111,6 +64,7 @@ class PaymentEditViewModel extends StateNotifier<PaymentModel> {
 
   set cash(double newVal) {
     state.cash = newVal;
+    print('${state.cash}');
     state = state;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/models/payment_model.dart';
 import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
 class PaymentSaveButton extends ConsumerWidget {
@@ -8,7 +9,6 @@ class PaymentSaveButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final editModel = watch(paymentEditProvider);
-    print('button');
     return Container(
       child: Column(
         children: [

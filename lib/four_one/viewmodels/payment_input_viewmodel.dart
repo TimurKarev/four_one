@@ -14,6 +14,7 @@ class PaymentInputViewModel {
     _cash = reader(paymentEditProvider).cash;
     percentageTextEditCtrl.text = _percentage.toString();
     cashTextEditCtrl.text = _cash.toString();
+
   }
 
   final Reader reader;
@@ -29,6 +30,8 @@ class PaymentInputViewModel {
   bool _checkBoxValue = false;
 
   bool get checkBoxValue => _checkBoxValue;
+
+
 
   void setNewCheckboxValue(bool newValue) {
     _checkBoxValue = newValue;
@@ -77,4 +80,5 @@ class PaymentInputViewModel {
     num mod = pow(10.0, places);
     return ((value * mod).round().toDouble() / mod);
   }
+
 }

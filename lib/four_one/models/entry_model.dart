@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
-import 'package:state_notifier/state_notifier.dart';
+import 'package:four_one/four_one/models/payment_model.dart';
+import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
 
-final createEntryProvider = StateNotifierProvider<CreateEntryViewModel, EntryModel>((ref){
-  return CreateEntryViewModel();
-});
 
 class EntryModel {
   String client = '';
@@ -15,14 +11,4 @@ class EntryModel {
   double sum = 0.0;
   late DateTime finishDate = DateTime.now().add(const Duration(days: 50));
   List<PaymentModel> payments = [];
-}
-
-class CreateEntryViewModel extends StateNotifier<EntryModel>{
-  CreateEntryViewModel() : super(EntryModel());
-
-  TextEditingController clientController = TextEditingController();
-  TextEditingController objectController = TextEditingController();
-  TextEditingController orderController = TextEditingController();
-  TextEditingController contractController = TextEditingController();
-  TextEditingController sumController = TextEditingController();
 }

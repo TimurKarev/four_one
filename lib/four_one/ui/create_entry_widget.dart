@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/entry_model.dart';
 import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/EntryTextFormField.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
+import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
 
 class CreateEntryWidget extends StatelessWidget {
-  const CreateEntryWidget({Key? key}) : super(key: key);
+  CreateEntryWidget({Key? key}) : super(key: key);
 
   static final path = '/4_1/create-entry';
+
+  final dateProvider = Provider<DateTime>((ref) {
+    return ref.watch(createEntryProvider).finishDate;
+  });
+
+  void _setNewDate(BuildContext context, DateTime newValue){
+    context.read(createEntryProvider.notifier).date = newValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +65,10 @@ class CreateEntryWidget extends StatelessWidget {
                 SizedBox(
                   width: 20,
                 ),
-                DatePickerForm(),
+                DatePickerForm(
+                  provider: dateProvider,
+                  setDate: _setNewDate,
+                ),
               ],
             ),
             SizedBox(

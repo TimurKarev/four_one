@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/models/entry_model.dart';
+import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
+
 
 class EntryTextFormField extends StatelessWidget {
   const EntryTextFormField(
@@ -16,16 +20,28 @@ class EntryTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TextFormField(
-        controller: controller,
-        inputFormatters: isNumeric ? [
-          FilteringTextInputFormatter.allow(
-              RegExp(r'(^\d*\.?\d*)')),
-        ] : null,
-        decoration: InputDecoration(
-          labelText: labelText,
+      child: Focus(
+        onFocusChange: (bool focus) {
+          if (!focus) {
+            _updateModel(context);
+          }
+        },
+        child: TextFormField(
+          controller: controller,
+          inputFormatters: isNumeric ? [
+            FilteringTextInputFormatter.allow(
+                RegExp(r'(^\d*\.?\d*)')),
+          ] : null,
+          onEditingComplete: () =>_updateModel(context),
+          decoration: InputDecoration(
+            labelText: labelText,
+          ),
         ),
       ),
     );
+  }
+
+  void _updateModel(BuildContext context){
+    context.read(createEntryProvider.notifier).update();
   }
 }
