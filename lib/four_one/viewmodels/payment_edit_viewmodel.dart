@@ -18,17 +18,6 @@ class PaymentEditViewModel extends StateNotifier<PaymentModel> {
     state.init(
       initDate: read(createEntryProvider).finishDate,
     );
-    _getStream();
-  }
-
-  void _getStream() {
-    final AsyncValue<double> async = ref.read(sumStream);
-
-    async.when(
-      data: (d) => print(d),
-      loading: () {},
-      error: (e,_) => print(e.toString()),
-    );
   }
 
   set date(DateTime newDate) {
@@ -64,7 +53,6 @@ class PaymentEditViewModel extends StateNotifier<PaymentModel> {
 
   set cash(double newVal) {
     state.cash = newVal;
-    print('${state.cash}');
     state = state;
   }
 }

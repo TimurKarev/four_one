@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/ui/pay_schedule/add_schedular_widget.dart';
 import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/EntryTextFormField.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
@@ -74,7 +75,8 @@ class CreateEntryWidget extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            PaymentEditWidget(),
+            //PaymentEditWidget(),
+            AddScheduleWidget(),
           ],
         ),
       ),
