@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/models/payment_edit_model.dart';
 import 'package:four_one/four_one/models/payment_schedule_model.dart';
 import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
@@ -17,6 +18,13 @@ class PaymentScheduleViewModel extends StateNotifier<PaymentScheduleModel>{
     fullSum = sum;
     state.resetModel();
     _initEditModel();
+  }
+
+  void savePayment(){
+    final model = reader(paymentEditProvider);
+    state.payments.add(PaymentEditModel.clone(donor: model));
+    _initEditModel();
+    print(state.payments.toString());
   }
 
   int get paymentLength => state.payments.length;

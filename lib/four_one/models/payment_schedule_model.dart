@@ -6,4 +6,13 @@ class PaymentScheduleModel {
   void resetModel(){
     payments = [];
   }
+
+  @override
+  String toString() {
+    String retStr = '';
+    payments.forEach((element) {
+      retStr += element.toString() + '\n';
+    });
+    return retStr;
+  }
 }

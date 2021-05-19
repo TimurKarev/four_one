@@ -24,6 +24,8 @@ extension ParseToString on PaymentOptionValues {
 }
 
 class PaymentEditModel {
+  PaymentEditModel();
+
   late DateTime date;
   late PaymentOptionValues paymentOptions;
   late double percentage;
@@ -35,5 +37,28 @@ class PaymentEditModel {
     paymentOptions = PaymentOptionValues.prepayment;
     percentage = 0.0;
     cash = 0.0;
+  }
+
+  @override
+  String toString(){
+    String retStr ='';
+    retStr =  date.toString();
+    retStr += ' ' + paymentOptions.toStr();
+    retStr += ' ' + percentage.toString();
+    retStr += ' ' + cash.toString();
+    retStr += ' ' + string;
+    return retStr;
+  }
+
+  factory PaymentEditModel.clone({required PaymentEditModel donor}){
+    PaymentEditModel newClass = PaymentEditModel();
+
+    newClass.date = donor.date;
+    newClass.paymentOptions = donor.paymentOptions;
+    newClass.percentage = donor.percentage;
+    newClass.string = donor.string;
+    newClass.cash = donor.cash;
+
+    return newClass;
   }
 }
