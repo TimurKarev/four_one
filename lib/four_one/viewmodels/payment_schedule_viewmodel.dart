@@ -18,13 +18,14 @@ class PaymentScheduleViewModel extends StateNotifier<PaymentScheduleModel>{
     fullSum = sum;
     state.resetModel();
     _initEditModel();
+    state = state;
   }
 
   void savePayment(){
     final model = reader(paymentEditProvider);
     state.payments.add(PaymentEditModel.clone(donor: model));
     _initEditModel();
-    print(state.payments.toString());
+    state = state;
   }
 
   int get paymentLength => state.payments.length;
