@@ -1,27 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_model.dart';
-import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
+import 'package:four_one/four_one/models/payment_edit_model.dart';
 
 final paymentEditProvider =
-    StateNotifierProvider<PaymentEditViewModel, PaymentModel>((ref) {
+    StateNotifierProvider<PaymentEditViewModel, PaymentEditModel>((ref) {
   return PaymentEditViewModel(ref);
 });
 
-class PaymentEditViewModel extends StateNotifier<PaymentModel> {
+class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
   late final Reader read;
   final ProviderReference ref;
   bool saveButtonEnable = false;
 
-  PaymentEditViewModel(this.ref) : super(PaymentModel()) {
-    print('init inti');
+
+  PaymentEditViewModel(this.ref) : super(PaymentEditModel()) {
     read = ref.read;
-    state.init(
-      initDate: read(createEntryProvider).finishDate,
-    );
+    state.init();
+  }
+
+  void init(double residual) {
+
   }
 
   set date(DateTime newDate) {
-    state = state.setDate(newDate);
+    state.date = newDate;
+    state = state;
   }
 
   set option(String newOption) {
@@ -43,7 +45,8 @@ class PaymentEditViewModel extends StateNotifier<PaymentModel> {
         newValue = PaymentOptionValues.shipment;
         break;
     }
-    state = state.setOption(newValue);
+    state.paymentOptions = newValue;
+    state = state;
   }
 
   set percentage(double newVal) {

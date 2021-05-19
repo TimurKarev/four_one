@@ -18,18 +18,22 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
 
   set showScheduleWidget(bool newValue) {
     if (!_showScheduleWidget && newValue){
-      reader(paymentScheduleProvider.notifier).init(state.sum);
+      _resetPaymentSchedule();
     }
     _showScheduleWidget = newValue;
     state = state;
   }
 
+  _resetPaymentSchedule(){
+    reader(paymentScheduleProvider.notifier).init(state.sum);
+  }
+
   bool get showScheduleWidget => _showScheduleWidget;
 
-  TextEditingController clientController = TextEditingController();
-  TextEditingController objectController = TextEditingController();
-  TextEditingController orderController = TextEditingController();
-  TextEditingController contractController = TextEditingController();
+  late TextEditingController clientController = TextEditingController(text: state.client);
+  late TextEditingController objectController = TextEditingController(text: state.object);
+  late TextEditingController orderController = TextEditingController(text: state.order);
+  late TextEditingController contractController = TextEditingController(text: state.contract);
   late TextEditingController sumController =
       TextEditingController(text: state.sum.toString());
 
@@ -39,17 +43,22 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   }
 
   void update() {
+    final sum = double.parse(sumController.text);
     state.client = clientController.text;
     state.object = objectController.text;
     state.order = orderController.text;
     state.contract = contractController.text;
-    state.sum = double.parse(sumController.text);
+
     if (_checkReadyScheduleState()){
       addButtonEnabled = true;
+      if (state.sum != sum) {
+        state.sum = sum;
+        _resetPaymentSchedule();
+      }
     } else {
       addButtonEnabled = false;
     }
-    //print('Add button $addButton');
+    state.sum = sum;
     state = state;
   }
 

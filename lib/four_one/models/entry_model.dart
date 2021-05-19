@@ -1,14 +1,11 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_model.dart';
-import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
-
+import 'package:four_one/four_one/models/payment_edit_model.dart';
 
 class EntryModel {
-  String client = '';
-  String object = '';
-  String order = '';
-  String contract = '';
-  double sum = 0.0;
+  String client = 'ООО Пирожок';
+  String object = 'Атласс сити';
+  String order = 'Курлядская';
+  String contract = '23-346 К';
+  double sum = 100000.0;
   late DateTime finishDate = DateTime.now().add(const Duration(days: 50));
-  List<PaymentModel> payments = [];
+  List<PaymentEditModel> payments = [];
 }

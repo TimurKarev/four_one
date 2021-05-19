@@ -1,7 +1,7 @@
-import 'package:four_one/four_one/models/payment_model.dart';
+import 'package:four_one/four_one/models/payment_edit_model.dart';
 
 class PaymentScheduleModel {
-  List<PaymentModel> payments = [];
+  List<PaymentEditModel> payments = [];
 
   void resetModel(){
     payments = [];

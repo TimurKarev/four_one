@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_model.dart';
+import 'package:four_one/four_one/models/payment_edit_model.dart';
 import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
@@ -22,7 +22,7 @@ class PaymentStringWidget extends ConsumerWidget {
     );
   }
 
-  String _getStringByEditModel(PaymentModel model) {
+  String _getStringByEditModel(PaymentEditModel model) {
     late String str;
     final String valueStr =
         'в размере ${model.cash} руб. (${model.percentage} %) не позднее ${formatDate(model.date)}г.';

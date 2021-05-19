@@ -23,32 +23,16 @@ extension ParseToString on PaymentOptionValues {
   }
 }
 
+class PaymentEditModel {
+  late DateTime date;
+  late PaymentOptionValues paymentOptions;
+  late double percentage;
+  late double cash;
 
-class PaymentModel {
-  late DateTime _date;
-  late PaymentOptionValues _paymentOptions;
-
-  double percentage = 0.0;
-  double cash = 0.0;
-
-  DateTime get date => _date;
-
-  PaymentOptionValues get paymentOptions => _paymentOptions;
-
-  PaymentModel setDate(DateTime date) {
-    _date = date;
-    return this;
-  }
-
-  PaymentModel setOption(PaymentOptionValues newOption) {
-    _paymentOptions = newOption;
-    return this;
-  }
-
-  void init({
-    required DateTime initDate,
-  }) {
-    _date = initDate;
-    _paymentOptions = PaymentOptionValues.prepayment;
+  void init(){
+    date = DateTime.now();
+    paymentOptions = PaymentOptionValues.prepayment;
+    percentage = 0.0;
+    cash = 0.0;
   }
 }
