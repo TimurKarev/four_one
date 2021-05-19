@@ -1,20 +1,28 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/ui/pay_schedule/residual_checkbox.dart';
+import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
 import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
 
 final paymentInputViewModelProvider =
     Provider((ref) => PaymentInputViewModel(ref.read));
 
 class PaymentInputViewModel {
-  PaymentInputViewModel(this.reader){
-    _percentage = reader(paymentEditProvider).percentage;
-    _cash = reader(paymentEditProvider).cash;
+  PaymentInputViewModel(this.reader);
+
+  void init({required double residualSum, double? percentage, double? cash}){
+    _fullSum = reader(createEntryProvider).sum;
+    _residualSum = residualSum;
+    _percentage = 0.0;
+    _cash = 0.0;
+    if (percentage != null && cash != null){
+      _percentage = percentage;
+      _cash = cash;
+    }
     percentageTextEditCtrl.text = _percentage.toString();
     cashTextEditCtrl.text = _cash.toString();
-
   }
 
   final Reader reader;
@@ -22,8 +30,8 @@ class PaymentInputViewModel {
   TextEditingController cashTextEditCtrl = TextEditingController();
   TextEditingController percentageTextEditCtrl = TextEditingController();
 
-  double _fullSum = 10000000.0;
-  double _residualSum = 1000000.0;
+  late double _fullSum;
+  late double _residualSum;
   late double _percentage;
   late double _cash;
 

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/payment_edit_model.dart';
+import 'package:four_one/four_one/viewmodels/payment_input_viewmodel.dart';
 
 final paymentEditProvider =
     StateNotifierProvider<PaymentEditViewModel, PaymentEditModel>((ref) {
@@ -18,7 +20,9 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
   }
 
   void init(double residual) {
-
+    state.init();
+    read(paymentInputViewModelProvider).init(residualSum: residual);
+    state = state;
   }
 
   set date(DateTime newDate) {
