@@ -28,6 +28,7 @@ class PaymentEditModel {
   late PaymentOptionValues paymentOptions;
   late double percentage;
   late double cash;
+  late String string;
 
   void init(){
     date = DateTime.now();

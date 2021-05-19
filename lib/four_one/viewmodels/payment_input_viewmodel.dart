@@ -13,6 +13,7 @@ class PaymentInputViewModel {
   PaymentInputViewModel(this.reader);
 
   void init({required double residualSum, double? percentage, double? cash}){
+    setNewCheckboxValue(false);
     _fullSum = reader(createEntryProvider).sum;
     _residualSum = residualSum;
     _percentage = 0.0;

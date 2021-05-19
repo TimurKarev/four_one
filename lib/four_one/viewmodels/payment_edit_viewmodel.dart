@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/payment_edit_model.dart';
+import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/payment_input_viewmodel.dart';
 
 final paymentEditProvider =
@@ -17,17 +18,18 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
   PaymentEditViewModel(this.ref) : super(PaymentEditModel()) {
     read = ref.read;
     state.init();
+    updateString();
   }
 
   void init(double residual) {
     state.init();
     read(paymentInputViewModelProvider).init(residualSum: residual);
-    state = state;
+    updateString();
   }
 
   set date(DateTime newDate) {
     state.date = newDate;
-    state = state;
+    updateString();
   }
 
   set option(String newOption) {
@@ -50,16 +52,41 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
         break;
     }
     state.paymentOptions = newValue;
-    state = state;
+    updateString();
   }
 
   set percentage(double newVal) {
     state.percentage = newVal;
-    state = state;
+    updateString();
   }
 
   set cash(double newVal) {
     state.cash = newVal;
+    updateString();
+  }
+
+  void updateString() {
+    late String str;
+    final String valueStr =
+        'в размере ${state.cash} руб. (${state.percentage} %) не позднее ${formatDate(state.date)}г.';
+    switch (state.paymentOptions) {
+      case PaymentOptionValues.prepayment:
+        str = 'Авансовый платеж ' + valueStr;
+        break;
+      case PaymentOptionValues.notification:
+        str = 'Платеж после уведомления' + valueStr;
+        break;
+      case PaymentOptionValues.completed:
+        str = 'Платеж по готовности оборудования' + valueStr;
+        break;
+      case PaymentOptionValues.date:
+        str = 'Платеж ' + valueStr;
+        break;
+      case PaymentOptionValues.shipment:
+        str = 'Платеж до отгрузки ' + valueStr;
+        break;
+    }
+    state.string = str;
     state = state;
   }
 }
