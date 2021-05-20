@@ -29,17 +29,6 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
 
   bool get saveButtonEnabled => _saveButtonEnabled;
 
-  // set saveButtonEnabled(bool newValue){
-  //   if (_saveButtonEnabled != newValue){
-  //     _saveButtonEnabled = newValue;
-  //     state = state;
-  //   }
-  // }
-
-  _resetPaymentSchedule(){
-    reader(paymentScheduleProvider.notifier).init(state.sum);
-  }
-
   late TextEditingController clientController = TextEditingController(text: state.client);
   late TextEditingController objectController = TextEditingController(text: state.object);
   late TextEditingController orderController = TextEditingController(text: state.order);
@@ -47,9 +36,20 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   late TextEditingController sumController =
       TextEditingController(text: state.sum.toString());
 
+  _resetPaymentSchedule(){
+    reader(paymentScheduleProvider.notifier).init(state.sum);
+  }
+
   set date(DateTime newDate) {
     state.finishDate = newDate;
+    saveButtonChangeEnable();
     state = state;
+  }
+
+  void saveEntry(){
+      update();
+      state.payments = reader(paymentScheduleProvider);
+      print('Save');
   }
 
   void update() {

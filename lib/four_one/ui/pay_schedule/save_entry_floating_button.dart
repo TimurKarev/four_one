@@ -15,7 +15,9 @@ class SaveEntryFloatingButton extends ConsumerWidget {
     final enable = watch(_enableProvider);
     return FloatingActionButton(
       child: Icon(Icons.save),
-      onPressed: enable ? () {} : null,
+      onPressed: enable ? () {
+        context.read(createEntryProvider.notifier).saveEntry();
+      } : null,
       backgroundColor: enable ? Colors.blue : Colors.grey,
     );
   }
