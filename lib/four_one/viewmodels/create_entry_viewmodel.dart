@@ -15,6 +15,9 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
 
   bool addButtonEnabled = false;
   bool _showScheduleWidget = false;
+  bool _saveButtonEnabled = false;
+
+  bool get showScheduleWidget => _showScheduleWidget;
 
   set showScheduleWidget(bool newValue) {
     if (!_showScheduleWidget && newValue){
@@ -24,11 +27,18 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     state = state;
   }
 
+  bool get saveButtonEnabled => _saveButtonEnabled;
+
+  // set saveButtonEnabled(bool newValue){
+  //   if (_saveButtonEnabled != newValue){
+  //     _saveButtonEnabled = newValue;
+  //     state = state;
+  //   }
+  // }
+
   _resetPaymentSchedule(){
     reader(paymentScheduleProvider.notifier).init(state.sum);
   }
-
-  bool get showScheduleWidget => _showScheduleWidget;
 
   late TextEditingController clientController = TextEditingController(text: state.client);
   late TextEditingController objectController = TextEditingController(text: state.object);
@@ -57,8 +67,10 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
       }
     } else {
       addButtonEnabled = false;
+      _saveButtonEnabled = false;
     }
     state.sum = sum;
+    saveButtonChangeEnable();
     state = state;
   }
 
@@ -72,5 +84,18 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
       return true;
     }
     return false;
+  }
+
+  void saveButtonChangeEnable(){
+    bool oldValue = _saveButtonEnabled;
+    _saveButtonEnabled = false;
+    final isPaymentComplete = reader(paymentScheduleProvider.notifier).isPaymentsComplete();
+    final isAllFormsReady = _checkReadyScheduleState();
+    if (isPaymentComplete && isAllFormsReady ){
+      _saveButtonEnabled = true;
+    }
+    if (oldValue != _saveButtonEnabled){
+      state = state;
+    }
   }
 }

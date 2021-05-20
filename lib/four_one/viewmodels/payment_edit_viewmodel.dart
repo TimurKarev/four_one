@@ -73,10 +73,10 @@ class PaymentEditViewModel extends StateNotifier<PaymentEditModel> {
         str = 'Авансовый платеж ' + valueStr;
         break;
       case PaymentOptionValues.notification:
-        str = 'Платеж после уведомления' + valueStr;
+        str = 'Платеж после уведомления ' + valueStr;
         break;
       case PaymentOptionValues.completed:
-        str = 'Платеж по готовности оборудования' + valueStr;
+        str = 'Платеж по готовности оборудования ' + valueStr;
         break;
       case PaymentOptionValues.date:
         str = 'Платеж ' + valueStr;

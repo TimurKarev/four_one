@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/ui/pay_schedule/add_schedular_widget.dart';
-import 'package:four_one/four_one/ui/pay_schedule/payment_edit_widget.dart';
+import 'package:four_one/four_one/ui/pay_schedule/save_entry_floating_button.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/EntryTextFormField.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
 import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
@@ -80,6 +80,9 @@ class CreateEntryWidget extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: SaveEntryFloatingButton(
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
