@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/viewmodels/payment_input_viewmodel.dart';
+import 'package:four_one/four_one/viewmodels/entry/payment_input_viewmodel.dart';
 
 enum PaymentTextFormType {
   percentage,

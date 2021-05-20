@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_edit_model.dart';
-import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
+import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
+import 'package:four_one/four_one/viewmodels/entry/payment_edit_viewmodel.dart';
 
 
 class PaymentOptionDropdown extends ConsumerWidget {

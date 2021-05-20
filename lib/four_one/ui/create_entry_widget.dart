@@ -4,7 +4,7 @@ import 'package:four_one/four_one/ui/pay_schedule/add_schedular_widget.dart';
 import 'package:four_one/four_one/ui/pay_schedule/save_entry_floating_button.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/EntryTextFormField.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/date_picker_form.dart';
-import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
+import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
 
 class CreateEntryWidget extends StatelessWidget {
   CreateEntryWidget({Key? key}) : super(key: key);

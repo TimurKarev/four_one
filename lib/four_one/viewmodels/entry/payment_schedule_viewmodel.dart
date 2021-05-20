@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/payment_edit_model.dart';
-import 'package:four_one/four_one/models/payment_schedule_model.dart';
-import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
-import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
+import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
+import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
+import 'package:four_one/four_one/viewmodels/entry/payment_edit_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final paymentScheduleProvider = StateNotifierProvider<PaymentScheduleViewModel, PaymentScheduleModel>((ref){

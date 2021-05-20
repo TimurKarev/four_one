@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/entry_model.dart';
-import 'package:four_one/four_one/viewmodels/payment_schedule_viewmodel.dart';
+import 'package:four_one/four_one/models/entry/entry_model.dart';
+import 'package:four_one/four_one/viewmodels/entry/payment_schedule_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final createEntryProvider =
@@ -46,10 +46,13 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     state = state;
   }
 
+  List<EntryModel> testList = [];
+
   void saveEntry(){
       update();
       state.payments = reader(paymentScheduleProvider);
-      print('Save');
+      testList.add(state);
+      testList.forEach((element) {print(element.toString());});
   }
 
   void update() {

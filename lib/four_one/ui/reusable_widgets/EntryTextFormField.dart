@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/entry_model.dart';
-import 'package:four_one/four_one/viewmodels/create_entry_viewmodel.dart';
+import 'package:four_one/four_one/models/entry/entry_model.dart';
+import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
 
 
 class EntryTextFormField extends StatelessWidget {

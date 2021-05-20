@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/viewmodels/payment_edit_viewmodel.dart';
+import 'package:four_one/four_one/viewmodels/entry/payment_edit_viewmodel.dart';
 
 class PaymentStringWidget extends ConsumerWidget {
   PaymentStringWidget({Key? key}) : super(key: key);
