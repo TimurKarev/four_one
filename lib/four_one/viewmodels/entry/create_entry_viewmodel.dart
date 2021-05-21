@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/entry/entry_model.dart';
+import 'package:four_one/four_one/models/project_model.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_schedule_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 final createEntryProvider =
-    StateNotifierProvider<CreateEntryViewModel, EntryModel>((ref) {
+StateNotifierProvider<CreateEntryViewModel, EntryModel>((ref) {
   return CreateEntryViewModel(ref.read);
 });
 
 class CreateEntryViewModel extends StateNotifier<EntryModel> {
   final Reader reader;
+
   CreateEntryViewModel(this.reader) : super(EntryModel());
 
   bool addButtonEnabled = false;
@@ -20,7 +22,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   bool get showScheduleWidget => _showScheduleWidget;
 
   set showScheduleWidget(bool newValue) {
-    if (!_showScheduleWidget && newValue){
+    if (!_showScheduleWidget && newValue) {
       _resetPaymentSchedule();
     }
     _showScheduleWidget = newValue;
@@ -29,14 +31,18 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
 
   bool get saveButtonEnabled => _saveButtonEnabled;
 
-  late TextEditingController clientController = TextEditingController(text: state.client);
-  late TextEditingController objectController = TextEditingController(text: state.object);
-  late TextEditingController orderController = TextEditingController(text: state.order);
-  late TextEditingController contractController = TextEditingController(text: state.contract);
+  late TextEditingController clientController = TextEditingController(
+      text: state.client);
+  late TextEditingController objectController = TextEditingController(
+      text: state.object);
+  late TextEditingController orderController = TextEditingController(
+      text: state.order);
+  late TextEditingController contractController = TextEditingController(
+      text: state.contract);
   late TextEditingController sumController =
-      TextEditingController(text: state.sum.toString());
+  TextEditingController(text: state.sum.toString());
 
-  _resetPaymentSchedule(){
+  _resetPaymentSchedule() {
     reader(paymentScheduleProvider.notifier).init(state.sum);
   }
 
@@ -46,13 +52,15 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     state = state;
   }
 
-  List<EntryModel> testList = [];
+  late ProjectModel model;
 
-  void saveEntry(){
-      update();
-      state.payments = reader(paymentScheduleProvider);
-      testList.add(state);
-      testList.forEach((element) {print(element.toString());});
+  void saveEntry() async {
+    update();
+    state.payments = reader(paymentScheduleProvider);
+    model = ProjectModel(state);
+    // final json = model.toFirebaseJson();
+    // print(json);
+    await model.saveToDatabase();
   }
 
   void update() {
@@ -62,7 +70,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     state.order = orderController.text;
     state.contract = contractController.text;
 
-    if (_checkReadyScheduleState()){
+    if (_checkReadyScheduleState()) {
       addButtonEnabled = true;
       if (state.sum != sum) {
         state.sum = sum;
@@ -89,15 +97,16 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     return false;
   }
 
-  void saveButtonChangeEnable(){
+  void saveButtonChangeEnable() {
     bool oldValue = _saveButtonEnabled;
     _saveButtonEnabled = false;
-    final isPaymentComplete = reader(paymentScheduleProvider.notifier).isPaymentsComplete();
+    final isPaymentComplete = reader(paymentScheduleProvider.notifier)
+        .isPaymentsComplete();
     final isAllFormsReady = _checkReadyScheduleState();
-    if (isPaymentComplete && isAllFormsReady ){
+    if (isPaymentComplete && isAllFormsReady) {
       _saveButtonEnabled = true;
     }
-    if (oldValue != _saveButtonEnabled){
+    if (oldValue != _saveButtonEnabled) {
       state = state;
     }
   }
