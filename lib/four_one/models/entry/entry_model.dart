@@ -1,14 +1,31 @@
-
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
 
 class EntryModel {
-  String client = 'ООО Пирожок';
-  String object = 'Атласс сити';
-  String order = 'Курлядская';
-  String contract = '23-346 К';
-  double sum = 100000.0;
+  String client = '';
+  String object = '';
+  String order = '';
+  String contract = '';
+  double sum = 0.0;
   late DateTime finishDate = DateTime.now().add(const Duration(days: 50));
   PaymentScheduleModel? payments;
+
+  EntryModel(
+      {this.client = '',
+      this.object = '',
+      this.order = '',
+      this.contract = '',
+      this.sum = 0.0,
+      this.payments});
+
+  factory EntryModel.fillTestData() {
+    return EntryModel(
+      client: 'ООО Возница',
+      object: "ул Колесница",
+      order: "1300 - 1243",
+      contract: '123-345',
+      sum: 10000000.0,
+    );
+  }
 
   @override
   String toString() {

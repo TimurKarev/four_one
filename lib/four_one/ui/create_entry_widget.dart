@@ -15,14 +15,25 @@ class CreateEntryWidget extends StatelessWidget {
     return ref.watch(createEntryProvider).finishDate;
   });
 
-  void _setNewDate(BuildContext context, DateTime newValue){
+  void _setNewDate(BuildContext context, DateTime newValue) {
     context.read(createEntryProvider.notifier).date = newValue;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              final provider = context.read(createEntryProvider.notifier);
+              provider.clearForm(fill: true);
+              provider.update();
+            },
+            child: Icon(Icons.autorenew),
+          ),
+        ],
+      ),
       body: Container(
         padding: EdgeInsets.fromLTRB(40.0, 10.0, 20.0, 5.0),
         alignment: Alignment.bottomCenter,
@@ -80,8 +91,7 @@ class CreateEntryWidget extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: SaveEntryFloatingButton(
-      ),
+      floatingActionButton: SaveEntryFloatingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

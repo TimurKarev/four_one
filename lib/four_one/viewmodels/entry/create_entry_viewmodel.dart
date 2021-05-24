@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/entry/entry_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
+import 'package:four_one/four_one/services/firebase/firebae_service.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_schedule_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
+import 'package:four_one/four_one/services/firebase/paths.dart';
 
 final createEntryProvider =
-StateNotifierProvider<CreateEntryViewModel, EntryModel>((ref) {
+    StateNotifierProvider<CreateEntryViewModel, EntryModel>((ref) {
   return CreateEntryViewModel(ref.read);
 });
 
@@ -31,19 +33,31 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
 
   bool get saveButtonEnabled => _saveButtonEnabled;
 
-  late TextEditingController clientController = TextEditingController(
-      text: state.client);
-  late TextEditingController objectController = TextEditingController(
-      text: state.object);
-  late TextEditingController orderController = TextEditingController(
-      text: state.order);
-  late TextEditingController contractController = TextEditingController(
-      text: state.contract);
+  late TextEditingController clientController =
+      TextEditingController(text: state.client);
+  late TextEditingController objectController =
+      TextEditingController(text: state.object);
+  late TextEditingController orderController =
+      TextEditingController(text: state.order);
+  late TextEditingController contractController =
+      TextEditingController(text: state.contract);
   late TextEditingController sumController =
-  TextEditingController(text: state.sum.toString());
+      TextEditingController(text: state.sum.toString());
+
+  void clearForm({bool fill = false}) {
+    fill ? state = EntryModel.fillTestData() : state = EntryModel();
+    clientController.text = state.client;
+    objectController.text = state.object;
+    orderController.text = state.order;
+    contractController.text = state.contract;
+    sumController.text = state.sum.toString();
+    _resetPaymentSchedule();
+  }
 
   _resetPaymentSchedule() {
     reader(paymentScheduleProvider.notifier).init(state.sum);
+    reader(createEntryProvider.notifier).showScheduleWidget = false;
+
   }
 
   set date(DateTime newDate) {
@@ -58,9 +72,9 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     update();
     state.payments = reader(paymentScheduleProvider);
     model = ProjectModel(state);
-    // final json = model.toFirebaseJson();
-    // print(json);
-    await model.saveToDatabase();
+    await reader(firebaseServiceProvider).saveDocumentWithAutoId(
+        collectionPath: Path.Table, doc: model.toFirebaseJson());
+    clearForm();
   }
 
   void update() {
@@ -100,8 +114,8 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   void saveButtonChangeEnable() {
     bool oldValue = _saveButtonEnabled;
     _saveButtonEnabled = false;
-    final isPaymentComplete = reader(paymentScheduleProvider.notifier)
-        .isPaymentsComplete();
+    final isPaymentComplete =
+        reader(paymentScheduleProvider.notifier).isPaymentsComplete();
     final isAllFormsReady = _checkReadyScheduleState();
     if (isPaymentComplete && isAllFormsReady) {
       _saveButtonEnabled = true;

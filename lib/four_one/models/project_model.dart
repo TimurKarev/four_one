@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'entry/entry_model.dart';
 import 'entry/payment_schedule_model.dart';
 import 'entry/payment_edit_model.dart';
@@ -49,10 +47,6 @@ class ProjectModel {
     return retMap;
   }
 
-  Future<void> saveToDatabase() async {
-    final reference = FirebaseFirestore.instance.doc('Table/doc/');
-    await reference.set(toFirebaseJson());
-  }
 }
 
 class IncomesHistoryModel {
