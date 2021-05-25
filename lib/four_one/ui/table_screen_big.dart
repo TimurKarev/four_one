@@ -11,7 +11,7 @@ class TableScreenBig extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: DataTableWidget(model: FourOneModel.empty()),
+      body: DataTableWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.vxNav.push(Uri(path: CreateEntryWidget.path));

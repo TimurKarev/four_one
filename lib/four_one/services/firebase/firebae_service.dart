@@ -11,4 +11,10 @@ class FirebaseService {
     final reference = FirebaseFirestore.instance.collection(collectionPath);
     await reference.add(doc);
   }
+
+  Stream<QuerySnapshot> collectionStream({required String path}) {
+    Stream<QuerySnapshot> snapshot =
+        FirebaseFirestore.instance.collection(path).snapshots();
+    return snapshot;
+  }
 }
