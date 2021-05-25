@@ -20,9 +20,13 @@ class BigTableModel {
   late double sum;
   late DateTime finishDate;
   late PaymentScheduleModel payments;
-  IncomesHistoryModel? incomes;
+  late IncomesHistoryModel incomes;
+
+  late double balance;
 
   BigTableModel();
+
+  double get reminderSum => sum - incomes.getIncomeSum();
 
   factory BigTableModel.fromFirebaseMap(Map<String, dynamic> data) {
     BigTableModel model = BigTableModel();
@@ -45,16 +49,19 @@ class BigTableModel {
       model.payments.payments.add(paymentModel);
     });
 
-    final List<dynamic> incomesData = data['incomes'];
     model.incomes = IncomesHistoryModel();
-    incomesData.forEach((income) {
-      final map = income as Map<String, dynamic>;
-      if (map.containsKey('date') && map.containsKey('incomeSum')) {
-        IncomeModel incomeModel =
-            IncomeModel(date: income['date'], incomeSum: income['incomeSum']);
-        model.incomes!.incomes.add(incomeModel);
-      }
-    });
+    if (data['incomes'] != null) {
+      // final List<dynamic> incomesData = data['incomes'];
+      // model.incomes = IncomesHistoryModel();
+      // incomesData.forEach((income) {
+      //   final map = income as Map<String, dynamic>;
+      //   if (map.containsKey('date') && map.containsKey('incomeSum')) {
+      //     IncomeModel incomeModel =
+      //         IncomeModel(date: income['date'], incomeSum: income['incomeSum']);
+      //     model.incomes!.incomes.add(incomeModel);
+      //   }
+      // });
+    }
     return model;
   }
 }

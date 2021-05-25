@@ -42,7 +42,7 @@ class ProjectModel {
       paymentsList.add(pay);
     });
     retMap['payments'] = paymentsList;
-    retMap['incomes'] = [{}];
+//    retMap['incomes'] = [{}];
 
     return retMap;
   }
@@ -50,7 +50,18 @@ class ProjectModel {
 }
 
 class IncomesHistoryModel {
-  List<IncomeModel> incomes = [];
+  List<IncomeModel>? incomes;
+
+  double getIncomeSum(){
+    if (incomes == null){
+      return 0.0;
+    }
+    double retVal = 0.0;
+    incomes!.forEach((element) {
+      retVal += element.incomeSum;
+    });
+    return retVal;
+  }
 }
 
 class IncomeModel {
