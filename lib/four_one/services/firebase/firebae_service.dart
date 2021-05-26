@@ -17,4 +17,19 @@ class FirebaseService {
         FirebaseFirestore.instance.collection(path).snapshots();
     return snapshot;
   }
+
+  Future<bool> updateDocument(String path, Map<String, dynamic> data) {
+    final reference = FirebaseFirestore.instance.doc(path);
+    return reference
+    .update(data)
+        .then((value) => true)
+        .catchError((error) => false);
+  }
+
+  Future<Map<String, dynamic>> getDocument(String path) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+    return await reference.get().then((value) {
+      return value.data() as Map<String, dynamic>;
+    });
+  }
 }

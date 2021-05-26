@@ -13,6 +13,7 @@ class BigTableModel {
     "Остаток",
   ];
 
+  late String id;
   late String client;
   late String object;
   late String order;
@@ -28,8 +29,21 @@ class BigTableModel {
 
   double get reminderSum => sum - incomes.getIncomeSum();
 
-  factory BigTableModel.fromFirebaseMap(Map<String, dynamic> data) {
+  String get paymentLegend => payments.paymentString;
+
+  String get incomeSum => incomes.getIncomeSum().toString();
+
+  double get debt {
+    double retVal = payments.remindPaymentByDate(DateTime.now()) - incomes.getIncomeSum();
+    if (retVal < 0) {
+      retVal = 0.0;
+    }
+    return retVal;
+  }
+
+  factory BigTableModel.fromFirebaseMap(Map<String, dynamic> data, String uid) {
     BigTableModel model = BigTableModel();
+    model.id = uid;
     model.client = data['client'];
     model.object = data['object'];
     model.order = data['order'];
@@ -44,23 +58,27 @@ class BigTableModel {
       PaymentEditModel paymentModel = PaymentEditModel();
       paymentModel.string = payment['string'];
       paymentModel.cash = payment['cash'];
+      paymentModel.date = payment['date'].toDate();
       paymentModel.paymentOptions = PaymentOptionValues.date;
       paymentModel.percentage = payment['percentage'];
       model.payments.payments.add(paymentModel);
     });
 
     model.incomes = IncomesHistoryModel();
-    if (data['incomes'] != null) {
-      // final List<dynamic> incomesData = data['incomes'];
-      // model.incomes = IncomesHistoryModel();
-      // incomesData.forEach((income) {
-      //   final map = income as Map<String, dynamic>;
-      //   if (map.containsKey('date') && map.containsKey('incomeSum')) {
-      //     IncomeModel incomeModel =
-      //         IncomeModel(date: income['date'], incomeSum: income['incomeSum']);
-      //     model.incomes!.incomes.add(incomeModel);
-      //   }
-      // });
+    if (data.containsKey('incomes')) {
+      final List<dynamic> incomesData = data['incomes'];
+      incomesData.forEach((income) {
+        final map = income as Map<String, dynamic>;
+        if (map.containsKey('date') && map.containsKey('incomeSum')) {
+          IncomeModel incomeModel =
+              IncomeModel(date: income['date'].toDate(), incomeSum: income['incomeSum']);
+          if (model.incomes.incomes == null){
+            model.incomes.incomes = [incomeModel];
+          } else {
+            model.incomes.incomes!.add(incomeModel);
+          }
+        }
+      });
     }
     return model;
   }

@@ -73,7 +73,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
     state.payments = reader(paymentScheduleProvider);
     model = ProjectModel(state);
     await reader(firebaseServiceProvider).saveDocumentWithAutoId(
-        collectionPath: Path.Table, doc: model.toFirebaseJson());
+        collectionPath: FirebasePath.Table, doc: model.toFirebaseJson());
     clearForm();
   }
 

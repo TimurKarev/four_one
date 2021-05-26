@@ -15,12 +15,12 @@ class BigTableViewModel {
 
   Stream<List<BigTableModel>> tableDataStream() {
     Stream<QuerySnapshot> snapshot =
-        ref.watch(firebaseServiceProvider).collectionStream(path: Path.Table);
+        ref.watch(firebaseServiceProvider).collectionStream(path: FirebasePath.Table);
     return snapshot.map((event) {
       List<BigTableModel> rowsList = [];
       event.docs.forEach((element) {
         final Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-        rowsList.add(BigTableModel.fromFirebaseMap(data));
+        rowsList.add(BigTableModel.fromFirebaseMap(data, element.id));
       });
       return rowsList;
     });

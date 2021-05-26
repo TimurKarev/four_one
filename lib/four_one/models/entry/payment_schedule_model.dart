@@ -18,6 +18,25 @@ class PaymentScheduleModel {
     payments = [];
   }
 
+  double remindPaymentByDate(DateTime date){
+    double retVal = 0.0;
+    payments.forEach((payment) {
+      if (date.isAfter(payment.date)) {
+        retVal += payment.cash;
+      }
+    });
+    return retVal;
+  }
+
+  String get paymentString {
+    String retString = '';
+    payments.forEach((payment) {
+      retString += payment.string + '\n';
+    });
+    return retString;
+  }
+
+
   @override
   String toString() {
     String retStr = '';
