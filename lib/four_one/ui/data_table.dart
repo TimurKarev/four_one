@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
+import 'package:four_one/four_one/ui/edit_payment_dialog.dart';
 import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
 import 'package:four_one/four_one/viewmodels/tables/income_dialog_view_model.dart';
 
@@ -21,7 +22,7 @@ class DataTableWidget extends ConsumerWidget {
           columns: BigTableModel.columns
               .map((col) => DataColumn(label: Text(col.toString())))
               .toList(),
-          rows: _getRows(data),
+          rows: _getRows(data, context),
         ),
       );
     }, loading: () {
@@ -33,18 +34,27 @@ class DataTableWidget extends ConsumerWidget {
     });
   }
 
-  List<DataRow> _getRows(List<BigTableModel> rows) {
+  List<DataRow> _getRows(List<BigTableModel> rows, BuildContext context) {
     List<DataRow> retRows = [];
 
     rows.forEach((row) {
       final DataRow dataRow = DataRow(cells: [
         DataCell(Text(row.client)),
-        DataCell(Text(row.object)),
+        DataCell(
+          Text(row.object),
+        ),
         DataCell(
           DataTableTooltip(
             message: row.paymentLegend,
-            child: Text(
-              row.sum.toString(),
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return EditPaymentDialog(model: row);
+                    });
+              },
+              child: Text(row.sum.toString()),
             ),
           ),
         ),
@@ -87,8 +97,6 @@ class DataTableIncomeDialog extends StatelessWidget {
   final BigTableModel model;
 
   DataTableIncomeDialog({Key? key, required this.model}) : super(key: key);
-
-  //final TextEditingController controller =  TextEditingController();
 
   @override
   Widget build(BuildContext context) {

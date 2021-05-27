@@ -18,6 +18,14 @@ class PaymentScheduleModel {
     payments = [];
   }
 
+  double get fullSum {
+    double retValue = 0.0;
+    payments.forEach((element) {
+      retValue += element.cash;
+    });
+    return retValue;
+  }
+
   double remindPaymentByDate(DateTime date){
     double retVal = 0.0;
     payments.forEach((payment) {
