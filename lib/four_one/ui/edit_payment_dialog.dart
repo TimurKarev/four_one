@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/utils/date_formatter.dart';
@@ -23,12 +24,12 @@ class EditPaymentDialog extends ConsumerWidget {
         TextButton(
           onPressed: enableOk
               ? () async {
-                  // final isSaved = await provider.updateDataBase(model.id);
-                  // if (!isSaved) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     SnackBar(content: Text('Yay! A SnackBar!')),
-                  //   );
-                  // }
+                  final isSaved = await provider.updateDataBase(model.id);
+                  if (!isSaved) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Yay! A SnackBar!')),
+                    );
+                  }
                   Navigator.pop(context, 'OK');
                 }
               : null,
@@ -46,6 +47,10 @@ class EditPaymentDialog extends ConsumerWidget {
                 SizedBox(
                   width: 100.0,
                   child: TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'(^\d*\.?\d*)')),
+                    ],
                     initialValue: payment.cash.toString(),
                     onChanged: (String newVal) =>
                         provider.sumFieldChanged(newVal, payment),

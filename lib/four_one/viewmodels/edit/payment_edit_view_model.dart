@@ -39,4 +39,22 @@ class PaymentEditViewModel extends ChangeNotifier {
     payment.date = newDate;
     notifyListeners();
   }
+
+  Future<bool> updateDataBase(String id) async {
+    List<dynamic>  data = [];
+    payments.forEach((payment) {
+      data.add(
+        {
+          'date': payment.date,
+          'paymentOption': payment.paymentOptions.toStr(),
+          'percentage': payment.percentage,
+          'cash': payment.cash,
+          'string': payment.string,
+        }
+      );
+    });
+    read(firestore)
+    return false;
+
+  }
 }
