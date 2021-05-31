@@ -32,8 +32,7 @@ class IncomeDialogViewModel extends ChangeNotifier {
     } else {
       newData['incomes'] = [newIncome];
     }
-    print(newData.toString());
-    return firebaseProvider.updateDocument(path, newData);
+    return await firebaseProvider.updateDocument(path, newData);
   }
 
 }

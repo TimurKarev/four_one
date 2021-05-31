@@ -1,3 +1,5 @@
+import 'package:four_one/four_one/utils/date_formatter.dart';
+
 enum PaymentOptionValues {
   prepayment,
   notification,
@@ -32,17 +34,23 @@ class PaymentEditModel {
   late double cash;
   late String string;
 
-  void init(){
+  void init() {
     date = DateTime.now();
     paymentOptions = PaymentOptionValues.prepayment;
     percentage = 0.0;
     cash = 0.0;
   }
 
+  String updateString() {
+    string =
+        'Платеж в размере $cash руб. ($percentage)% не позднее ${formatDate(date)}';
+    return string;
+  }
+
   @override
-  String toString(){
-    String retStr ='';
-    retStr =  date.toString();
+  String toString() {
+    String retStr = '';
+    retStr = date.toString();
     retStr += ' ' + paymentOptions.toStr();
     retStr += ' ' + percentage.toString();
     retStr += ' ' + cash.toString();
@@ -50,7 +58,7 @@ class PaymentEditModel {
     return retStr;
   }
 
-  factory PaymentEditModel.clone({required PaymentEditModel donor}){
+  factory PaymentEditModel.clone({required PaymentEditModel donor}) {
     PaymentEditModel newClass = PaymentEditModel();
 
     newClass.date = donor.date;

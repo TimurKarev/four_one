@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/services/firebase/firebae_service.dart';
+import 'package:four_one/four_one/services/firebase/paths.dart';
 
 final paymentsEditProvider =
     ChangeNotifierProviderFamily<PaymentEditViewModel, PaymentScheduleModel>(
@@ -35,26 +37,24 @@ class PaymentEditViewModel extends ChangeNotifier {
     }
   }
 
-  void dateFieldChanged(DateTime newDate, PaymentEditModel payment){
+  void dateFieldChanged(DateTime newDate, PaymentEditModel payment) {
     payment.date = newDate;
     notifyListeners();
   }
 
   Future<bool> updateDataBase(String id) async {
-    List<dynamic>  data = [];
+    List<dynamic> data = [];
     payments.forEach((payment) {
-      data.add(
-        {
-          'date': payment.date,
-          'paymentOption': payment.paymentOptions.toStr(),
-          'percentage': payment.percentage,
-          'cash': payment.cash,
-          'string': payment.string,
-        }
-      );
+      data.add({
+        'date': payment.date,
+        'paymentOption': payment.paymentOptions.toStr(),
+        'percentage': payment.percentage,
+        'cash': payment.cash,
+        'string': payment.updateString(),
+      });
     });
-    read(firestore)
-    return false;
 
+    return await read(firebaseServiceProvider)
+        .updateDocument(FirebasePath.row(id), {'payments': data});
   }
 }

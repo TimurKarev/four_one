@@ -23,7 +23,10 @@ class FirebaseService {
     return reference
     .update(data)
         .then((value) => true)
-        .catchError((error) => false);
+        .catchError((error) {
+          print(error.toString());
+          return false;
+        });
   }
 
   Future<Map<String, dynamic>> getDocument(String path) async {
