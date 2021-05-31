@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/ui/edit_payment_dialog.dart';
+import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
 import 'package:four_one/four_one/viewmodels/tables/income_dialog_view_model.dart';
 
@@ -39,9 +40,11 @@ class DataTableWidget extends ConsumerWidget {
 
     rows.forEach((row) {
       final DataRow dataRow = DataRow(cells: [
-        DataCell(Text(row.client)),
+        DataCell(DataTableTooltip(message: 'Договор №${row.contract}',
+        child: Text(row.client))),
         DataCell(
-          Text(row.object),
+          DataTableTooltip(message: 'готовность - ${formatDate(row.finishDate)}',
+          child: Text(row.object)),
         ),
         DataCell(
           DataTableTooltip(
@@ -58,9 +61,12 @@ class DataTableWidget extends ConsumerWidget {
             ),
           ),
         ),
-        DataCell(DataTableIncomeDialog(model: row)),
-        DataCell(Text(row.debt.toString())),
-        DataCell(Text(row.reminderSum.toString())),
+        DataCell(DataTableTooltip(message: row.incomeString,
+        child: DataTableIncomeDialog(model: row))),
+        DataCell(DataTableTooltip(message: row.debtString,
+        child: Text(row.debt.toString()))),
+        DataCell(DataTableTooltip(message: row.paymentLegend,
+        child: Text(row.reminderSum.toString()))),
       ]);
       retRows.add(dataRow);
     });
@@ -78,6 +84,11 @@ class DataTableTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (message.length <= 0) {
+      return Container(
+        child: child,
+      );
+    }
     return Tooltip(
       message: message,
       child: child,

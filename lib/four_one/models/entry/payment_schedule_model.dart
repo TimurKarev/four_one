@@ -1,4 +1,5 @@
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
+import 'package:four_one/four_one/models/project_model.dart';
 
 class PaymentScheduleModel {
   List<PaymentEditModel> payments = [];
@@ -7,14 +8,14 @@ class PaymentScheduleModel {
 
   factory PaymentScheduleModel.clone(PaymentScheduleModel donor){
     PaymentScheduleModel newClass = PaymentScheduleModel();
-    donor.payments.forEach((payment){
+    donor.payments.forEach((payment) {
       final newPayment = PaymentEditModel.clone(donor: payment);
       newClass.payments.add(newPayment);
     });
     return newClass;
   }
 
-  void resetModel(){
+  void resetModel() {
     payments = [];
   }
 
@@ -26,7 +27,7 @@ class PaymentScheduleModel {
     return retValue;
   }
 
-  double remindPaymentByDate(DateTime date){
+  double remindPaymentByDate(DateTime date) {
     double retVal = 0.0;
     payments.forEach((payment) {
       if (date.isAfter(payment.date)) {
@@ -52,5 +53,19 @@ class PaymentScheduleModel {
       retStr += element.toString() + '\n';
     });
     return retStr;
+  }
+
+  DateTime getFirstDebtDate(IncomesHistoryModel incomes) {
+    if (incomes.incomes == null) {
+      return payments[0].date;
+    }
+    DateTime retDate = incomes.incomes!.last.date;
+    payments.forEach((payment) {
+      if (remindPaymentByDate(payment.date.add(Duration(days: 1))) >
+          incomes.getIncomeSum() && retDate.isBefore(payment.date)) {
+          retDate = payment.date;
+      }
+    });
+    return retDate;
   }
 }

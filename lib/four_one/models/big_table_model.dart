@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
@@ -25,7 +26,20 @@ class BigTableModel {
 
   late double balance;
 
+  String get futureIncomeString => incomes.incomeLegend;
   BigTableModel();
+
+  String get debtString  {
+    if (debt <= 0.0) {
+      return '';
+    }
+    DateTime firstDate = payments.getFirstDebtDate(incomes);
+    final diff = DateTime.now().difference(firstDate);
+
+    return 'задолженность - ${diff.inDays.toString()} дней';
+  }
+
+  String get incomeString => incomes.incomeLegend;
 
   double get reminderSum => sum - incomes.getIncomeSum();
 

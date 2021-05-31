@@ -14,7 +14,7 @@ class EditPaymentDialog extends ConsumerWidget {
     final provider = watch(paymentsEditProvider(model.payments));
     final enableOk = provider.enableOk;
 
-    print('build');
+    //print('build');
     return AlertDialog(
       actions: [
         TextButton(

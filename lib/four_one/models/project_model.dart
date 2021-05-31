@@ -1,3 +1,5 @@
+import 'package:four_one/four_one/utils/date_formatter.dart';
+
 import 'entry/entry_model.dart';
 import 'entry/payment_schedule_model.dart';
 import 'entry/payment_edit_model.dart';
@@ -51,6 +53,17 @@ class ProjectModel {
 
 class IncomesHistoryModel {
   List<IncomeModel>? incomes;
+
+  String get incomeLegend {
+    String str = '';
+    if (incomes != null) {
+      incomes!.forEach((income) {
+        str += income.incomeSum.toString() + ' руб. - ' + formatDate(income.date) +
+            '\n';
+      });
+    }
+    return str;
+  }
 
   double getIncomeSum(){
     if (incomes == null){
