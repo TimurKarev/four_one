@@ -8,7 +8,7 @@ class PaymentScheduleModel {
   String get futurePaymentString {
     String str ='';
     payments.forEach((payment) {
-      print('income ${payment.date}');
+      //print('income ${payment.date}');
       if (payment.date.isAfter(DateTime.now())){
         str += "${payment.cash} руб.   ${formatDate(payment.date)} \n";
       }

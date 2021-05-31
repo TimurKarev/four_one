@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/ui/edit_payment_dialog.dart';
+import 'package:four_one/four_one/ui/ready_date_edit_dialog.dart';
 import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
 import 'package:four_one/four_one/viewmodels/tables/income_dialog_view_model.dart';
@@ -40,11 +41,22 @@ class DataTableWidget extends ConsumerWidget {
 
     rows.forEach((row) {
       final DataRow dataRow = DataRow(cells: [
-        DataCell(DataTableTooltip(message: 'Договор №${row.contract}',
-        child: Text(row.client))),
+        DataCell(DataTableTooltip(
+            message: 'Договор №${row.contract}', child: Text(row.client))),
         DataCell(
-          DataTableTooltip(message: 'готовность - ${formatDate(row.finishDate)}',
-          child: Text(row.object)),
+          DataTableTooltip(
+            message: 'готовность - ${formatDate(row.finishDate)}',
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return ReadyDateEditDialog(model: row);
+                    });
+              },
+              child: Text(row.object),
+            ),
+          ),
         ),
         DataCell(
           DataTableTooltip(
@@ -61,12 +73,14 @@ class DataTableWidget extends ConsumerWidget {
             ),
           ),
         ),
-        DataCell(DataTableTooltip(message: row.incomeString,
-        child: DataTableIncomeDialog(model: row))),
-        DataCell(DataTableTooltip(message: row.debtString,
-        child: Text(row.debt.toString()))),
-        DataCell(DataTableTooltip(message: row.futureIncomeString,
-        child: Text((row.futurePayment).toString()))),
+        DataCell(DataTableTooltip(
+            message: row.incomeString,
+            child: DataTableIncomeDialog(model: row))),
+        DataCell(DataTableTooltip(
+            message: row.debtString, child: Text(row.debt.toString()))),
+        DataCell(DataTableTooltip(
+            message: row.futureIncomeString,
+            child: Text((row.futurePayment).toString()))),
       ]);
       retRows.add(dataRow);
     });
