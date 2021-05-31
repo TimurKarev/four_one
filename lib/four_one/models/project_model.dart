@@ -22,7 +22,7 @@ class ProjectModel {
   late double sum;
   late DateTime finishDate;
   late PaymentScheduleModel payments;
-  IncomesHistoryModel? incomes;
+  late IncomesHistoryModel incomes;
 
   Map<String, dynamic> toFirebaseJson() {
     Map<String, dynamic> retMap = {};
@@ -52,26 +52,50 @@ class ProjectModel {
 }
 
 class IncomesHistoryModel {
-  List<IncomeModel>? incomes;
+  List<IncomeModel> incomes = [];
 
   String get incomeLegend {
     String str = '';
-    if (incomes != null) {
-      incomes!.forEach((income) {
+      incomes.forEach((income) {
         str += income.incomeSum.toString() + ' руб. - ' + formatDate(income.date) +
             '\n';
       });
-    }
     return str;
   }
 
   double getIncomeSum(){
-    if (incomes == null){
+    if (incomes.length <= 0){
       return 0.0;
     }
     double retVal = 0.0;
-    incomes!.forEach((element) {
+    incomes.forEach((element) {
       retVal += element.incomeSum;
+    });
+    return retVal;
+  }
+
+  double futureIncomeByDate(DateTime date){
+    if (incomes.length <= 0){
+      return 0.0;
+    }
+    double retVal = 0.0;
+    incomes.forEach((income) {
+      if (date.isBefore(income.date)) {
+        retVal += income.incomeSum;
+      }
+    });
+    return retVal;
+  }
+
+  double pastIncomeByDate(DateTime date){
+    if (incomes.length <= 0){
+      return 0.0;
+    }
+    double retVal = 0.0;
+    incomes.forEach((income) {
+      if (date.isAfter(income.date)) {
+        retVal += income.incomeSum;
+      }
     });
     return retVal;
   }

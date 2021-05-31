@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
@@ -26,7 +25,24 @@ class BigTableModel {
 
   late double balance;
 
-  String get futureIncomeString => incomes.incomeLegend;
+  double get futurePayment {
+    final balance = balanceByDate(DateTime.now());
+    final futPay = payments.futurePaymentsByDate(DateTime.now());
+
+    if (balance < 0.0) {
+      return futurePayments;
+    }
+    final retVal = futPay - balance;
+    //print('$futPay    $balance  $retVal');
+    return retVal;
+  }
+
+  double balanceByDate(DateTime date)=> incomeSum - payments.pastPaymentsByDate(date);
+
+
+  String get futureIncomeString => payments.futurePaymentString;
+
+
   BigTableModel();
 
   String get debtString  {
@@ -43,12 +59,14 @@ class BigTableModel {
 
   double get reminderSum => sum - incomes.getIncomeSum();
 
+  double get futurePayments => payments.futurePaymentsByDate(DateTime.now());
+
   String get paymentLegend => payments.paymentString;
 
-  String get incomeSum => incomes.getIncomeSum().toString();
+  double get incomeSum => incomes.getIncomeSum();
 
   double get debt {
-    double retVal = payments.remindPaymentByDate(DateTime.now()) - incomes.getIncomeSum();
+    double retVal = payments.pastPaymentsByDate(DateTime.now()) - incomes.getIncomeSum();
     if (retVal < 0) {
       retVal = 0.0;
     }
@@ -86,10 +104,10 @@ class BigTableModel {
         if (map.containsKey('date') && map.containsKey('incomeSum')) {
           IncomeModel incomeModel =
               IncomeModel(date: income['date'].toDate(), incomeSum: income['incomeSum']);
-          if (model.incomes.incomes == null){
+          if (model.incomes.incomes.length <= 0){
             model.incomes.incomes = [incomeModel];
           } else {
-            model.incomes.incomes!.add(incomeModel);
+            model.incomes.incomes.add(incomeModel);
           }
         }
       });

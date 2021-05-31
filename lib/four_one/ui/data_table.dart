@@ -65,8 +65,8 @@ class DataTableWidget extends ConsumerWidget {
         child: DataTableIncomeDialog(model: row))),
         DataCell(DataTableTooltip(message: row.debtString,
         child: Text(row.debt.toString()))),
-        DataCell(DataTableTooltip(message: row.paymentLegend,
-        child: Text(row.reminderSum.toString()))),
+        DataCell(DataTableTooltip(message: row.futureIncomeString,
+        child: Text((row.futurePayment).toString()))),
       ]);
       retRows.add(dataRow);
     });
@@ -169,7 +169,7 @@ class DataTableIncomeDialog extends StatelessWidget {
                 );
               });
         },
-        child: Text(model.incomeSum),
+        child: Text(model.incomeSum.toString()),
       ),
     );
   }

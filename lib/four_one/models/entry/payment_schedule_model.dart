@@ -1,8 +1,20 @@
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
+import 'package:four_one/four_one/utils/date_formatter.dart';
 
 class PaymentScheduleModel {
   List<PaymentEditModel> payments = [];
+
+  String get futurePaymentString {
+    String str ='';
+    payments.forEach((payment) {
+      print('income ${payment.date}');
+      if (payment.date.isAfter(DateTime.now())){
+        str += "${payment.cash} руб.   ${formatDate(payment.date)} \n";
+      }
+    });
+    return str;
+  }
 
   PaymentScheduleModel();
 
@@ -27,7 +39,7 @@ class PaymentScheduleModel {
     return retValue;
   }
 
-  double remindPaymentByDate(DateTime date) {
+  double pastPaymentsByDate(DateTime date) {
     double retVal = 0.0;
     payments.forEach((payment) {
       if (date.isAfter(payment.date)) {
@@ -36,6 +48,17 @@ class PaymentScheduleModel {
     });
     return retVal;
   }
+
+  double futurePaymentsByDate(DateTime date) {
+    double retVal = 0.0;
+    payments.forEach((payment) {
+      if(date.isBefore(payment.date)) {
+        retVal += payment.cash;
+      }
+    });
+    return retVal;
+  }
+
 
   String get paymentString {
     String retString = '';
@@ -56,12 +79,12 @@ class PaymentScheduleModel {
   }
 
   DateTime getFirstDebtDate(IncomesHistoryModel incomes) {
-    if (incomes.incomes == null) {
+    if (incomes.incomes.length <= 0) {
       return payments[0].date;
     }
-    DateTime retDate = incomes.incomes!.last.date;
+    DateTime retDate = incomes.incomes.last.date;
     payments.forEach((payment) {
-      if (remindPaymentByDate(payment.date.add(Duration(days: 1))) >
+      if (pastPaymentsByDate(payment.date.add(Duration(days: 1))) >
           incomes.getIncomeSum() && retDate.isBefore(payment.date)) {
           retDate = payment.date;
       }
