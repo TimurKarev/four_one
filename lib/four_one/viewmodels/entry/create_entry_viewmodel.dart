@@ -57,7 +57,6 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   _resetPaymentSchedule() {
     reader(paymentScheduleProvider.notifier).init(state.sum);
     reader(createEntryProvider.notifier).showScheduleWidget = false;
-
   }
 
   set date(DateTime newDate) {
@@ -104,8 +103,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
         state.contract.length > 0 &&
         state.order.length > 0 &&
         state.object.length > 0 &&
-        state.client.length > 0 &&
-        state.finishDate.isAfter(DateTime.now())) {
+        state.client.length > 0) {
       return true;
     }
     return false;
