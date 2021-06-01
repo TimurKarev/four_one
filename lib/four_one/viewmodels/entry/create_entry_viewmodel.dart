@@ -45,7 +45,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
       TextEditingController(text: state.sum.toString());
 
   void clearForm({bool fill = false}) {
-    fill ? state = EntryModel.fillTestData() : state = EntryModel();
+    fill ? state = EntryModel() : state = EntryModel();
     clientController.text = state.client;
     objectController.text = state.object;
     orderController.text = state.order;

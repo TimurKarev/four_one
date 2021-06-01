@@ -12,7 +12,7 @@ class TableScreenBig extends StatelessWidget {
       appBar: AppBar(
         title: Text('Таблица 4.1  development'),
       ),
-      body: DataTableWidget(),
+      body: SingleChildScrollView(child: DataTableWidget()),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.vxNav.push(Uri(path: CreateEntryWidget.path));

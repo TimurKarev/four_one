@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/routers/four_one_routers.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  setPathUrlStrategy();
   runApp(ProviderScope(child: MyApp()));
 }
 
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       routerDelegate: _routersDelegate,
       routeInformationParser: VxInformationParser(),
       title: '4.1 отчет',

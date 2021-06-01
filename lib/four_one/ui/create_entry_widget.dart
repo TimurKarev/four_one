@@ -34,61 +34,63 @@ class CreateEntryWidget extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(40.0, 10.0, 20.0, 5.0),
-        alignment: Alignment.bottomCenter,
-        child: Column(
-          children: [
-            EntryTextFormField(
-                labelText: 'Заказчик',
-                controller: context
-                    .read(createEntryProvider.notifier)
-                    .clientController),
-            EntryTextFormField(
-                labelText: 'Объект',
-                controller: context
-                    .read(createEntryProvider.notifier)
-                    .objectController),
-            EntryTextFormField(
-                labelText: 'Заказ',
-                controller:
-                    context.read(createEntryProvider.notifier).orderController),
-            EntryTextFormField(
-                labelText: 'Договор',
-                controller: context
-                    .read(createEntryProvider.notifier)
-                    .contractController),
-            EntryTextFormField(
-                isNumeric: true,
-                labelText: 'Сумма, руб.',
-                controller:
-                    context.read(createEntryProvider.notifier).sumController),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Text(
-                  "Готовность",
-                  style: TextStyle(
-                    fontSize: 16.0,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(40.0, 10.0, 20.0, 5.0),
+          alignment: Alignment.bottomCenter,
+          child: Column(
+            children: [
+              EntryTextFormField(
+                  labelText: 'Заказчик',
+                  controller: context
+                      .read(createEntryProvider.notifier)
+                      .clientController),
+              EntryTextFormField(
+                  labelText: 'Объект',
+                  controller: context
+                      .read(createEntryProvider.notifier)
+                      .objectController),
+              EntryTextFormField(
+                  labelText: 'Заказ',
+                  controller:
+                      context.read(createEntryProvider.notifier).orderController),
+              EntryTextFormField(
+                  labelText: 'Договор',
+                  controller: context
+                      .read(createEntryProvider.notifier)
+                      .contractController),
+              EntryTextFormField(
+                  isNumeric: true,
+                  labelText: 'Сумма, руб.',
+                  controller:
+                      context.read(createEntryProvider.notifier).sumController),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Готовность",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                DatePickerForm(
-                  provider: dateProvider,
-                  setDate: _setNewDate,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            //PaymentEditWidget(),
-            AddScheduleWidget(),
-          ],
+                  SizedBox(
+                    width: 20,
+                  ),
+                  DatePickerForm(
+                    provider: dateProvider,
+                    setDate: _setNewDate,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              //PaymentEditWidget(),
+              AddScheduleWidget(),
+            ],
+          ),
         ),
       ),
       floatingActionButton: SaveEntryFloatingButton(),
