@@ -9,7 +9,9 @@ class TableScreenBig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Таблица 4.1  alpha 0.0.1'),
+      ),
       body: DataTableWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
