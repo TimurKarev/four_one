@@ -10,8 +10,31 @@ final bigTableDataProvider = Provider<BigTableViewModel>((ref) {
 
 class BigTableViewModel {
   final ProviderReference ref;
+  List<BigTableModel> modelList = [];
 
   BigTableViewModel({required this.ref});
+
+  double get debt {
+    double retVal = 0.0;
+    if (modelList.isEmpty) {
+      return retVal;
+    }
+    modelList.forEach((model) {
+      retVal += model.debt;
+    });
+    return retVal;
+  }
+
+  double get futureIncome {
+    double retVal = 0.0;
+    if (modelList.isEmpty) {
+      return retVal;
+    }
+    modelList.forEach((model) {
+      retVal += model.futurePayment;
+    });
+    return retVal;
+  }
 
   Stream<List<BigTableModel>> tableDataStream() {
     Stream<QuerySnapshot> snapshot =
@@ -22,6 +45,7 @@ class BigTableViewModel {
         final Map<String, dynamic> data = element.data() as Map<String, dynamic>;
         rowsList.add(BigTableModel.fromFirebaseMap(data, element.id));
       });
+      modelList = rowsList;
       return rowsList;
     });
   }

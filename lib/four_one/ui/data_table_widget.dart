@@ -39,6 +39,15 @@ class DataTableWidget extends ConsumerWidget {
   List<DataRow> _getRows(List<BigTableModel> rows, BuildContext context) {
     List<DataRow> retRows = [];
 
+    final DataRow firstRow = DataRow(cells: [
+      DataCell(Container()),
+      DataCell(Container()),
+      DataCell(Container()),
+      DataCell(Container()),
+      DataCell(Text(context.read(bigTableDataProvider).debt.toString())),
+      DataCell(Text(context.read(bigTableDataProvider).futureIncome.toString())),
+    ]);
+    retRows.add(firstRow);
     rows.forEach((row) {
       final DataRow dataRow = DataRow(cells: [
         DataCell(DataTableTooltip(
