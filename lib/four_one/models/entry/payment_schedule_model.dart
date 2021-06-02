@@ -1,6 +1,6 @@
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
-import 'package:four_one/four_one/utils/date_formatter.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 
 class PaymentScheduleModel {
   List<PaymentEditModel> payments = [];

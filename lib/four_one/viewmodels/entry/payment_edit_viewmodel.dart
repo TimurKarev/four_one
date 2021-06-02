@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
-import 'package:four_one/four_one/utils/date_formatter.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_input_viewmodel.dart';
 
 final paymentEditProvider =
