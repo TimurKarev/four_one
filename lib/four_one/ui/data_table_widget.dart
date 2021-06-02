@@ -45,8 +45,10 @@ class DataTableWidget extends ConsumerWidget {
       DataCell(Container()),
       DataCell(Container()),
       DataCell(Container()),
-      DataCell(BigNumberTextWidget(number: context.read(bigTableDataProvider).debt.toString())),
-      DataCell(Text(context.read(bigTableDataProvider).futureIncome.toString())),
+      DataCell(BigNumberTextWidget(
+          number: context.read(bigTableDataProvider).debt.toString())),
+      DataCell(BigNumberTextWidget(
+          number: context.read(bigTableDataProvider).futureIncome.toString())),
     ]);
     retRows.add(firstRow);
     rows.forEach((row) {
@@ -79,18 +81,22 @@ class DataTableWidget extends ConsumerWidget {
                       return EditPaymentDialog(model: row);
                     });
               },
-              child: Text(row.sum.toString()),
+              child: BigNumberTextWidget(number: row.sum.toString()),
             ),
           ),
         ),
         DataCell(DataTableTooltip(
             message: row.incomeString,
             child: DataTableIncomeDialog(model: row))),
-        DataCell(DataTableTooltip(
-            message: row.debtString, child: Text(row.debt.toString()))),
+        DataCell(
+          DataTableTooltip(
+            message: row.debtString,
+            child: BigNumberTextWidget(number: row.debt.toString()),
+          ),
+        ),
         DataCell(DataTableTooltip(
             message: row.futureIncomeString,
-            child: Text((row.futurePayment).toString()))),
+            child: BigNumberTextWidget(number: row.futurePayment.toString()))),
       ]);
       retRows.add(dataRow);
     });
@@ -193,7 +199,7 @@ class DataTableIncomeDialog extends StatelessWidget {
                 );
               });
         },
-        child: Text(model.incomeSum.toString()),
+        child: BigNumberTextWidget(number: model.incomeSum.toString()),
       ),
     );
   }
