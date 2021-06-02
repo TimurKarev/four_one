@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/ui/edit_payment_dialog.dart';
 import 'package:four_one/four_one/ui/ready_date_edit_dialog.dart';
+import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
 import 'package:four_one/four_one/utils/date_formatter.dart';
 import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
 import 'package:four_one/four_one/viewmodels/tables/income_dialog_view_model.dart';
@@ -44,8 +45,10 @@ class DataTableWidget extends ConsumerWidget {
       DataCell(Container()),
       DataCell(Container()),
       DataCell(Container()),
-      DataCell(Text(context.read(bigTableDataProvider).debt.toString())),
-      DataCell(Text(context.read(bigTableDataProvider).futureIncome.toString())),
+      DataCell(BigNumberTextWidget(
+          number: context.read(bigTableDataProvider).debt.toString())),
+      DataCell(BigNumberTextWidget(
+          number: context.read(bigTableDataProvider).futureIncome.toString())),
     ]);
     retRows.add(firstRow);
     rows.forEach((row) {
@@ -78,18 +81,22 @@ class DataTableWidget extends ConsumerWidget {
                       return EditPaymentDialog(model: row);
                     });
               },
-              child: Text(row.sum.toString()),
+              child: BigNumberTextWidget(number: row.sum.toString()),
             ),
           ),
         ),
         DataCell(DataTableTooltip(
             message: row.incomeString,
             child: DataTableIncomeDialog(model: row))),
-        DataCell(DataTableTooltip(
-            message: row.debtString, child: Text(row.debt.toString()))),
+        DataCell(
+          DataTableTooltip(
+            message: row.debtString,
+            child: BigNumberTextWidget(number: row.debt.toString()),
+          ),
+        ),
         DataCell(DataTableTooltip(
             message: row.futureIncomeString,
-            child: Text((row.futurePayment).toString()))),
+            child: BigNumberTextWidget(number: row.futurePayment.toString()))),
       ]);
       retRows.add(dataRow);
     });
@@ -192,7 +199,7 @@ class DataTableIncomeDialog extends StatelessWidget {
                 );
               });
         },
-        child: Text(model.incomeSum.toString()),
+        child: BigNumberTextWidget(number: model.incomeSum.toString()),
       ),
     );
   }
