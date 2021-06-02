@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
-import 'package:four_one/four_one/utils/date_formatter.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/edit/payment_edit_view_model.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class EditPaymentDialog extends ConsumerWidget {
   EditPaymentDialog({Key? key, required this.model}) : super(key: key);
@@ -48,12 +48,11 @@ class EditPaymentDialog extends ConsumerWidget {
                   width: 100.0,
                   child: TextFormField(
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'(^\d*\.?\d*)')),
+                      ThousandsFormatter(allowFraction: true),
                     ],
                     initialValue: payment.cash.toString(),
                     onChanged: (String newVal) =>
-                        provider.sumFieldChanged(newVal, payment),
+                        provider.sumFieldChanged(getNumFromFormatString(newVal), payment),
                   ),
                 ),
                 SizedBox(width: 20.0),

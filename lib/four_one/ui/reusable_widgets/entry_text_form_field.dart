@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
-
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class EntryTextFormField extends StatelessWidget {
   const EntryTextFormField(
@@ -27,11 +26,12 @@ class EntryTextFormField extends StatelessWidget {
         },
         child: TextFormField(
           controller: controller,
-          inputFormatters: isNumeric ? [
-            FilteringTextInputFormatter.allow(
-                RegExp(r'(^\d*\.?\d*)')),
-          ] : null,
-          onEditingComplete: () =>_updateModel(context),
+          inputFormatters: isNumeric
+              ? [
+                  ThousandsFormatter(allowFraction: true),
+                ]
+              : null,
+          onEditingComplete: () => _updateModel(context),
           decoration: InputDecoration(
             labelText: labelText,
           ),
@@ -40,7 +40,7 @@ class EntryTextFormField extends StatelessWidget {
     );
   }
 
-  void _updateModel(BuildContext context){
+  void _updateModel(BuildContext context) {
     context.read(createEntryProvider.notifier).update();
   }
 }

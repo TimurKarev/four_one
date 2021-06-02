@@ -1,4 +1,4 @@
-import 'package:four_one/four_one/utils/date_formatter.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 
 import 'entry/entry_model.dart';
 import 'entry/payment_schedule_model.dart';

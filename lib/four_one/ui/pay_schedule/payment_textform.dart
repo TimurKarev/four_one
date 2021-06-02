@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_input_viewmodel.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 enum PaymentTextFormType {
   percentage,
@@ -64,8 +65,7 @@ class PaymentTextForm extends StatelessWidget {
                       paymentModel.setNewCheckboxValue(false);
                     },
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'(^\d*\.?\d*)')),
+                      ThousandsFormatter(allowFraction: true),
                     ],
                     onEditingComplete: () {
                       _updateTextFormValues(paymentModel);
@@ -94,12 +94,12 @@ class PaymentTextForm extends StatelessWidget {
     if (type == PaymentTextFormType.cash) {
       text = _getControllerByType(model).text;
       if (text.length > 0) {
-        model.updateTextFormValuesFromCash(double.parse(text));
+        model.updateTextFormValuesFromCash(double.parse(getNumFromFormatString(text)));
       }
     } else {
       text = _getControllerByType(model).text;
       if (text.length > 0) {
-        model.updateTextFormValuesFromPercentage(double.parse(text));
+        model.updateTextFormValuesFromPercentage(double.parse(getNumFromFormatString(text)));
       }
     }
   }

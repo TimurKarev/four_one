@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/entry/entry_model.dart';
 import 'package:four_one/four_one/models/project_model.dart';
 import 'package:four_one/four_one/services/firebase/firebae_service.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_schedule_viewmodel.dart';
 import 'package:state_notifier/state_notifier.dart';
 import 'package:four_one/four_one/services/firebase/paths.dart';
@@ -77,7 +78,7 @@ class CreateEntryViewModel extends StateNotifier<EntryModel> {
   }
 
   void update() {
-    final sum = double.parse(sumController.text);
+    final sum = double.parse(getNumFromFormatString(sumController.text));
     state.client = clientController.text;
     state.object = objectController.text;
     state.order = orderController.text;

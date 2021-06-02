@@ -5,9 +5,10 @@ import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/ui/edit_payment_dialog.dart';
 import 'package:four_one/four_one/ui/ready_date_edit_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
-import 'package:four_one/four_one/utils/date_formatter.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
 import 'package:four_one/four_one/viewmodels/tables/income_dialog_view_model.dart';
+import 'package:pattern_formatter/numeric_formatter.dart';
 
 class DataTableWidget extends ConsumerWidget {
   DataTableWidget({Key? key}) : super(key: key);
@@ -181,11 +182,10 @@ class DataTableIncomeDialog extends StatelessWidget {
                                 //controller: controller,
                                 onChanged: (String newVal) {
                                   provider.sum =
-                                      double.parse(newVal.toString());
+                                      double.parse(getNumFromFormatString(newVal));
                                 },
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'(^\d*\.?\d*)'))
+                                  ThousandsFormatter(allowFraction: true),
                                 ],
                               ),
                             ),
@@ -239,11 +239,11 @@ class _PaymentDateWidgetState extends State<PaymentDateWidget> {
               enabled: switchValue,
               initialValue: '0',
               onChanged: (String newVal) {
-                provider.days = int.parse(newVal);
+                provider.days = int.parse(getNumFromFormatString(newVal));
               },
               keyboardType: TextInputType.number,
               inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
+                ThousandsFormatter(),
               ],
             ),
           ),
