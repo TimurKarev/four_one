@@ -50,7 +50,7 @@ class EditPaymentDialog extends ConsumerWidget {
                     inputFormatters: [
                       ThousandsFormatter(allowFraction: true),
                     ],
-                    initialValue: payment.cash.toString(),
+                    initialValue: getFormatNum(payment.cash.toString()),
                     onChanged: (String newVal) =>
                         provider.sumFieldChanged(getNumFromFormatString(newVal), payment),
                   ),
@@ -63,7 +63,6 @@ class EditPaymentDialog extends ConsumerWidget {
                     showDatePicker(
                       context: context,
                       initialDate: payment.date,
-                      //TODO: create dynamic dates
                       firstDate: payment.date.subtract(Duration(days: 500)),
                       lastDate: DateTime.now().add(Duration(days: 500)),
                     ).then((value) {

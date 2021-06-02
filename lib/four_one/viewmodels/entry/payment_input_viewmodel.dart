@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/ui/pay_schedule/residual_checkbox.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
 import 'package:four_one/four_one/viewmodels/entry/payment_edit_viewmodel.dart';
 
@@ -81,8 +82,8 @@ class PaymentInputViewModel {
   }
 
   void _updateTextFieldControllers() {
-    percentageTextEditCtrl.text = _percentage.toString();
-    cashTextEditCtrl.text = _cash.toString();
+    percentageTextEditCtrl.text = getFormatNum(_percentage.toString());
+    cashTextEditCtrl.text = getFormatNum(_cash.toString());
   }
 
   double roundDouble(double value, [int places=2]){
