@@ -16,7 +16,7 @@ class BigNumberTextWidget extends StatelessWidget {
     String revStr = '';
     var j = 1;
     var i = intnum.length;
-    while(i>=0){
+    while(i>=2){
       j++;
       i--;
       if (j%3 == 0){
