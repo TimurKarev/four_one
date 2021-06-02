@@ -67,7 +67,7 @@ class DataTableWidget extends ConsumerWidget {
                       return ReadyDateEditDialog(model: row);
                     });
               },
-              child: Text(row.object),
+              child: Text('${row.object} (${row.order})'),
             ),
           ),
         ),
