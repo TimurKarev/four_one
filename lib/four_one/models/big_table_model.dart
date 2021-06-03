@@ -23,8 +23,8 @@ class BigTableModel {
   late DateTime finishDate;
   late PaymentScheduleModel payments;
   late IncomesHistoryModel incomes;
-
   late double balance;
+  BigTableModel();
 
   double get futurePayment {
     final balance = balanceByDate(DateTime.now());
@@ -34,17 +34,12 @@ class BigTableModel {
       return futurePayments;
     }
     final retVal = futPay - balance;
-    //print('$futPay    $balance  $retVal');
     return retVal;
   }
 
   double balanceByDate(DateTime date)=> incomeSum - payments.pastPaymentsByDate(date);
 
-
   String get futureIncomeString => payments.futurePaymentString;
-
-
-  BigTableModel();
 
   String get debtString  {
     if (debt <= 0.0) {
@@ -56,6 +51,7 @@ class BigTableModel {
     return 'задолженность - ${diff.inDays.toString()} дней';
   }
 
+  ///Return full income string with past payments
   String get incomeString => incomes.incomeLegend;
 
   double get reminderSum => sum - incomes.getIncomeSum();
@@ -71,6 +67,15 @@ class BigTableModel {
     if (retVal < 0) {
       retVal = 0.0;
     }
+    return retVal;
+  }
+
+  ///Returns calculating future incomes
+  PaymentScheduleModel get futureIncomes {
+    PaymentScheduleModel retVal = PaymentScheduleModel.clone(payments);
+
+    var balance = balanceByDate(DateTime.now());
+
     return retVal;
   }
 
