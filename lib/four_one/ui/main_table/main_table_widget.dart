@@ -59,6 +59,7 @@ class MainTableWidget extends ConsumerWidget {
       child: Column(
         children: [
           _getTableHeader(),
+          getTotalsRow(context),
           Expanded(
             child: ListView.separated(
               itemCount: data.length,
@@ -73,9 +74,34 @@ class MainTableWidget extends ConsumerWidget {
     );
   }
 
+  SizedBox getTotalsRow(BuildContext context) {
+    final rowValues = [
+      '',
+      '',
+      '',
+      '',
+      context.read(bigTableDataProvider).debt.toString(),
+      '',
+      context.read(bigTableDataProvider).futureIncome.toString(),
+    ];
+    return SizedBox(
+      height: 40.0,
+      child: Row(
+        children: rowValues.asMap().entries.map(
+              (entry) => SizedBox(
+                width: colWidths[entry.key],
+                child: rowValues[entry.key] == '' ? Container(): BigNumberTextWidget(
+                  number: rowValues[entry.key],
+                ),
+              ),
+            ).toList(),
+      ),
+    );
+  }
+
   SizedBox _getTableHeader() {
     return SizedBox(
-      height: 60.0,
+      height: 30.0,
       child: Row(
         children: BigTableModel.columns
             .asMap()
