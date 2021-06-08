@@ -83,16 +83,23 @@ class BigTableModel {
     // print('-----------------------------');
 
     var balance = balanceByDate(DateTime.now());
-
+    int remInd = -1;
     for (var i = 0; i < retVal.payments.length; i++) {
       if (balance > 0) {
         if (balance >= retVal.payments[i].cash) {
-          balance += retVal.payments[i].cash;
-          retVal.payments.removeAt(i);
+          balance -= retVal.payments[i].cash;
+          //retVal.payments.removeAt(i);
+          remInd = i;
         } else {
           retVal.payments[i].cash -= balance;
+          balance = 0;
         }
       }
+    }
+    if (remInd > 0) {
+      retVal.payments.removeRange(0, remInd);
+    } else if (remInd == 0) {
+      retVal.payments.removeAt(remInd);
     }
     return retVal;
   }
