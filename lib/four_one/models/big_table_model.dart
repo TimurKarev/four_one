@@ -23,8 +23,9 @@ class BigTableModel {
   late DateTime finishDate;
   late PaymentScheduleModel payments;
   late IncomesHistoryModel incomes;
-
   late double balance;
+
+  BigTableModel();
 
   double get futurePayment {
     final balance = balanceByDate(DateTime.now());
@@ -34,19 +35,15 @@ class BigTableModel {
       return futurePayments;
     }
     final retVal = futPay - balance;
-    //print('$futPay    $balance  $retVal');
     return retVal;
   }
 
-  double balanceByDate(DateTime date)=> incomeSum - payments.pastPaymentsByDate(date);
-
+  double balanceByDate(DateTime date) =>
+      incomeSum - payments.pastPaymentsByDate(date);
 
   String get futureIncomeString => payments.futurePaymentString;
 
-
-  BigTableModel();
-
-  String get debtString  {
+  String get debtString {
     if (debt <= 0.0) {
       return '';
     }
@@ -56,6 +53,7 @@ class BigTableModel {
     return 'задолженность - ${diff.inDays.toString()} дней';
   }
 
+  ///Return full income string with past payments
   String get incomeString => incomes.incomeLegend;
 
   double get reminderSum => sum - incomes.getIncomeSum();
@@ -67,9 +65,41 @@ class BigTableModel {
   double get incomeSum => incomes.getIncomeSum();
 
   double get debt {
-    double retVal = payments.pastPaymentsByDate(DateTime.now()) - incomes.getIncomeSum();
+    double retVal =
+        payments.pastPaymentsByDate(DateTime.now()) - incomes.getIncomeSum();
     if (retVal < 0) {
       retVal = 0.0;
+    }
+    return retVal;
+  }
+
+  ///Returns calculating future incomes
+  PaymentScheduleModel get futureIncomes {
+    PaymentScheduleModel retVal = PaymentScheduleModel.clone(payments);
+
+    // print(retVal.toString());
+    retVal.removePastPayments();
+    // print(retVal.toString());
+    // print('-----------------------------');
+
+    var balance = balanceByDate(DateTime.now());
+    int remInd = -1;
+    for (var i = 0; i < retVal.payments.length; i++) {
+      if (balance > 0) {
+        if (balance >= retVal.payments[i].cash) {
+          balance -= retVal.payments[i].cash;
+          //retVal.payments.removeAt(i);
+          remInd = i;
+        } else {
+          retVal.payments[i].cash -= balance;
+          balance = 0;
+        }
+      }
+    }
+    if (remInd > 0) {
+      retVal.payments.removeRange(0, remInd);
+    } else if (remInd == 0) {
+      retVal.payments.removeAt(remInd);
     }
     return retVal;
   }
@@ -103,9 +133,9 @@ class BigTableModel {
       incomesData.forEach((income) {
         final map = income as Map<String, dynamic>;
         if (map.containsKey('date') && map.containsKey('incomeSum')) {
-          IncomeModel incomeModel =
-              IncomeModel(date: income['date'].toDate(), incomeSum: income['incomeSum']);
-          if (model.incomes.incomes.length <= 0){
+          IncomeModel incomeModel = IncomeModel(
+              date: income['date'].toDate(), incomeSum: income['incomeSum']);
+          if (model.incomes.incomes.length <= 0) {
             model.incomes.incomes = [incomeModel];
           } else {
             model.incomes.incomes.add(incomeModel);

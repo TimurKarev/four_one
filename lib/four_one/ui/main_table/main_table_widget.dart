@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
+import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
 import 'package:four_one/four_one/ui/data_table_income_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/data_table_tooltip.dart';
@@ -13,7 +14,9 @@ import '../ready_date_edit_dialog.dart';
 class MainTableWidget extends ConsumerWidget {
   MainTableWidget({Key? key}) : super(key: key);
 
-  List<double> colWidths = [
+  final double _multiRowHeight = 22.0;
+
+  List<double> _colWidths = [
     150.0,
     250.0,
     150.0,
@@ -23,7 +26,7 @@ class MainTableWidget extends ConsumerWidget {
     150.0,
   ];
 
-  double get tableWidth => colWidths.fold(0, (p, e) => p + e);
+  double get tableWidth => _colWidths.fold(0, (p, e) => p + e);
 
   final dataProvider = StreamProvider<List<BigTableModel>>((ref) {
     return ref.watch(bigTableDataProvider).tableDataStream();
@@ -87,14 +90,20 @@ class MainTableWidget extends ConsumerWidget {
     return SizedBox(
       height: 40.0,
       child: Row(
-        children: rowValues.asMap().entries.map(
+        children: rowValues
+            .asMap()
+            .entries
+            .map(
               (entry) => SizedBox(
-                width: colWidths[entry.key],
-                child: rowValues[entry.key] == '' ? Container(): BigNumberTextWidget(
-                  number: rowValues[entry.key],
-                ),
+                width: _colWidths[entry.key],
+                child: rowValues[entry.key] == ''
+                    ? Container()
+                    : BigNumberTextWidget(
+                        number: rowValues[entry.key],
+                      ),
               ),
-            ).toList(),
+            )
+            .toList(),
       ),
     );
   }
@@ -108,7 +117,7 @@ class MainTableWidget extends ConsumerWidget {
             .entries
             .map(
               (entre) => SizedBox(
-                width: colWidths[entre.key],
+                width: _colWidths[entre.key],
                 child: Text(
                   entre.value,
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -121,16 +130,17 @@ class MainTableWidget extends ConsumerWidget {
   }
 
   Widget _getRow(BuildContext context, BigTableModel row) {
+    PaymentScheduleModel futurePayments = row.futureIncomes;
     return Container(
       child: Row(
         children: [
           SizedBox(
-            width: colWidths[0],
+            width: _colWidths[0],
             child: DataTableTooltip(
                 message: '${row.contract}', child: Text(row.client)),
           ),
           SizedBox(
-            width: colWidths[1],
+            width: _colWidths[1],
             child: DataTableTooltip(
                 message: 'готовность - ${formatDate(row.finishDate)}',
                 child: TextButton(
@@ -148,7 +158,7 @@ class MainTableWidget extends ConsumerWidget {
                 )),
           ),
           SizedBox(
-            width: colWidths[2],
+            width: _colWidths[2],
             child: DataTableTooltip(
               message: row.paymentLegend,
               child: TextButton(
@@ -166,7 +176,7 @@ class MainTableWidget extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: colWidths[3],
+            width: _colWidths[3],
             child: DataTableTooltip(
               message: row.incomeString,
               child: Align(
@@ -177,19 +187,46 @@ class MainTableWidget extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: colWidths[4],
+            width: _colWidths[4],
             child: DataTableTooltip(
               message: row.debtString,
               child: BigNumberTextWidget(number: row.debt.toString()),
             ),
           ),
-          SizedBox(width: colWidths[5], child: Text('')),
           SizedBox(
-            width: colWidths[6],
+            width: _colWidths[5],
+            child: Column(
+              children: futurePayments.payments
+                  .asMap()
+                  .entries
+                  .map(
+                    (entry) => Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizedBox(
+                            height: _multiRowHeight,
+                            child: Text(formatDate(entry.value.date)))),
+                  )
+                  .toList(),
+            ),
+          ),
+          SizedBox(
+            width: _colWidths[6],
             child: DataTableTooltip(
-              message: row.futureIncomeString,
-              child: BigNumberTextWidget(
-                number: row.futurePayment.toString(),
+              message: getFormatNum(row.futurePayment.toString()),
+              child: Column(
+                children: futurePayments.payments
+                    .asMap()
+                    .entries
+                    .map(
+                      (entry) => Align(
+                          alignment: Alignment.centerLeft,
+                          child: SizedBox(
+                            height: _multiRowHeight,
+                            child: BigNumberTextWidget(
+                                number: entry.value.cash.toString()),
+                          )),
+                    )
+                    .toList(),
               ),
             ),
           ),

@@ -48,23 +48,26 @@ class ProjectModel {
 
     return retMap;
   }
-
 }
 
 class IncomesHistoryModel {
   List<IncomeModel> incomes = [];
 
+  IncomesHistoryModel();
+
   String get incomeLegend {
     String str = '';
-      incomes.forEach((income) {
-        str += income.incomeSum.toString() + ' руб. - ' + formatDate(income.date) +
-            '\n';
-      });
+    incomes.forEach((income) {
+      str += income.incomeSum.toString() +
+          ' руб. - ' +
+          formatDate(income.date) +
+          '\n';
+    });
     return str;
   }
 
-  double getIncomeSum(){
-    if (incomes.length <= 0){
+  double getIncomeSum() {
+    if (incomes.length <= 0) {
       return 0.0;
     }
     double retVal = 0.0;
@@ -74,8 +77,8 @@ class IncomesHistoryModel {
     return retVal;
   }
 
-  double futureIncomeByDate(DateTime date){
-    if (incomes.length <= 0){
+  double futureIncomeByDate(DateTime date) {
+    if (incomes.length <= 0) {
       return 0.0;
     }
     double retVal = 0.0;
@@ -87,8 +90,8 @@ class IncomesHistoryModel {
     return retVal;
   }
 
-  double pastIncomeByDate(DateTime date){
-    if (incomes.length <= 0){
+  double pastIncomeByDate(DateTime date) {
+    if (incomes.length <= 0) {
       return 0.0;
     }
     double retVal = 0.0;
@@ -99,6 +102,14 @@ class IncomesHistoryModel {
     });
     return retVal;
   }
+
+  factory IncomesHistoryModel.clone(IncomesHistoryModel donor) {
+    IncomesHistoryModel retVal = IncomesHistoryModel();
+    donor.incomes.forEach(
+      (income) => retVal.incomes.add(IncomeModel.clone(income)),
+    );
+    return retVal;
+  }
 }
 
 class IncomeModel {
@@ -106,4 +117,8 @@ class IncomeModel {
   double incomeSum;
 
   IncomeModel({required this.date, required this.incomeSum});
+
+  factory IncomeModel.clone(IncomeModel donor) {
+    return IncomeModel(date: donor.date, incomeSum: donor.incomeSum);
+  }
 }

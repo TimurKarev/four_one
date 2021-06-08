@@ -5,26 +5,33 @@ import 'package:four_one/four_one/utils/formatters.dart';
 class PaymentScheduleModel {
   List<PaymentEditModel> payments = [];
 
-  String get futurePaymentString {
-    String str ='';
-    payments.forEach((payment) {
-      //print('income ${payment.date}');
-      if (payment.date.isAfter(DateTime.now())){
-        str += "${payment.cash} руб.   ${formatDate(payment.date)} \n";
-      }
-    });
-    return str;
-  }
-
   PaymentScheduleModel();
 
-  factory PaymentScheduleModel.clone(PaymentScheduleModel donor){
+  factory PaymentScheduleModel.clone(PaymentScheduleModel donor) {
     PaymentScheduleModel newClass = PaymentScheduleModel();
     donor.payments.forEach((payment) {
       final newPayment = PaymentEditModel.clone(donor: payment);
       newClass.payments.add(newPayment);
     });
     return newClass;
+  }
+
+  void removePastPayments() {
+    if (payments.length <= 0) {
+      return;
+    }
+    payments.removeWhere((element) => element.date.isBefore(DateTime.now()));
+  }
+
+  String get futurePaymentString {
+    String str = '';
+    payments.forEach((payment) {
+      //print('income ${payment.date}');
+      if (payment.date.isAfter(DateTime.now())) {
+        str += "${payment.cash} руб.   ${formatDate(payment.date)} \n";
+      }
+    });
+    return str;
   }
 
   void resetModel() {
@@ -52,13 +59,12 @@ class PaymentScheduleModel {
   double futurePaymentsByDate(DateTime date) {
     double retVal = 0.0;
     payments.forEach((payment) {
-      if(date.isBefore(payment.date)) {
+      if (date.isBefore(payment.date)) {
         retVal += payment.cash;
       }
     });
     return retVal;
   }
-
 
   String get paymentString {
     String retString = '';
@@ -67,7 +73,6 @@ class PaymentScheduleModel {
     });
     return retString;
   }
-
 
   @override
   String toString() {
@@ -85,8 +90,9 @@ class PaymentScheduleModel {
     DateTime retDate = incomes.incomes.last.date;
     payments.forEach((payment) {
       if (pastPaymentsByDate(payment.date.add(Duration(days: 1))) >
-          incomes.getIncomeSum() && retDate.isBefore(payment.date)) {
-          retDate = payment.date;
+              incomes.getIncomeSum() &&
+          retDate.isBefore(payment.date)) {
+        retDate = payment.date;
       }
     });
     return retDate;
