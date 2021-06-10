@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/authication/view_models/landing_page_view_model.dart';
 import 'package:four_one/four_one/viewmodels/reusable/custom_app_bar_veiw_model.dart';
 
 class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
@@ -15,7 +16,7 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         TextButton(
           onPressed: () async {
-            context.read(customAppBarProvider).logout();
+            context.read(landingPageProvider).logout();
           },
           child: Icon(
             Icons.logout,
