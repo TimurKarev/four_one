@@ -18,21 +18,38 @@ class FirebaseService {
     return snapshot;
   }
 
+  Future<bool> saveDocument(String path, Map<String, dynamic> data) {
+    final reference = FirebaseFirestore.instance.doc(path);
+    return reference.set(data).then((value) => true).catchError((error) {
+      print(error.toString());
+      return false;
+    });
+  }
+
   Future<bool> updateDocument(String path, Map<String, dynamic> data) {
     final reference = FirebaseFirestore.instance.doc(path);
-    return reference
-    .update(data)
-        .then((value) => true)
-        .catchError((error) {
-          print(error.toString());
-          return false;
-        });
+    return reference.update(data).then((value) => true).catchError((error) {
+      print(error.toString());
+      return false;
+    });
   }
 
   Future<Map<String, dynamic>> getDocument(String path) async {
     final reference = FirebaseFirestore.instance.doc(path);
     return await reference.get().then((value) {
       return value.data() as Map<String, dynamic>;
+    });
+  }
+
+  Future<Map<String, dynamic>> getOrCreateDocument(
+      String path, Map<String, dynamic> data) async {
+    final reference = FirebaseFirestore.instance.doc(path);
+    return await reference.get().then((value) {
+      if (value.exists) {
+        return value.data() as Map<String, dynamic>;
+      } else {
+        return reference.set(data).then((value) => data);
+      }
     });
   }
 }

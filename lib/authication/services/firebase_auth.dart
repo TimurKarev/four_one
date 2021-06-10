@@ -7,6 +7,8 @@ final authProvider =
 class MyFirebaseAuthService {
   final _auth = FirebaseAuth.instance;
 
+  User? get user => _auth.currentUser;
+
   Stream<User?> authStateChanges() => _auth.userChanges();
 
   Future<User?> signInAnonymously() async {

@@ -1,13 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/authication/models/user_model.dart';
 import 'package:four_one/authication/services/firebase_auth.dart';
+import 'package:four_one/four_one/services/firebase/firebae_service.dart';
+import 'package:four_one/four_one/services/firebase/paths.dart';
 
-final loginPageProvider = ChangeNotifierProvider((ref) => LoginViewModel(ref.read));
+final loginPageProvider =
+    ChangeNotifierProvider((ref) => LoginViewModel(ref));
 
 class LoginViewModel extends ChangeNotifier {
 
-  final Reader read;
+  UserModel userModel = UserModel();
+  final ProviderReference ref;
   bool loginPage = true;
   String actionString = 'Зарегестрироватсья';
   String buttonString = 'Войти';
@@ -24,7 +30,37 @@ class LoginViewModel extends ChangeNotifier {
   TextEditingController password2Controller = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
-  LoginViewModel(this.read);
+  LoginViewModel(this.ref);
+
+  final authStateChangeProvider = StreamProvider<User?>((ref) => ref.watch(authProvider).authStateChanges());
+
+  Stream<UserModel> userModelStream() {
+    final user = ref.watch(authStateChangeProvider);
+    return user.when(data: (data) async * {
+      await _updateUserModel(data);
+      yield userModel;
+    }, loading: () async* {
+      yield userModel;
+    }, error: (e, _) async* {
+      yield userModel;
+    });
+  }
+
+  Future<void> _updateUserModel(User? user) async {
+    if (user?.uid == null){
+      userModel = UserModel();
+      return;
+    }
+    var userMap = {
+      'name': nameController.text,
+      'email': mailController.text,
+      'uid': user!.uid,
+      'roles': ['not_assigned'],
+    };
+    final doc = await ref.read(firebaseServiceProvider).getOrCreateDocument(FirebasePath.user(user.uid), userMap);
+
+    userModel.update(doc);
+  }
 
   void revertPage() {
     loginPage = !loginPage;
@@ -118,18 +154,29 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<void> _register() async {
-    final auth = read(authProvider);
-    auth.createUserWithEmailAndPassword(
+    final auth = ref.read(authProvider);
+    await auth.createUserWithEmailAndPassword(
       email: mailController.text,
       password: password1Controller.text,
     );
+    //
+    // await read(firebaseServiceProvider).saveDocument(
+    //   path: FirebasePath.user(auth.user!.uid),
+    //   data: userMap,
+    // );
+    // _resetPage();
   }
 
-  void _login() {
-    final auth = read(authProvider);
-    auth.signInEmailAndPassword(
+  void _login() async {
+    final auth = ref.read(authProvider);
+    await auth.signInEmailAndPassword(
       email: mailController.text,
       password: password1Controller.text,
     );
+    // final userMap = await read(firebaseServiceProvider)
+    //     .getDocument(FirebasePath.user(auth.user!.uid));
+    // read(userModelProvider).update(userMap);
+    // print(read(userModelProvider).toString());
+    // _resetPage();
   }
 }

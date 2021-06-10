@@ -6,6 +6,8 @@ final customAppBarProvider = Provider((ref) => CustomAppBarViewModel(ref.read));
 class CustomAppBarViewModel {
   final Reader reader;
 
+  late final String? name;
+
   CustomAppBarViewModel(this.reader);
   void logout() {
     reader(authProvider).signOut();
