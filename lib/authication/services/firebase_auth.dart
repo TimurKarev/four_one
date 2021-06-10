@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authProvider =
-    Provider<FirebaseAuthService>((ref) => FirebaseAuthService());
+    Provider<MyFirebaseAuthService>((ref) => MyFirebaseAuthService());
 
-class FirebaseAuthService {
+class MyFirebaseAuthService {
   final _auth = FirebaseAuth.instance;
 
   Stream<User?> authStateChanges() => _auth.userChanges();

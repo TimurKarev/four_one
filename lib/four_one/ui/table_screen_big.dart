@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:four_one/four_one/ui/create_entry_widget.dart';
+import 'package:four_one/four_one/ui/reusable_widgets/custom_app_bar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import 'main_table/main_table_widget.dart';
@@ -10,9 +11,7 @@ class TableScreenBig extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Таблица 4.1  development'),
-      ),
+      appBar: AppBarCustom(),
       body: //SingleChildScrollView(child: DataTableWidget()),
       MainTableWidget(),
       floatingActionButton: FloatingActionButton(
