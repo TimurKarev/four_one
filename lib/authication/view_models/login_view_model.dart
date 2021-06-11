@@ -29,7 +29,6 @@ class LoginViewModel extends ChangeNotifier {
   LoginViewModel(this.ref);
 
   void revertPage() {
-    print('revert');
     loginPage = !loginPage;
     _resetPage();
     if (loginPage) {

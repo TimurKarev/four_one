@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/authication/view_models/landing_page_view_model.dart';
-import 'package:four_one/four_one/viewmodels/reusable/custom_app_bar_veiw_model.dart';
+
 
 class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
   const AppBarCustom({Key? key, required this.title, required this.userName}) : super(key: key);
@@ -31,11 +31,10 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(50);
 
   Widget _getTitle() {
-    print(userName);
     return Row(
       children: [
-        Text('title'),
-        //Expanded(child: Container()),
+        Text(title),
+        Expanded(child: Container()),
         Text(userName, style: TextStyle(color: Colors.white),),
       ],
     );

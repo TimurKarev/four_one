@@ -16,6 +16,7 @@ class LandingPageViewModel extends ChangeNotifier {
   LandingPageViewModel(this.reader);
 
   String? get uid => _userModel.uid;
+  String get name => _userModel.name;
 
   void logout() async {
     await reader(authProvider).signOut();
