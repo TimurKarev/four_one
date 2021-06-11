@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/security/security_view_model.dart';
 import 'package:four_one/four_one/ui/data_table_income_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/data_table_tooltip.dart';
@@ -131,6 +132,7 @@ class MainTableWidget extends ConsumerWidget {
 
   Widget _getRow(BuildContext context, BigTableModel row) {
     PaymentScheduleModel futurePayments = row.futureIncomes;
+    final canEdit = context.read(securityProvider).isUserCanEditOrder;
     return Container(
       child: Row(
         children: [
@@ -141,38 +143,43 @@ class MainTableWidget extends ConsumerWidget {
           ),
           SizedBox(
             width: _colWidths[1],
-            child: DataTableTooltip(
-                message: 'готовность - ${formatDate(row.finishDate)}',
-                child: TextButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                          return ReadyDateEditDialog(model: row);
-                        });
-                  },
-                  child: Align(
-                    child: Text('${row.object} (${row.order})'),
-                    alignment: Alignment.centerLeft,
-                  ),
-                )),
+            child: canEdit
+                ? DataTableTooltip(
+                    message: 'готовность - ${formatDate(row.finishDate)}',
+                    child: TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return ReadyDateEditDialog(model: row);
+                            });
+                      },
+                      child: Align(
+                        child: Text('${row.object} (${row.order})'),
+                        alignment: Alignment.centerLeft,
+                      ),
+                    ))
+                : Text('${row.object} (${row.order})'),
           ),
           SizedBox(
             width: _colWidths[2],
             child: DataTableTooltip(
               message: row.paymentLegend,
-              child: TextButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) {
-                        return EditPaymentDialog(model: row);
-                      });
-                },
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: BigNumberTextWidget(number: row.sum.toString())),
-              ),
+              child: canEdit
+                  ? TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) {
+                              return EditPaymentDialog(model: row);
+                            });
+                      },
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child:
+                              BigNumberTextWidget(number: row.sum.toString())),
+                    )
+                  : BigNumberTextWidget(number: row.sum.toString()),
             ),
           ),
           SizedBox(
@@ -182,7 +189,9 @@ class MainTableWidget extends ConsumerWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 //TODO: add button here
-                child: DataTableIncomeDialog(model: row),
+                child: canEdit
+                    ? DataTableIncomeDialog(model: row)
+                    : BigNumberTextWidget(number: row.incomeSum.toString()),
               ),
             ),
           ),
