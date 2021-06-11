@@ -43,7 +43,7 @@ class PaymentEditModel {
 
   String updateString() {
     string =
-        'Платеж в размере $cash руб. ($percentage)% не позднее ${formatDate(date)}';
+        'Платеж в размере ${getFormatNum(cash.toString())} руб. ($percentage)% не позднее ${formatDate(date)}';
     return string;
   }
 
