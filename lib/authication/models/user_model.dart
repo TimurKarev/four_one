@@ -10,9 +10,16 @@ class UserModel {
   }
 
   void update(Map<String, dynamic> data) {
+    Set<String> role = {'not_assigned'};
+    if (data.containsKey('roles')){
+      final roleList = new List<String>.from(data['roles']);
+      role = roleList.toSet();
+    }
+
     email = data['email'] ?? '';
     name = data['name'] ?? '';
     uid = data['uid'] ?? null;
+    roles = role;
   }
 
   Map<String, dynamic> get modelMap => {
