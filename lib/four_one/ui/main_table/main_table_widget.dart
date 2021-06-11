@@ -17,7 +17,7 @@ class MainTableWidget extends ConsumerWidget {
 
   final double _multiRowHeight = 22.0;
 
-  List<double> _colWidths = [
+  final List<double> _colWidths = [
     150.0,
     250.0,
     150.0,

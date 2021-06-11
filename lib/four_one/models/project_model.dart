@@ -58,7 +58,7 @@ class IncomesHistoryModel {
   String get incomeLegend {
     String str = '';
     incomes.forEach((income) {
-      str += income.incomeSum.toString() +
+      str += getFormatNum(income.incomeSum.toString()) +
           ' руб. - ' +
           formatDate(income.date) +
           '\n';
