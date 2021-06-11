@@ -210,10 +210,17 @@ class MainTableWidget extends ConsumerWidget {
                   .entries
                   .map(
                     (entry) => Align(
-                        alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                            height: _multiRowHeight,
-                            child: Text(formatDate(entry.value.date)))),
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: _multiRowHeight,
+                        child: Text(
+                          formatDate(entry.value.date),
+                          style: TextStyle(
+                            color: entry.value.date.difference(DateTime.now()).inDays <= 3 ? Colors.deepOrangeAccent : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
                   )
                   .toList(),
             ),
