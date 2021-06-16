@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/security/security_view_model.dart';
 import 'package:four_one/four_one/ui/data_table_income_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
@@ -35,7 +36,7 @@ class MainTableWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    return watch(dataProvider).when(
+    return watch(tableDataProvider).when(
       data: (data) {
         return Container(
           child: Row(
