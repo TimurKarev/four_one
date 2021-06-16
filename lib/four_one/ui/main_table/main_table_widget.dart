@@ -15,11 +15,11 @@ import '../ready_date_edit_dialog.dart';
 class MainTableWidget extends ConsumerWidget {
   MainTableWidget({Key? key}) : super(key: key);
 
-  final double _multiRowHeight = 22.0;
+  final double _multiRowHeight = 16.0;
 
   final List<double> _colWidths = [
     150.0,
-    250.0,
+    400.0,
     150.0,
     150.0,
     150.0,
@@ -88,8 +88,12 @@ class MainTableWidget extends ConsumerWidget {
       '',
       context.read(bigTableDataProvider).futureIncome.toString(),
     ];
+    final colors = {
+      4: Colors.red,
+      6: Colors.green,
+    };
     return SizedBox(
-      height: 40.0,
+      height: 50.0,
       child: Row(
         children: rowValues
             .asMap()
@@ -99,8 +103,13 @@ class MainTableWidget extends ConsumerWidget {
                 width: _colWidths[entry.key],
                 child: rowValues[entry.key] == ''
                     ? Container()
-                    : BigNumberTextWidget(
-                        number: rowValues[entry.key],
+                    : Text(
+                        getFormatNum(rowValues[entry.key]),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                          color: colors.containsKey(entry.key) ? colors[entry.key] : Colors.black,
+                        ),
                       ),
               ),
             )
@@ -216,7 +225,12 @@ class MainTableWidget extends ConsumerWidget {
                         child: Text(
                           formatDate(entry.value.date),
                           style: TextStyle(
-                            color: entry.value.date.difference(DateTime.now()).inDays <= 3 ? Colors.deepOrangeAccent : Colors.black,
+                            color: entry.value.date
+                                        .difference(DateTime.now())
+                                        .inDays <=
+                                    3
+                                ? Colors.deepOrangeAccent
+                                : Colors.black,
                           ),
                         ),
                       ),
