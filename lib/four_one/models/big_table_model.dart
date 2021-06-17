@@ -27,6 +27,31 @@ class BigTableModel {
 
   BigTableModel();
 
+  int compareFuturePaymentsDates(BigTableModel model) {
+    final selfFuturePayments = futureIncomes;
+    final modelFuturePayments = model.futureIncomes;
+
+    if (selfFuturePayments.payments.isEmpty && modelFuturePayments.payments.isEmpty) {
+      return 0;
+    }
+
+    if (selfFuturePayments.payments.isEmpty && modelFuturePayments.payments.isNotEmpty) {
+      return -1;
+    }
+    if (selfFuturePayments.payments.isNotEmpty && modelFuturePayments.payments.isEmpty) {
+      return 1;
+    }
+    if (selfFuturePayments.payments[0].date.isAfter(modelFuturePayments.payments[0].date)) {
+      return 1;
+    } else if (selfFuturePayments.payments[0].date.isAtSameMomentAs(modelFuturePayments.payments[0].date)) {
+      return 0;
+    } else {
+      return -1;
+    }
+
+    return 0;
+  }
+
   double get futurePayment {
     final balance = balanceByDate(DateTime.now());
     final futPay = payments.futurePaymentsByDate(DateTime.now());
