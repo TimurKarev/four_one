@@ -2,68 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/models/entry/table_model.dart';
+import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/security/security_view_model.dart';
 import 'package:four_one/four_one/ui/data_table_income_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/data_table_tooltip.dart';
 import 'package:four_one/four_one/utils/formatters.dart';
-import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
+import 'package:four_one/four_one/viewmodels/tables/big_table_view_model.dart';
 
 import '../edit_payment_dialog.dart';
 import '../ready_date_edit_dialog.dart';
 
 class MainTableWidget extends ConsumerWidget {
-  MainTableWidget({Key? key}) : super(key: key);
+
+  MainTableWidget({required data, colWidth,  Key? key}) : super(key: key){
+    _data = data;
+    _colWidths = [
+      150.0,
+      400.0,
+      150.0,
+      150.0,
+      150.0,
+      150.0,
+      150.0,
+    ];
+    if (colWidth != null) {
+      _colWidths[1] = colWidth;
+    }
+  }
+
+  late final TableModel _data;
 
   final double _multiRowHeight = 16.0;
 
-  final List<double> _colWidths = [
-    150.0,
-    400.0,
-    150.0,
-    150.0,
-    150.0,
-    150.0,
-    150.0,
-  ];
+  late final  List<double> _colWidths;
 
   double get tableWidth => _colWidths.fold(0, (p, e) => p + e);
 
-  final dataProvider = StreamProvider<List<BigTableModel>>((ref) {
-    return ref.watch(bigTableDataProvider).tableDataStream();
-  });
-
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    return watch(dataProvider).when(
-      data: (data) {
-        return Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: Container()),
-              _getTable(context, data),
-              Expanded(child: Container()),
-            ],
-          ),
-        );
-      },
-      loading: () => Center(child: CircularProgressIndicator.adaptive()),
-      error: (e, __) {
-        return Container(
-          child: Text('Error $e'),
-        );
-      },
+    final viewModel = watch(bigTableProvider);
+    final data = viewModel.getTableModel(_data);
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: Container()),
+          _getTable(context, data),
+          Expanded(child: Container()),
+        ],
+      ),
     );
   }
 
-  Widget _getTable(BuildContext context, List<BigTableModel> data) {
+  Widget _getTable(BuildContext context, TableModel model) {
+    final data = model.rowList;
     return Container(
       width: tableWidth,
       child: Column(
         children: [
-          _getTableHeader(),
-          getTotalsRow(context),
+          _getTableHeader(context),
+          getTotalsRow(context, model),
           Expanded(
             child: ListView.separated(
               itemCount: data.length,
@@ -78,15 +78,17 @@ class MainTableWidget extends ConsumerWidget {
     );
   }
 
-  SizedBox getTotalsRow(BuildContext context) {
+  SizedBox getTotalsRow(BuildContext context, TableModel model) {
     final rowValues = [
       '',
       '',
       '',
       '',
-      context.read(bigTableDataProvider).debt.toString(),
+      //context.read(bigTableDataProvider).debt.toString(),
+      model.debt.toString(),
       '',
-      context.read(bigTableDataProvider).futureIncome.toString(),
+      //context.read(bigTableDataProvider).futureIncome.toString(),
+      model.futureIncome.toString(),
     ];
     final colors = {
       4: Colors.red,
@@ -108,7 +110,9 @@ class MainTableWidget extends ConsumerWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.0,
-                          color: colors.containsKey(entry.key) ? colors[entry.key] : Colors.black,
+                          color: colors.containsKey(entry.key)
+                              ? colors[entry.key]
+                              : Colors.black,
                         ),
                       ),
               ),
@@ -118,7 +122,7 @@ class MainTableWidget extends ConsumerWidget {
     );
   }
 
-  SizedBox _getTableHeader() {
+  SizedBox _getTableHeader(BuildContext context) {
     return SizedBox(
       height: 30.0,
       child: Row(
@@ -128,9 +132,17 @@ class MainTableWidget extends ConsumerWidget {
             .map(
               (entre) => SizedBox(
                 width: _colWidths[entre.key],
-                child: Text(
-                  entre.value,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: TextButton(
+                  onPressed: () {
+                    context.read(bigTableProvider).sort = entre.key;
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      entre.value,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ),
             )
