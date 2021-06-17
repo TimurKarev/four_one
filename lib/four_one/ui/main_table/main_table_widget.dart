@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
+import 'package:four_one/four_one/models/entry/table_model.dart';
 import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/security/security_view_model.dart';
 import 'package:four_one/four_one/ui/data_table_income_dialog.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/big_number_text_widget.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/data_table_tooltip.dart';
 import 'package:four_one/four_one/utils/formatters.dart';
-import 'package:four_one/four_one/viewmodels/tables/BigTableViewModel.dart';
+import 'package:four_one/four_one/viewmodels/tables/big_table_view_model.dart';
 
 import '../edit_payment_dialog.dart';
 import '../ready_date_edit_dialog.dart';
@@ -29,10 +30,6 @@ class MainTableWidget extends ConsumerWidget {
   ];
 
   double get tableWidth => _colWidths.fold(0, (p, e) => p + e);
-
-  final dataProvider = StreamProvider<List<BigTableModel>>((ref) {
-    return ref.watch(bigTableDataProvider).tableDataStream();
-  });
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
@@ -58,13 +55,14 @@ class MainTableWidget extends ConsumerWidget {
     );
   }
 
-  Widget _getTable(BuildContext context, List<BigTableModel> data) {
+  Widget _getTable(BuildContext context, TableModel model) {
+    final data = model.rowList;
     return Container(
       width: tableWidth,
       child: Column(
         children: [
           _getTableHeader(),
-          getTotalsRow(context),
+          getTotalsRow(context, model),
           Expanded(
             child: ListView.separated(
               itemCount: data.length,
@@ -79,15 +77,17 @@ class MainTableWidget extends ConsumerWidget {
     );
   }
 
-  SizedBox getTotalsRow(BuildContext context) {
+  SizedBox getTotalsRow(BuildContext context, TableModel model) {
     final rowValues = [
       '',
       '',
       '',
       '',
-      context.read(bigTableDataProvider).debt.toString(),
+      //context.read(bigTableDataProvider).debt.toString(),
+      model.debt.toString(),
       '',
-      context.read(bigTableDataProvider).futureIncome.toString(),
+      //context.read(bigTableDataProvider).futureIncome.toString(),
+      model.futureIncome.toString(),
     ];
     final colors = {
       4: Colors.red,
