@@ -27,6 +27,23 @@ class BigTableModel {
 
   BigTableModel();
 
+  factory BigTableModel.clone(BigTableModel donor) {
+    final retVal = BigTableModel();
+
+    retVal.id = donor.id;
+    retVal.client = donor.client;
+    retVal.object = donor.object;
+    retVal.order = donor.order;
+    retVal.contract = donor.contract;
+    retVal.sum = donor.sum;
+    retVal.finishDate = donor.finishDate;
+    retVal.balance = donor.balance;
+    retVal.payments = PaymentScheduleModel.clone(donor.payments);
+    retVal.incomes = IncomesHistoryModel.clone(donor.incomes);
+
+    return retVal;
+  }
+
   int compareFuturePaymentsDates(BigTableModel model) {
     final selfFuturePayments = futureIncomes;
     final modelFuturePayments = model.futureIncomes;
