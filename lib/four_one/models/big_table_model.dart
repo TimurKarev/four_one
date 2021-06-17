@@ -95,6 +95,20 @@ class BigTableModel {
     return 'задолженность - ${diff.inDays.toString()} дней';
   }
 
+  int get durationDebtAndFuture {
+    int retVal = 0;
+    if (debt > 0) {
+      DateTime firstDate = payments.getFirstDebtDate(incomes);
+      final diff = DateTime.now().difference(firstDate);
+      retVal = -1 *  diff.inDays;
+    } else {
+      retVal = futureIncomes.payments[0].date
+          .difference(DateTime.now())
+          .inDays +1;
+    }
+    return retVal;
+  }
+
   ///Return full income string with past payments
   String get incomeString => incomes.incomeLegend;
 
