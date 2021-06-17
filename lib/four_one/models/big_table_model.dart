@@ -42,11 +42,11 @@ class BigTableModel {
       return 1;
     }
     if (selfFuturePayments.payments[0].date.isAfter(modelFuturePayments.payments[0].date)) {
-      return 1;
+      return -1;
     } else if (selfFuturePayments.payments[0].date.isAtSameMomentAs(modelFuturePayments.payments[0].date)) {
       return 0;
     } else {
-      return -1;
+      return 1;
     }
 
     return 0;

@@ -11,7 +11,7 @@ final bigTableProvider = ChangeNotifierProvider((ref) => BigTableViewModel());
 
 class BigTableViewModel extends ChangeNotifier {
   int _sort = 0;
-  int _revert = 1;
+  int _revert = -1;
 
   TableModel getTableModel(TableModel data) {
     if (_sort == 0) {
@@ -42,7 +42,7 @@ class BigTableViewModel extends ChangeNotifier {
         _revert *= -1;
       } else {
         _sort = index;
-        _revert = 1;
+        _revert = -1;
       }
       notifyListeners();
     }
