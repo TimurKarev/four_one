@@ -26,6 +26,7 @@ class SmallestTableWidget extends ConsumerWidget {
         },
       ),
     );
+
   }
 
   Widget _getRow(BuildContext context, BigTableModel row) {
@@ -75,12 +76,14 @@ class SmallestTableWidget extends ConsumerWidget {
   }
 
   Text _getDuration(BigTableModel row) {
-    final duration = row.durationDebtAndFuture;
+    final duration = row.debt>0?row.debtDuration : 100500;
     final color = duration > 0 ? Colors.green : Colors.red;
-    return Text(duration != 0 ? duration.toString() : '0',
-    style: TextStyle(
-      fontSize: 20.0,
-      color: color,
-    ),);
+    return Text(
+      duration != 0 ? duration.toString() : '0',
+      style: TextStyle(
+        fontSize: 20.0,
+        color: color,
+      ),
+    );
   }
 }

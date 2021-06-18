@@ -95,6 +95,40 @@ class BigTableModel {
     return 'задолженность - ${diff.inDays.toString()} дней';
   }
 
+  int get debtDuration {
+    if (debt <= 0) {
+      return 0;
+    }
+
+    int i = 0;
+    DateTime? date;
+    double balance = 0.0;
+    while(true) {
+      if (payments.payments.length <= i || incomes.incomes.length <= i) {
+        break;
+      }
+      if (payments.payments[i].date.isAfter(DateTime.now())){
+        break;
+      }
+      double income = incomes.incomes[i].incomeSum;
+      double payment = payments.payments[i].cash;
+      if (balance < 0) {
+        income -= balance;
+      } else {
+        payment += balance;
+      }
+      balance = payment - income;
+      if (balance > 0 ) {
+        date = payments.payments[i].date;
+      }
+      i++;
+    }
+    if (date == null) {
+      return 0;
+    }
+    return date.difference(DateTime.now()).inDays;
+  }
+
   int get durationDebtAndFuture {
     int retVal = 0;
     if (debt > 0) {
