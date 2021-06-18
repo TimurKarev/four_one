@@ -89,7 +89,7 @@ class BigTableModel {
     if (debt <= 0.0) {
       return '';
     }
-    return 'задолженность - ${-1 * debtDuration} дней';
+    return 'задолженность ${-1 * debtDuration} дней';
   }
 
   int get debtDuration {
@@ -98,12 +98,30 @@ class BigTableModel {
     }
 
     int i = 0;
-    DateTime? date;
+    DateTime? date = payments.payments.first.date;
     double balance = 0.0;
     while(true) {
-      if (payments.payments.length <= i || incomes.incomes.length <= i) {
+      if (incomes.incomes.length == 0) {
+        date = payments.payments.first.date;
         break;
       }
+
+      if (incomes.incomes.length <= i && payments.payments.length > i) {
+        if (balance > 0 ) {
+          date =
+          i > 0 ? payments.payments[i - 1].date : payments.payments.first.date;
+        } else {
+          date = payments.payments[i].date;
+        }
+        break;
+      }
+
+      if (payments.payments.length <= i) {
+        //////////////////////////
+        date = i>0 ? payments.payments[i-1].date : payments.payments.first.date;
+        break;
+      }
+
       if (payments.payments[i].date.isAfter(DateTime.now())){
         break;
       }
@@ -120,6 +138,7 @@ class BigTableModel {
       }
       i++;
     }
+
     if (date == null) {
       return 0;
     }

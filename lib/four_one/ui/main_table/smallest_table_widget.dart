@@ -14,9 +14,9 @@ class SmallestTableWidget extends ConsumerWidget {
   late final TableModel _model;
 
   final _headerNames = [
-    'Заказ',
-    'Дни',
-    'Сумма',
+    'заказ',
+    'дни',
+    'сумма',
   ];
 
   final _headerSizes = [
@@ -34,7 +34,7 @@ class SmallestTableWidget extends ConsumerWidget {
         _getHeader(context),
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 15.0),
             child: ListView.separated(
               itemCount: model.rowList.length,
               itemBuilder: (context, i) => _getRow(context, model.rowList[i]),
@@ -139,7 +139,7 @@ class SmallestTableWidget extends ConsumerWidget {
   Widget _getHeader(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      height: 25.0,
+      height: 50.0,
       child: Row(
         children: _headerNames
             .asMap()
