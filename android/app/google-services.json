@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "499440596124",
+    "firebase_url": "https://eti-crm-default-rtdb.firebaseio.com",
+    "project_id": "eti-crm",
+    "storage_bucket": "eti-crm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499440596124:android:3f80c9481f692546762959",
+        "android_client_info": {
+          "package_name": "eti.timurkarev.four_one"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499440596124-036bi0v9cida1l290rdi75bt85dgv2jp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_ChJ-yS4BNFX264gMclUxBcYGOOq9jJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499440596124-036bi0v9cida1l290rdi75bt85dgv2jp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
