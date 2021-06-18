@@ -14,9 +14,9 @@ class SmallestTableWidget extends ConsumerWidget {
   late final TableModel _model;
 
   final _headerNames = [
-    'Заказ',
-    'Дни',
-    'Сумма',
+    'заказ',
+    'дни',
+    'сумма',
   ];
 
   final _headerSizes = [
