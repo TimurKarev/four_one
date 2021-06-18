@@ -27,6 +27,23 @@ class BigTableModel {
 
   BigTableModel();
 
+  factory BigTableModel.clone(BigTableModel donor) {
+    final retVal = BigTableModel();
+
+    retVal.id = donor.id;
+    retVal.client = donor.client;
+    retVal.object = donor.object;
+    retVal.order = donor.order;
+    retVal.contract = donor.contract;
+    retVal.sum = donor.sum;
+    retVal.finishDate = donor.finishDate;
+    retVal.balance = donor.balance;
+    retVal.payments = PaymentScheduleModel.clone(donor.payments);
+    retVal.incomes = IncomesHistoryModel.clone(donor.incomes);
+
+    return retVal;
+  }
+
   int compareFuturePaymentsDates(BigTableModel model) {
     final selfFuturePayments = futureIncomes;
     final modelFuturePayments = model.futureIncomes;
@@ -72,10 +89,81 @@ class BigTableModel {
     if (debt <= 0.0) {
       return '';
     }
-    DateTime firstDate = payments.getFirstDebtDate(incomes);
-    final diff = DateTime.now().difference(firstDate);
+    return 'задолженность ${-1 * debtDuration} дней';
+  }
 
-    return 'задолженность - ${diff.inDays.toString()} дней';
+  int get debtDuration {
+    if (debt <= 0) {
+      return 0;
+    }
+
+    int i = 0;
+    DateTime? date = payments.payments.first.date;
+    double balance = 0.0;
+    while(true) {
+      if (incomes.incomes.length == 0) {
+        date = payments.payments.first.date;
+        break;
+      }
+
+      if (incomes.incomes.length <= i && payments.payments.length > i) {
+        if (balance > 0 ) {
+          date =
+          i > 0 ? payments.payments[i - 1].date : payments.payments.first.date;
+        } else {
+          date = payments.payments[i].date;
+        }
+        break;
+      }
+
+      if (payments.payments.length <= i) {
+        //////////////////////////
+        date = i>0 ? payments.payments[i-1].date : payments.payments.first.date;
+        break;
+      }
+
+      if (payments.payments[i].date.isAfter(DateTime.now())){
+        break;
+      }
+      double income = incomes.incomes[i].incomeSum;
+      double payment = payments.payments[i].cash;
+      if (balance < 0) {
+        income -= balance;
+      } else {
+        payment += balance;
+      }
+      balance = payment - income;
+      if (balance > 0 ) {
+        date = payments.payments[i].date;
+      }
+      i++;
+    }
+
+    if (date == null) {
+      return 0;
+    }
+    return date.difference(DateTime.now()).inDays;
+  }
+
+  List<double> get durationDebtAndFuture {
+    final bool isDebt = debt > 0.0;
+    double duration = 0;
+    double sum = 0.0;
+
+    if (isDebt) {
+      duration = debtDuration.toDouble();
+      sum = debt;
+    } else {
+      try {
+        duration = futureIncomes.payments[0].date
+            .difference(DateTime.now())
+            .inDays.toDouble();
+        sum = futureIncomes.payments[0].cash;
+      } catch (e) {
+        print('big_table_model get durationDebtAndFuture ${e.toString()}');
+      }
+    }
+    return [duration, sum];
   }
 
   ///Return full income string with past payments

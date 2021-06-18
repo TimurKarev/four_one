@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/ui/main_table/main_table_widget.dart';
-import 'package:four_one/four_one/viewmodels/tables/big_table_view_model.dart';
+import 'package:four_one/four_one/ui/main_table/smallest_table_widget.dart';
+
 
 class MainTablelayout extends ConsumerWidget {
   const MainTablelayout({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class MainTablelayout extends ConsumerWidget {
             if (constraints.maxWidth < 1300.0 && constraints.maxWidth >= 1150){
               return MainTableWidget(data: data, colWidth: 250.0);
             }
-            return SmallestTableWidget();
+            return SmallestTableWidget(model: data);
           },
         );
       },
@@ -29,17 +30,6 @@ class MainTablelayout extends ConsumerWidget {
           child: Text('Error $e'),
         );
       },
-    );
-  }
-}
-
-class SmallestTableWidget extends ConsumerWidget {
-  const SmallestTableWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    return Container(
-      child: Text('Kokokokokok'),
     );
   }
 }
