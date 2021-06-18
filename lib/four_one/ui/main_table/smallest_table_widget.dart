@@ -13,19 +13,38 @@ class SmallestTableWidget extends ConsumerWidget {
 
   late final TableModel _model;
 
+  final _headerNames = [
+    'Заказ',
+    'Дни',
+    'Сумма',
+  ];
+
+  final _headerSizes = [
+    7,
+    1,
+    2,
+  ];
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     final viewModel = watch(smallestTableProvider);
     final model = viewModel.getTableModel(_model);
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: ListView.separated(
-        itemCount: model.rowList.length,
-        itemBuilder: (context, i) => _getRow(context, model.rowList[i]),
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider();
-        },
-      ),
+    return Column(
+      children: [
+        _getHeader(context),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: ListView.separated(
+              itemCount: model.rowList.length,
+              itemBuilder: (context, i) => _getRow(context, model.rowList[i]),
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider();
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -36,6 +55,7 @@ class SmallestTableWidget extends ConsumerWidget {
         children: [
           Flexible(
             flex: 7,
+            fit: FlexFit.tight,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -61,6 +81,7 @@ class SmallestTableWidget extends ConsumerWidget {
           ),
           Flexible(
             flex: 3,
+            fit: FlexFit.tight,
             child: Container(
               child: _getDurationAndSum(row),
             ),
@@ -71,23 +92,25 @@ class SmallestTableWidget extends ConsumerWidget {
   }
 
   Widget _getDurationAndSum(BigTableModel row) {
-    final bool debt = row.debt > 0.0;
-    int duration = 0;
-    double sum = 0.0;
+    // final bool debt = row.debt > 0.0;
+    final l = row.durationDebtAndFuture;
+    final int duration = l[0].toInt();
+    final double sum = l[1];
+    //
+    // if (debt) {
+    //   duration = row.debtDuration;
+    //   sum = row.debt;
+    // } else {
+    //   try {
+    //     duration = row.futureIncomes.payments[0].date
+    //         .difference(DateTime.now())
+    //         .inDays;
+    //     sum = row.futureIncomes.payments[0].cash;
+    //   } catch (e) {
+    //     print('smallest_table_widget _getDurationAndSum ${e.toString()}');
+    //   }
+    // }
 
-    if (debt) {
-      duration = row.debtDuration;
-      sum = row.debt;
-    } else {
-      try {
-        duration = row.futureIncomes.payments[0].date.difference(DateTime.now()).inDays;
-        sum = row.futureIncomes.payments[0].cash;
-      } catch (e) {
-        print('smallest_table_widget _getDurationAndSum ${e.toString()}');
-      }
-    }
-
-    row.debt > 0 ? row.debtDuration : 100500;
     final color = duration > 0 ? Colors.green : Colors.red;
     return Row(
       children: [
@@ -110,6 +133,38 @@ class SmallestTableWidget extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getHeader(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      height: 25.0,
+      child: Row(
+        children: _headerNames
+            .asMap()
+            .entries
+            .map(
+              (entre) => Flexible(
+                fit: FlexFit.tight,
+                flex: _headerSizes[entre.key],
+                child: TextButton(
+                  onPressed: () {
+                    context.read(smallestTableProvider).sort = entre.key;
+                  },
+                  child: Align(
+                    alignment:
+                        entre.key == 1 ? Alignment.centerLeft : Alignment.center,
+                    child: Text(
+                      entre.value,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }

@@ -26,7 +26,7 @@ class TableScreenBig extends StatelessWidget {
         child: MainTablelayout(),
         allow: {'table_viewer'},
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: canCreateOrder ? FloatingActionButton(
         backgroundColor: canCreateOrder ? Colors.blue : Colors.grey,
         onPressed: canCreateOrder
             ? () {
@@ -34,7 +34,7 @@ class TableScreenBig extends StatelessWidget {
               }
             : null,
         child: Icon(Icons.add),
-      ),
+      ) : null,
     );
   }
 }

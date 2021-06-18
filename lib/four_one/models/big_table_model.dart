@@ -89,10 +89,7 @@ class BigTableModel {
     if (debt <= 0.0) {
       return '';
     }
-    DateTime firstDate = payments.getFirstDebtDate(incomes);
-    final diff = DateTime.now().difference(firstDate);
-
-    return 'задолженность - ${diff.inDays.toString()} дней';
+    return 'задолженность - ${-1 * debtDuration} дней';
   }
 
   int get debtDuration {
@@ -129,18 +126,25 @@ class BigTableModel {
     return date.difference(DateTime.now()).inDays;
   }
 
-  int get durationDebtAndFuture {
-    int retVal = 0;
-    if (debt > 0) {
-      DateTime firstDate = payments.getFirstDebtDate(incomes);
-      final diff = DateTime.now().difference(firstDate);
-      retVal = -1 *  diff.inDays;
+  List<double> get durationDebtAndFuture {
+    final bool isDebt = debt > 0.0;
+    double duration = 0;
+    double sum = 0.0;
+
+    if (isDebt) {
+      duration = debtDuration.toDouble();
+      sum = debt;
     } else {
-      retVal = futureIncomes.payments[0].date
-          .difference(DateTime.now())
-          .inDays +1;
+      try {
+        duration = futureIncomes.payments[0].date
+            .difference(DateTime.now())
+            .inDays.toDouble();
+        sum = futureIncomes.payments[0].cash;
+      } catch (e) {
+        print('big_table_model get durationDebtAndFuture ${e.toString()}');
+      }
     }
-    return retVal;
+    return [duration, sum];
   }
 
   ///Return full income string with past payments
