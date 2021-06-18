@@ -139,7 +139,7 @@ class SmallestTableWidget extends ConsumerWidget {
   Widget _getHeader(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      height: 25.0,
+      height: 50.0,
       child: Row(
         children: _headerNames
             .asMap()
