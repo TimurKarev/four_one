@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
@@ -26,7 +27,6 @@ class SmallestTableWidget extends ConsumerWidget {
         },
       ),
     );
-
   }
 
   Widget _getRow(BuildContext context, BigTableModel row) {
@@ -35,7 +35,7 @@ class SmallestTableWidget extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Flexible(
-            flex: 6,
+            flex: 7,
             child: Align(
               alignment: Alignment.centerLeft,
               child: Column(
@@ -52,7 +52,7 @@ class SmallestTableWidget extends ConsumerWidget {
                     ),
                   ),
                   Text(
-                    row.object,
+                    '${row.object} (${row.order})',
                     textAlign: TextAlign.left,
                   ),
                 ],
@@ -60,14 +60,9 @@ class SmallestTableWidget extends ConsumerWidget {
             ),
           ),
           Flexible(
-            flex: 2,
-            child: _getDuration(row),
-          ),
-          Container(
-            width: 100.0,
-            child: Text(
-              getFormatNum(row.debt.toString()),
-              textAlign: TextAlign.right,
+            flex: 3,
+            child: Container(
+              child: _getDurationAndSum(row),
             ),
           ),
         ],
@@ -75,15 +70,46 @@ class SmallestTableWidget extends ConsumerWidget {
     );
   }
 
-  Text _getDuration(BigTableModel row) {
-    final duration = row.debt>0?row.debtDuration : 100500;
+  Widget _getDurationAndSum(BigTableModel row) {
+    final bool debt = row.debt > 0.0;
+    int duration = 0;
+    double sum = 0.0;
+
+    if (debt) {
+      duration = row.debtDuration;
+      sum = row.debt;
+    } else {
+      try {
+        duration = row.futureIncomes.payments[0].date.difference(DateTime.now()).inDays;
+        sum = row.futureIncomes.payments[0].cash;
+      } catch (e) {
+        print('smallest_table_widget _getDurationAndSum ${e.toString()}');
+      }
+    }
+
+    row.debt > 0 ? row.debtDuration : 100500;
     final color = duration > 0 ? Colors.green : Colors.red;
-    return Text(
-      duration != 0 ? duration.toString() : '0',
-      style: TextStyle(
-        fontSize: 20.0,
-        color: color,
-      ),
+    return Row(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            duration != 0 ? duration.toString() : '0',
+            style: TextStyle(
+              fontSize: 20.0,
+              color: color,
+            ),
+          ),
+        ),
+        Spacer(),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Text(
+            getFormatNum(sum.toString()),
+            textAlign: TextAlign.right,
+          ),
+        ),
+      ],
     );
   }
 }
