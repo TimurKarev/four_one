@@ -94,22 +94,8 @@ class SmallestTableWidget extends ConsumerWidget {
   Widget _getDurationAndSum(BigTableModel row) {
     // final bool debt = row.debt > 0.0;
     final l = row.durationDebtAndFuture;
-    final int duration = l[0].toInt();
-    final double sum = l[1];
-    //
-    // if (debt) {
-    //   duration = row.debtDuration;
-    //   sum = row.debt;
-    // } else {
-    //   try {
-    //     duration = row.futureIncomes.payments[0].date
-    //         .difference(DateTime.now())
-    //         .inDays;
-    //     sum = row.futureIncomes.payments[0].cash;
-    //   } catch (e) {
-    //     print('smallest_table_widget _getDurationAndSum ${e.toString()}');
-    //   }
-    // }
+    final num duration = l[0].toInt();
+    final num sum = l[1];
 
     final color = duration > 0 ? Colors.green : Colors.red;
     return Row(

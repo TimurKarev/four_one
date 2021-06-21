@@ -17,7 +17,7 @@ class MainTablelayout extends ConsumerWidget {
             if (constraints.maxWidth >= 1300.0) {
               return MainTableWidget(data: data);
             }
-            if (constraints.maxWidth < 1300.0 && constraints.maxWidth >= 1150){
+            if (constraints.maxWidth < 1300.0 && constraints.maxWidth >= 1150.0){
               return MainTableWidget(data: data, colWidth: 250.0);
             }
             return SmallestTableWidget(model: data);
@@ -25,9 +25,9 @@ class MainTablelayout extends ConsumerWidget {
         );
       },
       loading: () => Center(child: CircularProgressIndicator.adaptive()),
-      error: (e, __) {
+      error: (e, stack) {
         return Container(
-          child: Text('Error $e'),
+          child: SingleChildScrollView(child: Text('Error $e \n $stack')),
         );
       },
     );
