@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/ui/main_table/main_table_widget.dart';
+import 'package:four_one/four_one/ui/main_table/small_table_widget.dart';
 import 'package:four_one/four_one/ui/main_table/smallest_table_widget.dart';
 
 class MainTablelayout extends ConsumerWidget {
@@ -44,9 +45,7 @@ class MobileLayout extends StatelessWidget {
     return OrientationBuilder(
       builder: (context, orientation) => orientation == Orientation.portrait
           ? SmallestTableWidget(model: model)
-          : Text(
-              orientation.toString(),
-            ),
+          : SmallTableWidget(model: model),
     );
   }
 }
