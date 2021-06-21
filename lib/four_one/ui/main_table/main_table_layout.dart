@@ -4,7 +4,6 @@ import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/ui/main_table/main_table_widget.dart';
 import 'package:four_one/four_one/ui/main_table/smallest_table_widget.dart';
 
-
 class MainTablelayout extends ConsumerWidget {
   const MainTablelayout({Key? key}) : super(key: key);
 
@@ -17,10 +16,11 @@ class MainTablelayout extends ConsumerWidget {
             if (constraints.maxWidth >= 1300.0) {
               return MainTableWidget(data: data);
             }
-            if (constraints.maxWidth < 1300.0 && constraints.maxWidth >= 1150.0){
+            if (constraints.maxWidth < 1300.0 &&
+                constraints.maxWidth >= 1150.0) {
               return MainTableWidget(data: data, colWidth: 250.0);
             }
-            return SmallestTableWidget(model: data);
+            return MobileLayout(model: data,);
           },
         );
       },
@@ -30,6 +30,23 @@ class MainTablelayout extends ConsumerWidget {
           child: SingleChildScrollView(child: Text('Error $e \n $stack')),
         );
       },
+    );
+  }
+}
+
+class MobileLayout extends StatelessWidget {
+  const MobileLayout({Key? key, required this.model}) : super(key: key);
+
+  final model;
+
+  @override
+  Widget build(BuildContext context) {
+    return OrientationBuilder(
+      builder: (context, orientation) => orientation == Orientation.portrait
+          ? SmallestTableWidget(model: model)
+          : Text(
+              orientation.toString(),
+            ),
     );
   }
 }

@@ -8,8 +8,12 @@ import 'package:velocity_x/velocity_x.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight
+  ]);
   setPathUrlStrategy();
   await Firebase.initializeApp();
   runApp(ProviderScope(child: MyApp()));
@@ -19,6 +23,7 @@ class MyApp extends StatelessWidget {
   final _routersDelegate = VxNavigator(
     routes: FourOneRouters.routers,
   );
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
