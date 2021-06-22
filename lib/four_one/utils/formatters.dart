@@ -1,8 +1,9 @@
 import 'package:intl/intl.dart';
 
-String formatDate(DateTime dt) {
-  //return '${dt.day}.${dt.month}.${dt.year}';
-  return DateFormat("dd.MM.yy").format(dt);
+String formatDate(DateTime dt, {bool year: true}) {
+  String retVal = DateFormat("dd.MM.yy").format(dt);
+
+  return year ? retVal : retVal.substring(0,5);
 }
 
 String getNumFromFormatString(String str) {
