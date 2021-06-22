@@ -49,7 +49,7 @@ class SmallTableWidget extends ConsumerWidget {
                     ),
                   ],
                 ),
-                _getMonthRows(monthMap, rowMap),
+                _getMonthRows(monthMap, rowMap, viewModel),
               ],
             ),
           ),
@@ -68,8 +68,8 @@ class SmallTableWidget extends ConsumerWidget {
     );
   }
 
-  Widget _getMonthRows(
-      Map<String, num> monthMap, Map<String, List<dynamic>> rowMap) {
+  Widget _getMonthRows(Map<String, num> monthMap,
+      Map<String, List<dynamic>> rowMap, SmallTableViewModel vm) {
     return Column(
       children: monthMap.entries
           .map((e) => Row(
@@ -77,7 +77,7 @@ class SmallTableWidget extends ConsumerWidget {
                   Flexible(
                     flex: _columnFlex[0],
                     fit: FlexFit.tight,
-                    child: Text(e.key),
+                    child: Text(vm.getMonthByIndex(int.parse(e.key))),
                   ),
                   Flexible(
                     flex: _columnFlex[1],
