@@ -45,7 +45,7 @@ class MobileLayout extends StatelessWidget {
     return OrientationBuilder(
       builder: (context, orientation) => orientation == Orientation.portrait
           ? SmallestTableWidget(model: model)
-          : SmallTableWidget(model: model),
+          : SmallTableWidget(appModel: model),
     );
   }
 }

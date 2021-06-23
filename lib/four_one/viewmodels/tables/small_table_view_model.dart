@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:four_one/four_one/models/big_table_model.dart';
-import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
-import 'package:four_one/four_one/models/entry/payment_schedule_model.dart';
 import 'package:four_one/four_one/models/entry/table_model.dart';
 import 'package:four_one/four_one/models/small_table_model.dart';
 
@@ -10,9 +7,9 @@ final smallTableProvider =
     ChangeNotifierProvider((ref) => SmallTableViewModel());
 
 class SmallTableViewModel extends ChangeNotifier {
-  late final SmallTableModel _model;
+  late SmallTableModel _model;
 
-  double _slider = 0;
+  double _slider = 5;
 
   double get slider => _slider;
 
@@ -21,7 +18,7 @@ class SmallTableViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void init(TableModel data) {
+  SmallTableModel init(TableModel data) {
     List<SmallTableCard> allCards = [];
     data.rowList.forEach((project) {
       final futureIncomes = project.futureIncomes.payments;
@@ -41,9 +38,17 @@ class SmallTableViewModel extends ChangeNotifier {
     SmallTableModel model = SmallTableModel();
     if (allCards.isNotEmpty) {
       allCards.forEach((card) {
-        final num monthInd = getMonthIndexBySlider(card.date);
+        final num monthInd = _getMonthIndexBySlider(card.date);
         model.addCard(monthInd, card);
       });
     }
+    _model = model;
+    return _model;
+  }
+
+  num _getMonthIndexBySlider(DateTime date) {
+    final oldMonth = date.month;
+    final newMonth = date.add(Duration(days: slider.toInt())).month;
+    return oldMonth == newMonth ? oldMonth : newMonth;
   }
 }

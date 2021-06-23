@@ -32,19 +32,24 @@ class SmallTableRowModel {
     "Декабрь"
   ];
 
-  String getMonthName(int month) {
-    if (month < 1 || month > 12) {
-      return month.toString();
-    }
-    return _month[month-1];
-  }
-
   final num monthIndex;
   final List<SmallTableCard> _cards = [];
 
+  List<SmallTableCard> get cards => _cards;
+
   SmallTableRowModel({required this.monthIndex});
 
-  void addCard(SmallTableCard card) => _cards.add(card);
+  String get monthName {
+    if (monthIndex < 1 || monthIndex > 12) {
+      return monthIndex.toString();
+    }
+    return _month[monthIndex.toInt() - 1];
+  }
+
+  void addCard(SmallTableCard card) {
+    _cards.add(card);
+    _cards.sort((a,b) => a.date.compareTo(b.date));
+  }
 
   num get monthPayment {
     num monthSum = 0;
@@ -58,6 +63,8 @@ class SmallTableRowModel {
 class SmallTableModel {
   final List<SmallTableRowModel> _model = [];
 
+  List<SmallTableRowModel> get rows => _model;
+
   void addCard(num month, SmallTableCard card) {
     bool isMonthExist = false;
     _model.forEach((row) {
@@ -70,6 +77,7 @@ class SmallTableModel {
       final newRow = SmallTableRowModel(monthIndex: month);
       newRow.addCard(card);
       _model.add(newRow);
+      _model.sort((a,b) => a.monthIndex.compareTo(b.monthIndex));
     }
   }
 }
