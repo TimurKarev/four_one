@@ -26,4 +26,14 @@ class TableModel {
     });
     return retVal;
   }
+
+  num getClientDebt(String client) {
+     num retVal = 0;
+     rowList.forEach((project) {
+       if (project.client == client) {
+         retVal += project.debt;
+       }
+     });
+     return retVal;
+  }
 }

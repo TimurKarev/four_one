@@ -21,7 +21,7 @@ class SmallestTableWidget extends ConsumerWidget {
 
   final _headerSizes = [
     7,
-    1,
+    2,
     2,
   ];
 
@@ -54,7 +54,7 @@ class SmallestTableWidget extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Flexible(
-            flex: 7,
+            flex: _headerSizes[0],
             fit: FlexFit.tight,
             child: Align(
               alignment: Alignment.centerLeft,
@@ -67,20 +67,24 @@ class SmallestTableWidget extends ConsumerWidget {
                       row.client,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Text(
                     '${row.object} (${row.order})',
                     textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: _headerSizes[1] + _headerSizes[2],
             fit: FlexFit.tight,
             child: Container(
               child: _getDurationAndSum(row),
@@ -94,22 +98,8 @@ class SmallestTableWidget extends ConsumerWidget {
   Widget _getDurationAndSum(BigTableModel row) {
     // final bool debt = row.debt > 0.0;
     final l = row.durationDebtAndFuture;
-    final int duration = l[0].toInt();
-    final double sum = l[1];
-    //
-    // if (debt) {
-    //   duration = row.debtDuration;
-    //   sum = row.debt;
-    // } else {
-    //   try {
-    //     duration = row.futureIncomes.payments[0].date
-    //         .difference(DateTime.now())
-    //         .inDays;
-    //     sum = row.futureIncomes.payments[0].cash;
-    //   } catch (e) {
-    //     print('smallest_table_widget _getDurationAndSum ${e.toString()}');
-    //   }
-    // }
+    final num duration = l[0];
+    final num sum = l[1];
 
     final color = duration > 0 ? Colors.green : Colors.red;
     return Row(
@@ -119,7 +109,7 @@ class SmallestTableWidget extends ConsumerWidget {
           child: Text(
             duration != 0 ? duration.toString() : '0',
             style: TextStyle(
-              fontSize: 20.0,
+              fontSize: 16.0,
               color: color,
             ),
           ),
@@ -128,7 +118,7 @@ class SmallestTableWidget extends ConsumerWidget {
         Align(
           alignment: Alignment.centerRight,
           child: Text(
-            getFormatNum(sum.toString()),
+            getFormatNum(sum.toInt().toString()),
             textAlign: TextAlign.right,
           ),
         ),
@@ -139,7 +129,7 @@ class SmallestTableWidget extends ConsumerWidget {
   Widget _getHeader(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10.0),
-      height: 50.0,
+      height: 35.0,
       child: Row(
         children: _headerNames
             .asMap()
@@ -157,7 +147,7 @@ class SmallestTableWidget extends ConsumerWidget {
                         entre.key == 1 ? Alignment.centerLeft : Alignment.center,
                     child: Text(
                       entre.value,
-                      textAlign: TextAlign.left,
+                      //textAlign: TextAlign.left,
                     ),
                   ),
                 ),

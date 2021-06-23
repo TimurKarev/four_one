@@ -19,7 +19,7 @@ class BigTableModel {
   late String object;
   late String order;
   late String contract;
-  late double sum;
+  late num sum;
   late DateTime finishDate;
   late PaymentScheduleModel payments;
   late IncomesHistoryModel incomes;
@@ -99,7 +99,7 @@ class BigTableModel {
 
     int i = 0;
     DateTime? date = payments.payments.first.date;
-    double balance = 0.0;
+    num balance = 0.0;
     while(true) {
       if (incomes.incomes.length == 0) {
         date = payments.payments.first.date;
@@ -125,8 +125,8 @@ class BigTableModel {
       if (payments.payments[i].date.isAfter(DateTime.now())){
         break;
       }
-      double income = incomes.incomes[i].incomeSum;
-      double payment = payments.payments[i].cash;
+      num income = incomes.incomes[i].incomeSum;
+      num payment = payments.payments[i].cash;
       if (balance < 0) {
         income -= balance;
       } else {
@@ -145,20 +145,20 @@ class BigTableModel {
     return date.difference(DateTime.now()).inDays;
   }
 
-  List<double> get durationDebtAndFuture {
+  List<num> get durationDebtAndFuture {
     final bool isDebt = debt > 0.0;
-    double duration = 0;
+    int duration = 0;
     double sum = 0.0;
 
     if (isDebt) {
-      duration = debtDuration.toDouble();
+      duration = debtDuration;
       sum = debt;
     } else {
       try {
         duration = futureIncomes.payments[0].date
             .difference(DateTime.now())
-            .inDays.toDouble();
-        sum = futureIncomes.payments[0].cash;
+            .inDays;
+        sum = futureIncomes.payments[0].cash.toDouble();
       } catch (e) {
         print('big_table_model get durationDebtAndFuture ${e.toString()}');
       }

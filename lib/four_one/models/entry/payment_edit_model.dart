@@ -30,8 +30,8 @@ class PaymentEditModel {
 
   late DateTime date;
   late PaymentOptionValues paymentOptions;
-  late double percentage;
-  late double cash;
+  late num percentage;
+  late num cash;
   late String string;
 
   void init() {

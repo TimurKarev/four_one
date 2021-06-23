@@ -114,7 +114,7 @@ class IncomesHistoryModel {
 
 class IncomeModel {
   DateTime date;
-  double incomeSum;
+  num incomeSum;
 
   IncomeModel({required this.date, required this.incomeSum});
 
