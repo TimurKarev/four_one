@@ -16,7 +16,7 @@ class TableScreenBig extends StatelessWidget {
     final canCreateOrder = context.read(securityProvider).isUserCanCreateOrder;
     return Scaffold(
       appBar: AppBarCustom(
-        title: 'Отчет 4_1',
+        title: 'Отчет 4_1 development',
         userName: context.read(landingPageProvider).name,
       ),
       body: SecurityWidget(

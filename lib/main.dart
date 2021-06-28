@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
       routerDelegate: _routersDelegate,
       routeInformationParser: VxInformationParser(),
-      title: '4.1 отчет',
+      title: '4.1 отчет dev',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
