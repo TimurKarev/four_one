@@ -32,73 +32,78 @@ class LoginPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (!provider.loginPage)
+      body: AutofillGroup(
+        child: Container(
+          padding: const EdgeInsets.all(30.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                if (!provider.loginPage)
+                  TextFormField(
+                    controller: provider.nameController,
+                    autofillHints: [AutofillHints.username],
+                    decoration: InputDecoration(
+                      labelText: 'Имя',
+                      errorText: _errorString(provider.nameErrorString),
+                    ),
+                  ),
+                if (!provider.loginPage)
+                  SizedBox(
+                    height: 30.0,
+                  ),
                 TextFormField(
-                  controller: provider.nameController,
+                  controller: provider.mailController,
+                  autofillHints: [AutofillHints.email],
                   decoration: InputDecoration(
-                    labelText: 'Имя',
-                    errorText: _errorString(provider.nameErrorString),
+                    labelText: 'Почта',
+                    errorText: _errorString(provider.mailErrorString),
                   ),
                 ),
-              if (!provider.loginPage)
                 SizedBox(
                   height: 30.0,
                 ),
-              TextFormField(
-                controller: provider.mailController,
-                decoration: InputDecoration(
-                  labelText: 'Почта',
-                  errorText: _errorString(provider.mailErrorString),
-                ),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              TextFormField(
-                obscureText: true,
-                controller: provider.password1Controller,
-                decoration: InputDecoration(
-                  labelText: 'Пароль',
-                  errorText: _errorString(provider.password1ErrorString),
-                ),
-              ),
-              if (!provider.loginPage)
-                SizedBox(
-                  height: 30.0,
-                ),
-              if (!provider.loginPage)
                 TextFormField(
                   obscureText: true,
-                  controller: provider.password2Controller,
+                  controller: provider.password1Controller,
+                  autofillHints: [AutofillHints.password],
                   decoration: InputDecoration(
-                    errorText: _errorString(provider.password2ErrorString),
-                    labelText: 'Повторите пароль',
+                    labelText: 'Пароль',
+                    errorText: _errorString(provider.password1ErrorString),
                   ),
                 ),
-              SizedBox(
-                height: 30.0,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  provider.mainActionPressed();
-                },
-                child: Text(provider.buttonString),
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  provider.revertPage();
-                },
-                child: Text(provider.revButtonString),
-              ),
-            ],
+                if (!provider.loginPage)
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                if (!provider.loginPage)
+                  TextFormField(
+                    obscureText: true,
+                    controller: provider.password2Controller,
+                    decoration: InputDecoration(
+                      errorText: _errorString(provider.password2ErrorString),
+                      labelText: 'Повторите пароль',
+                    ),
+                  ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    provider.mainActionPressed();
+                  },
+                  child: Text(provider.buttonString),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    provider.revertPage();
+                  },
+                  child: Text(provider.revButtonString),
+                ),
+              ],
+            ),
           ),
         ),
       ),
