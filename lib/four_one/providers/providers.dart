@@ -12,7 +12,10 @@ final tableDataProvider = StreamProvider.autoDispose<TableModel>((ref) {
     List<BigTableModel> rowsList = [];
     event.docs.forEach((element) {
       final Map<String, dynamic> data = element.data() as Map<String, dynamic>;
-      rowsList.add(BigTableModel.fromFirebaseMap(data, element.id));
+      final row = BigTableModel.fromFirebaseMap(data, element.id);
+      if (!row.isClosed) {
+        rowsList.add(row);
+      }
     });
     return TableModel(rowList: rowsList);
   });

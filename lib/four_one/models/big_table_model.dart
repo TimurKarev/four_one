@@ -24,6 +24,14 @@ class BigTableModel {
   late PaymentScheduleModel payments;
   late IncomesHistoryModel incomes;
   late double balance;
+  bool _isClosed = false;
+
+  bool get isClosed {
+    if (sum == incomes.getIncomeSum()) {
+      return true;
+    }
+    return false;
+  }
 
   BigTableModel();
 
