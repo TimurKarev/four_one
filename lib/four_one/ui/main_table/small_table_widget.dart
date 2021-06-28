@@ -52,7 +52,7 @@ class SmallTableWidget extends ConsumerWidget {
               ),
             ),
           ),
-          Slider(
+          Slider.adaptive(
             value: viewModel.slider,
             onChanged: (newValue) {
               viewModel.slider = newValue;
