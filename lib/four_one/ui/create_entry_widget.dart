@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/four_one/security/security_widget.dart';
+import 'package:four_one/four_one/ui/client_input_widget.dart';
 import 'package:four_one/four_one/ui/pay_schedule/add_schedular_widget.dart';
 import 'package:four_one/four_one/ui/pay_schedule/save_entry_floating_button.dart';
 import 'package:four_one/four_one/ui/reusable_widgets/entry_text_form_field.dart';
@@ -43,11 +44,8 @@ class CreateEntryWidget extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Column(
               children: [
-                EntryTextFormField(
-                    labelText: 'Заказчик',
-                    controller: context
-                        .read(createEntryProvider.notifier)
-                        .clientController),
+
+                ClientInputWidget(),
                 EntryTextFormField(
                     labelText: 'Объект',
                     controller: context
@@ -55,8 +53,9 @@ class CreateEntryWidget extends StatelessWidget {
                         .objectController),
                 EntryTextFormField(
                     labelText: 'Заказ',
-                    controller:
-                        context.read(createEntryProvider.notifier).orderController),
+                    controller: context
+                        .read(createEntryProvider.notifier)
+                        .orderController),
                 EntryTextFormField(
                     labelText: 'Договор',
                     controller: context
@@ -65,8 +64,9 @@ class CreateEntryWidget extends StatelessWidget {
                 EntryTextFormField(
                     isNumeric: true,
                     labelText: 'Сумма, руб.',
-                    controller:
-                        context.read(createEntryProvider.notifier).sumController),
+                    controller: context
+                        .read(createEntryProvider.notifier)
+                        .sumController),
                 SizedBox(
                   height: 10,
                 ),
