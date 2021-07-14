@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
 
-class ClientInputWidget extends StatelessWidget {
+final clientListProvider = Provider.autoDispose((ref) {
+  return ref.watch(tableDataProvider).when(
+      data: (value) {
+        Set<String> retList = {};
+        value.rowList.forEach((element) {
+          retList.add(element.client);
+        });
+        return retList;
+      },
+      loading: () => {},
+      error: (Object error, StackTrace? stackTrace) => {});
+});
+
+
+class ClientInputWidget extends ConsumerWidget {
   const ClientInputWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ScopedReader watch) {
+    final v = watch(clientListProvider);
+    final Set<String> clientList = v as Set<String>;
     return Container(
       child: TypeAheadFormField<String?>(
         onSuggestionSelected: (String? suggestion) {
@@ -22,7 +39,7 @@ class ClientInputWidget extends StatelessWidget {
           );
         },
         suggestionsCallback: (String pattern) {
-          return ['ООО ЭТИ', "ООО ЭСИ", "Полесок "].where((element) {
+          return clientList.where((element) {
             return element.contains(pattern);
           });
         },
