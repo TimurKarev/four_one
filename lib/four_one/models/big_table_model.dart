@@ -23,7 +23,7 @@ class BigTableModel {
   late DateTime finishDate;
   late PaymentScheduleModel payments;
   late IncomesHistoryModel incomes;
-  late double balance;
+  //late double balance;
   bool _isClosed = false;
 
   bool get isClosed {
@@ -45,7 +45,7 @@ class BigTableModel {
     retVal.contract = donor.contract;
     retVal.sum = donor.sum;
     retVal.finishDate = donor.finishDate;
-    retVal.balance = donor.balance;
+    //retVal.balance = donor.balance;
     retVal.payments = PaymentScheduleModel.clone(donor.payments);
     retVal.incomes = IncomesHistoryModel.clone(donor.incomes);
 
