@@ -15,8 +15,7 @@ import '../edit_payment_dialog.dart';
 import '../ready_date_edit_dialog.dart';
 
 class MainTableWidget extends ConsumerWidget {
-
-  MainTableWidget({required data, colWidth,  Key? key}) : super(key: key){
+  MainTableWidget({required data, colWidth, Key? key}) : super(key: key) {
     _data = data;
     _colWidths = [
       150.0,
@@ -36,7 +35,7 @@ class MainTableWidget extends ConsumerWidget {
 
   final double _multiRowHeight = 16.0;
 
-  late final  List<double> _colWidths;
+  late final List<double> _colWidths;
 
   double get tableWidth => _colWidths.fold(0, (p, e) => p + e);
 
@@ -62,6 +61,7 @@ class MainTableWidget extends ConsumerWidget {
       width: tableWidth,
       child: Column(
         children: [
+          TotalsWidget(model: model),
           _getTableHeader(context),
           getTotalsRow(context, model),
           Expanded(
@@ -271,6 +271,60 @@ class MainTableWidget extends ConsumerWidget {
                     .toList(),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TotalsWidget extends StatelessWidget {
+  const TotalsWidget({Key? key, required this.model}) : super(key: key);
+
+  final TableModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(width: 50.0),
+              Text('Долг'),
+              SizedBox(width: 50.0),
+              Text('Остаток'),
+            ],
+          ),
+          Row(
+            children: [
+              Text("ЭСИ"),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(model.getClientDebt('ЭСИ').toString())),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(model.getClientFutureIncome('ЭСИ').toString())),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Внешние"),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(model.getClientDebt('ЭСИ', exclude: true).toString())),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(
+                  model.getClientDebt('ЭСИ', exclude: true).toString())),
+            ],
+          ),
+          Row(
+            children: [
+              Text("Всего"),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(
+                  model.debt.toString())),
+              SizedBox(width: 10.0),
+              Text(getFormatNum(
+                  model.futureIncome.toString())),
+            ],
           ),
         ],
       ),

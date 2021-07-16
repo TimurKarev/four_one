@@ -16,6 +16,23 @@ class TableModel {
     return retVal;
   }
 
+  num getClientDebt(String client, {bool exclude = false}) {
+    num retVal = 0;
+
+    rowList.forEach((project) {
+      if (!exclude) {
+        if (project.client == client) {
+          retVal += project.debt;
+        }
+      } else {
+        if (project.client != client) {
+          retVal += project.debt;
+        }
+      }
+    });
+    return retVal;
+  }
+
   double get futureIncome {
     double retVal = 0.0;
     if (rowList.isEmpty) {
@@ -27,13 +44,19 @@ class TableModel {
     return retVal;
   }
 
-  num getClientDebt(String client) {
-     num retVal = 0;
-     rowList.forEach((project) {
-       if (project.client == client) {
-         retVal += project.debt;
-       }
-     });
-     return retVal;
+  num getClientFutureIncome(String client, {bool exclude = false}) {
+    num retVal = 0;
+    rowList.forEach((project) {
+      if (!exclude) {
+        if (project.client == client) {
+          retVal += project.futurePayment;
+        }
+      } else {
+        if (project.client != client) {
+          retVal += project.futurePayment;
+        }
+      }
+    });
+    return retVal;
   }
 }
