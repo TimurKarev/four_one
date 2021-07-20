@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/models/big_table_model.dart';
 import 'package:four_one/four_one/models/entry/table_model.dart';
 
 final bigTableProvider = ChangeNotifierProvider((ref) => BigTableViewModel());
@@ -28,6 +29,18 @@ class BigTableViewModel extends ChangeNotifier {
     if (_sort == 5) {
       data.rowList.sort((a,b) => _revert * a.compareFuturePaymentsDates(b));
     }
+
+    List<BigTableModel> esiList = [];
+    data.rowList.forEach((element) {
+      if (element.client == 'ЭСИ') {
+        esiList.add(element);
+      }
+    });
+
+    data.rowList.removeWhere((element) => element.client == 'ЭСИ');
+
+    data.rowList.addAll(esiList);
+
     return data;
   }
 
