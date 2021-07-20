@@ -7,6 +7,7 @@ class BigTableModel {
   static const columns = [
     'Заказчик',
     "Объект",
+    "Готовность",
     "Сумма",
     "Оплачено",
     "Долг",
@@ -71,6 +72,19 @@ class BigTableModel {
     } else if (selfFuturePayments.payments[0].date.isAtSameMomentAs(modelFuturePayments.payments[0].date)) {
       return 0;
     } else {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  int compareReadyDates(BigTableModel model) {
+    final selfFinishDate = finishDate;
+    final modelFinishDate = model.finishDate;
+
+    if (selfFinishDate.isAfter(modelFinishDate)) {
+      return -1;
+    } else if (selfFinishDate.isBefore(modelFinishDate)){
       return 1;
     }
 

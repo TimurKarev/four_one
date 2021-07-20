@@ -18,15 +18,18 @@ class BigTableViewModel extends ChangeNotifier {
       data.rowList.sort((a, b) => _revert * a.object.toLowerCase().compareTo(b.object.toLowerCase()));
     }
     if (_sort == 2) {
-      data.rowList.sort((a, b) => _revert * a.sum.compareTo(b.sum));
+      data.rowList.sort((a,b) => _revert * a.compareReadyDates(b));
     }
     if (_sort == 3) {
-      data.rowList.sort((a, b) => _revert * a.incomeSum.compareTo(b.incomeSum));
+      data.rowList.sort((a, b) => _revert * a.sum.compareTo(b.sum));
     }
     if (_sort == 4) {
-      data.rowList.sort((a, b) => _revert * a.debt.compareTo(b.debt));
+      data.rowList.sort((a, b) => _revert * a.incomeSum.compareTo(b.incomeSum));
     }
     if (_sort == 5) {
+      data.rowList.sort((a, b) => _revert * a.debt.compareTo(b.debt));
+    }
+    if (_sort == 6) {
       data.rowList.sort((a,b) => _revert * a.compareFuturePaymentsDates(b));
     }
 
@@ -45,7 +48,7 @@ class BigTableViewModel extends ChangeNotifier {
   }
 
   set sort(int index) {
-    if (index >=0 && index <= 5) {
+    if (index >=0 && index <= 6) {
       if (_sort == index) {
         _revert *= -1;
       } else {

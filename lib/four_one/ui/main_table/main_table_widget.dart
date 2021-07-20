@@ -25,6 +25,7 @@ class MainTableWidget extends ConsumerWidget {
       150.0,
       150.0,
       150.0,
+      150.0,
     ];
     if (colWidth != null) {
       _colWidths[1] = colWidth;
@@ -168,25 +169,27 @@ class MainTableWidget extends ConsumerWidget {
           SizedBox(
             width: _colWidths[1],
             child: canEdit
-                ? DataTableTooltip(
-                    message: 'готовность - ${formatDate(row.finishDate)}',
-                    child: TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (_) {
-                              return ReadyDateEditDialog(model: row);
-                            });
-                      },
-                      child: Align(
-                        child: Text('${row.object} (${row.order})'),
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ))
+                ? TextButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return ReadyDateEditDialog(model: row);
+                        });
+                  },
+                  child: Align(
+                    child: Text('${row.object} (${row.order})'),
+                    alignment: Alignment.centerLeft,
+                  ),
+                )
                 : Text('${row.object} (${row.order})'),
           ),
           SizedBox(
             width: _colWidths[2],
+            child: Text(formatDate(row.finishDate)),
+          ),
+          SizedBox(
+            width: _colWidths[3],
             child: DataTableTooltip(
               message: row.paymentLegend,
               child: canEdit
@@ -207,7 +210,7 @@ class MainTableWidget extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: _colWidths[3],
+            width: _colWidths[4],
             child: DataTableTooltip(
               message: row.incomeString,
               child: Align(
@@ -220,14 +223,14 @@ class MainTableWidget extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: _colWidths[4],
+            width: _colWidths[5],
             child: DataTableTooltip(
               message: row.debtString,
               child: BigNumberTextWidget(number: row.debt.toString()),
             ),
           ),
           SizedBox(
-            width: _colWidths[5],
+            width: _colWidths[6],
             child: Column(
               children: futurePayments.payments
                   .asMap()
@@ -255,7 +258,7 @@ class MainTableWidget extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: _colWidths[6],
+            width: _colWidths[7],
             child: DataTableTooltip(
               message: getFormatNum(row.futurePayment.toString()),
               child: Column(
@@ -353,8 +356,8 @@ class TotalsWidget extends StatelessWidget {
                       //SizedBox(width: 10.0),
                       SizedBox(
                           width: _columnWidth[1],
-                          child: Text(getFormatNum(
-                              model.getClientDebt('ЭСИ').toString()),
+                          child: Text(
+                            getFormatNum(model.getClientDebt('ЭСИ').toString()),
                             style: TextStyle(
                               color: Colors.red[300],
                               fontSize: 16.0,
@@ -363,8 +366,9 @@ class TotalsWidget extends StatelessWidget {
                       //SizedBox(width: 10.0),
                       SizedBox(
                           width: _columnWidth[2],
-                          child: Text(getFormatNum(
-                              model.getClientFutureIncome('ЭСИ').toString()),
+                          child: Text(
+                            getFormatNum(
+                                model.getClientFutureIncome('ЭСИ').toString()),
                             style: TextStyle(
                               color: Colors.green[300],
                               fontSize: 16.0,
@@ -379,7 +383,8 @@ class TotalsWidget extends StatelessWidget {
                       //SizedBox(width: 10.0),
                       SizedBox(
                           width: _columnWidth[1],
-                          child: Text(getFormatNum(model.debt.toString()),
+                          child: Text(
+                            getFormatNum(model.debt.toString()),
                             style: TextStyle(
                               color: Colors.red[400],
                               fontSize: 16.0,
@@ -390,7 +395,7 @@ class TotalsWidget extends StatelessWidget {
                       SizedBox(
                           width: _columnWidth[2],
                           child: Text(
-                              getFormatNum(model.futureIncome.toString()),
+                            getFormatNum(model.futureIncome.toString()),
                             style: TextStyle(
                               color: Colors.green[400],
                               fontSize: 16.0,
