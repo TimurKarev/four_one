@@ -24,11 +24,8 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
             //Uint8List bytes = await ExelHelper.generateExcel();
             //Save and launch the file.
             // await
-            // FileSaver.instance.saveFile(
-            //     'file', bytes,
-            //     'xlsx', mimeType: MimeType.MICROSOFTEXCEL
-            // );
-            showDialog(
+
+            await showDialog(
                 context: context,
                 builder: (_) {
                   return SaveExcelDialog();

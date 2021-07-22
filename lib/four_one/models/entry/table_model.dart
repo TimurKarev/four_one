@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:four_one/four_one/models/big_table_model.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class TableModel {
   List<BigTableModel> rowList;
@@ -58,5 +61,17 @@ class TableModel {
       }
     });
     return retVal;
+  }
+
+  Future<Uint8List> toExcel() async {
+    final Workbook workbook = Workbook();
+    final Worksheet sheet = workbook.worksheets[0];
+    final Uint8List bytes = workbook.saveAsStream() as Uint8List;
+
+
+
+
+    workbook.dispose();
+    return bytes;
   }
 }
