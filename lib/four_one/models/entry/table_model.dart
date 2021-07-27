@@ -1,8 +1,5 @@
 import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
 import 'package:four_one/four_one/models/big_table_model.dart';
-import 'package:four_one/four_one/models/entry/payment_edit_model.dart';
 import 'package:four_one/four_one/utils/excel_helper.dart';
 import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
@@ -85,10 +82,13 @@ class TableModel {
       'debt': '#ffc000',
     };
 
+    final todayFull = DateTime.now();
+    final currentMonth = todayFull.month;
+
     ExcelHelper excel = ExcelHelper();
 
     excel.addText(
-      rangeList: [1, 1, 1, 10],
+      rangeList: [1, 1, 1, 14],
       text:
           'ОТЧЕТ №4.1  Дебиторская задолженность / График оплат по основной деятельности',
       bold: true,
@@ -108,13 +108,28 @@ class TableModel {
       );
       currentColumn++;
     });
+
+    for (int m = 0; m < 4; m++) {
+      int mIndex = currentMonth + m;
+      if (mIndex > 12) {
+        mIndex -= 12;
+      }
+      excel.addText(
+        rangeList: [2, currentColumn + m],
+        text: excel.getMonthName(mIndex),
+        bold: true,
+        backColorHex: backColors['header'],
+        borderStyle: LineStyle.medium,
+      );
+    }
+
     excel.setStyle(
         rangeList: [2, currentColumn - 1], backColorHex: backColors['debt']);
 
     //Текущая дата
     excel.addText(
       rangeList: [3, 5],
-      text: formatDate(DateTime.now()),
+      text: formatDate(todayFull),
       backColorHex: backColors['header'],
       borderStyle: LineStyle.medium,
       bold: true,
@@ -129,6 +144,7 @@ class TableModel {
       bold: true,
     );
 
+    Map<int, num> monthMap = {};
     int currentRow = 4;
     rowList.forEach((element) {
       if (element.client != 'ЭСИ') {
@@ -194,6 +210,20 @@ class TableModel {
           excel.addText(
               rangeList: [currentRow + j, 9],
               text: getFormatNum(payments[j].cash.toString()));
+
+          int mIndex = payments[j].date.month - currentMonth;
+          if (mIndex < 0) {
+            mIndex += 12;
+          }
+          excel.addText(
+              rangeList: [currentRow + j, currentColumn + mIndex],
+              text: getFormatNum(payments[j].cash.toString()));
+          if (monthMap.containsKey(currentColumn + mIndex)) {
+            monthMap[currentColumn + mIndex] =
+                monthMap[currentColumn + mIndex]! + payments[j].cash;
+          } else {
+            monthMap[currentColumn + mIndex] = payments[j].cash;
+          }
         }
 
         excel.addText(
@@ -206,6 +236,14 @@ class TableModel {
         excel.setBorder(rangeList: [currentRow, 1, currentRow + rows - 1, 10]);
         currentRow += rows;
       }
+    });
+
+    monthMap.keys.forEach((key) {
+      excel.addText(
+        rangeList: [3, key],
+        text: getFormatNum(monthMap[key].toString()),
+        bold: true,
+      );
     });
 
     excel.setBorder(

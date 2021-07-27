@@ -3,7 +3,23 @@ import 'dart:typed_data';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class ExcelHelper {
-  final List<double> columnWidth = [20, 30, 15, 15, 15, 15, 25, 15, 15, 15];
+
+  final _month = [
+    'Январь',
+    'Февраль',
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь"
+  ];
+
+  final List<double> columnWidth = [20, 30, 15, 15, 15, 15, 25, 15, 15, 15, 15,15,15,15];
 
   final Workbook _workbook = Workbook();
   late final Worksheet _sheet;
@@ -26,6 +42,13 @@ class ExcelHelper {
 
     _sheet.getRangeByIndex(1, 1).rowHeight = 20.0;
     _sheet.getRangeByIndex(2, 1).rowHeight = 30.0;
+  }
+
+  String getMonthName(int monthIndex) {
+    if (monthIndex < 1 || monthIndex > 12) {
+      return monthIndex.toString();
+    }
+    return _month[monthIndex.toInt() - 1];
   }
 
   Uint8List get file {
