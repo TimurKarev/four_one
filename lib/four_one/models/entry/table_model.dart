@@ -147,7 +147,7 @@ class TableModel {
     Map<int, num> monthMap = {};
     int currentRow = 4;
     rowList.forEach((element) {
-      if (element.client != 'ЭСИ') {
+      if (element.client != 'ЭСИ' && element.client != 'ЛЭСР') {
         int rows = element.futureIncomes.payments.length;
         if (rows < 1) {
           rows = 1;
@@ -233,7 +233,7 @@ class TableModel {
           bold: true,
         );
 
-        excel.setBorder(rangeList: [currentRow, 1, currentRow + rows - 1, 10]);
+        excel.setBorder(rangeList: [currentRow, 1, currentRow + rows - 1, 14]);
         currentRow += rows;
       }
     });
@@ -246,55 +246,31 @@ class TableModel {
       );
     });
 
+    for (int c = 1; c <= 14; c++) {
+      excel.setBorder(rangeList: [4, c, currentRow - 1, c]);
+    }
+
+    [1, 8, 9, 10, 11, 12, 13, 14].forEach((c) {
+      excel.setBorder(
+        rangeList: [4, c, currentRow - 1, c],
+        borderStyle: LineStyle.medium,
+      );
+    });
+
     excel.setBorder(
-      rangeList: [4, 1, currentRow - 1, columnsNames.length],
+      rangeList: [2, 1, currentRow - 1, 14],
       borderStyle: LineStyle.medium,
     );
 
     excel.setBorder(
-      rangeList: [2, 1, currentRow - 1, 1],
+      rangeList: [4, 1, currentRow - 1, 14],
       borderStyle: LineStyle.medium,
     );
 
-    excel.setBorder(
-      rangeList: [2, 2, currentRow - 1, 2],
-      borderStyle: LineStyle.thin,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 3, currentRow - 1, 4],
-      borderStyle: LineStyle.thin,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 5, currentRow - 1, 5],
-      borderStyle: LineStyle.thin,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 6, currentRow - 1, 6],
-      borderStyle: LineStyle.thin,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 7, currentRow - 1, 7],
-      borderStyle: LineStyle.thin,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 8, currentRow - 1, 8],
-      borderStyle: LineStyle.medium,
-    );
-
-    excel.setBorder(
-      rangeList: [2, 9, currentRow - 1, 9],
-      borderStyle: LineStyle.medium,
-    );
-
-    excel.setBorder(
-      rangeList: [1, 1, currentRow - 1, columnsNames.length],
-      borderStyle: LineStyle.medium,
-    );
+    currentRow = excel.createSpecialTables(
+        client: 'ЭСИ', currentRow: currentRow, model: this);
+    currentRow = excel.createSpecialTables(
+        client: 'ЛЭСР', currentRow: currentRow, model: this);
 
     return excel.file;
   }

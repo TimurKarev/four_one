@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:four_one/four_one/models/entry/table_model.dart';
+import 'package:four_one/four_one/utils/formatters.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class ExcelHelper {
-
   final _month = [
     'Январь',
     'Февраль',
@@ -18,8 +19,27 @@ class ExcelHelper {
     "Ноябрь",
     "Декабрь"
   ];
+  final backColors = {
+    'header': '#ffff00',
+    'debt': '#ffc000',
+  };
 
-  final List<double> columnWidth = [20, 30, 15, 15, 15, 15, 25, 15, 15, 15, 15,15,15,15];
+  final List<double> columnWidth = [
+    20,
+    30,
+    15,
+    15,
+    15,
+    15,
+    25,
+    15,
+    15,
+    15,
+    15,
+    15,
+    15,
+    15
+  ];
 
   final Workbook _workbook = Workbook();
   late final Worksheet _sheet;
@@ -175,8 +195,7 @@ class ExcelHelper {
 
     if (range.row == range.lastRow && range.column == range.lastColumn) {
       _setSingleCellBorder(rangeObj: range, borderStyle: borderStyle);
-    }
-    else if (range.row == range.lastRow && range.column != range.lastColumn) {
+    } else if (range.row == range.lastRow && range.column != range.lastColumn) {
       _sheet
           .getRangeByIndex(range.row, range.column)
           .cellStyle
@@ -190,12 +209,8 @@ class ExcelHelper {
           .right
           .lineStyle = borderStyle ?? LineStyle.thin;
       for (int col = range.column; col <= range.lastColumn; col++) {
-        _sheet
-            .getRangeByIndex(range.row, col)
-            .cellStyle
-            .borders
-            .top
-            .lineStyle = borderStyle ?? LineStyle.thin;
+        _sheet.getRangeByIndex(range.row, col).cellStyle.borders.top.lineStyle =
+            borderStyle ?? LineStyle.thin;
         _sheet
             .getRangeByIndex(range.row, col)
             .cellStyle
@@ -203,8 +218,7 @@ class ExcelHelper {
             .bottom
             .lineStyle = borderStyle ?? LineStyle.thin;
       }
-    }
-    else if (range.row != range.lastRow && range.column == range.lastColumn) {
+    } else if (range.row != range.lastRow && range.column == range.lastColumn) {
       _sheet
           .getRangeByIndex(range.row, range.column)
           .cellStyle
@@ -231,8 +245,7 @@ class ExcelHelper {
             .right
             .lineStyle = borderStyle ?? LineStyle.thin;
       }
-    }
-    else if (range.row != range.lastRow && range.column != range.lastColumn) {
+    } else if (range.row != range.lastRow && range.column != range.lastColumn) {
       for (int row = range.row; row <= range.lastRow; row++) {
         _sheet
             .getRangeByIndex(row, range.column)
@@ -248,12 +261,8 @@ class ExcelHelper {
             .lineStyle = borderStyle ?? LineStyle.thin;
       }
       for (int col = range.column; col <= range.lastColumn; col++) {
-        _sheet
-            .getRangeByIndex(range.row, col)
-            .cellStyle
-            .borders
-            .top
-            .lineStyle = borderStyle ?? LineStyle.thin;
+        _sheet.getRangeByIndex(range.row, col).cellStyle.borders.top.lineStyle =
+            borderStyle ?? LineStyle.thin;
         _sheet
             .getRangeByIndex(range.lastRow, col)
             .cellStyle
@@ -261,7 +270,81 @@ class ExcelHelper {
             .bottom
             .lineStyle = borderStyle ?? LineStyle.thin;
       }
-
     }
+  }
+
+  int createSpecialTables({
+    required String client,
+    required int currentRow,
+    required TableModel model,
+  }) {
+    currentRow += 2;
+    addText(
+      rangeList: [currentRow, 4],
+      text: 'Цена КП',
+      bold: true,
+      borderStyle: LineStyle.medium,
+      backColorHex: backColors['header'],
+    );
+    addText(
+      rangeList: [currentRow, 5],
+      text: 'Оплачено',
+      bold: true,
+      borderStyle: LineStyle.medium,
+      backColorHex: backColors['header'],
+    );
+    currentRow += 1;
+    final startRow = currentRow;
+    final rowList = model.rowList;
+    rowList.forEach((row) {
+      if (row.client == client) {
+        addText(
+          rangeList: [currentRow, 2],
+          text: row.object,
+          hAlign: HAlignType.left,
+        );
+        addText(
+          rangeList: [currentRow, 3],
+          text: row.order,
+        );
+        addText(
+          rangeList: [currentRow, 4],
+          text: getFormatNum(row.sum.toString()),
+        );
+        addText(
+          rangeList: [currentRow, 5],
+          text: getFormatNum(row.incomeSum.toString()),
+        );
+        addText(
+          rangeList: [currentRow, 6],
+          text: 'Готовность ${getFormatNum(formatDate(row.finishDate))}',
+          hAlign: HAlignType.left,
+        );
+        setBorder(rangeList: [currentRow, 1, currentRow, 6], borderStyle: LineStyle.thin,);
+        currentRow += 1;
+      }
+    });
+
+    addText(
+      rangeList: [startRow, 1, currentRow - 1, 1],
+      text: client,
+      bold: true,
+      hAlign: HAlignType.left,
+      borderStyle: LineStyle.medium,
+    );
+
+    if (startRow != currentRow-1) {
+      for (int c = 3; c < 6; c++) {
+        setBorder(rangeList: [startRow, c, currentRow - 1, c],
+            borderStyle: LineStyle.thin);
+      }
+    }
+
+    setBorder(
+      rangeList: [startRow, 1, currentRow - 1, 6],
+      borderStyle: LineStyle.thick,
+    );
+
+    return currentRow;
   }
 }
