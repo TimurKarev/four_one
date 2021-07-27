@@ -178,9 +178,14 @@ class TableModel {
           merge: true,
           //borderStyle: LineStyle.thin,
         );
+
+        var incomeSum = getFormatNum(element.incomeSum.toString());
+        if (incomeSum == '0') {
+          incomeSum = '';
+        }
         excel.addText(
           rangeList: [currentRow, 5, currentRow + rows - 1, 5],
-          text: getFormatNum(element.incomeSum.toString()),
+          text: incomeSum,
           merge: true,
           //borderStyle: LineStyle.thin,
         );
@@ -226,11 +231,16 @@ class TableModel {
           }
         }
 
+        var debt = getFormatNum(element.debt.toString());
+        if (debt == '0') {
+          debt = '';
+        }
         excel.addText(
           rangeList: [currentRow, 10, currentRow + rows - 1, 10],
-          text: getFormatNum(element.debt.toString()),
+          text: debt,
           merge: true,
           bold: true,
+          backColorHex: backColors['debt'],
         );
 
         excel.setBorder(rangeList: [currentRow, 1, currentRow + rows - 1, 14]);
