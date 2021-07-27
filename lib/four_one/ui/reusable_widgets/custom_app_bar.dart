@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:four_one/authication/view_models/landing_page_view_model.dart';
+import 'package:four_one/four_one/ui/reusable_widgets/save_excel_dialog.dart';
+
 
 
 class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
@@ -14,6 +16,23 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: _getTitle(),
       actions: [
+        TextButton(
+          onPressed: () async {
+            //Uint8List bytes = await ExelHelper.generateExcel();
+            //Save and launch the file.
+            // await
+
+            await showDialog(
+                context: context,
+                builder: (_) {
+                  return SaveExcelDialog();
+                });
+          },
+          child: Icon(
+            Icons.download,
+            color: Colors.white,
+          ),
+        ),
         TextButton(
           onPressed: () async {
             context.read(landingPageProvider).logout();

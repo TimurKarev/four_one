@@ -302,7 +302,7 @@ class TotalsWidget extends StatelessWidget {
           Expanded(child: Container()),
           Card(
             margin: EdgeInsets.all(5.0),
-            elevation: 20.0,
+            elevation: 4.0,
             child: Container(
               padding: EdgeInsets.all(10.0),
               child: Column(

@@ -32,6 +32,9 @@ dependencies:
   pattern_formatter: ^2.0.0
   firebase_auth: ^1.3.0
   flutter_typeahead: ^3.2.0
+  syncfusion_flutter_xlsio: ^19.2.48-beta
+  file_saver: ^0.0.9
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
