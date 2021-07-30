@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/edit_order/ui/ctrls/common_order_controller.dart';
 import 'package:four_one/four_one/providers/providers.dart';
 import 'package:four_one/four_one/viewmodels/entry/create_entry_viewmodel.dart';
 
@@ -26,36 +27,46 @@ class ClientInputWidget extends ConsumerWidget {
     final v = watch(clientListProvider);
     final Set<String> clientList = v as Set<String>;
     return Container(
-      child: TypeAheadFormField<String?>(
-        onSuggestionSelected: (String? suggestion) {
-          context
-              .read(createEntryProvider.notifier)
-              .clientController
-              .text = suggestion!;
+      child: Focus(
+        onFocusChange: (bool focus) {
+          if (!focus) {
+            context.read(providerCommonOrderProvider).clientTextFieldLooseFocus();
+          }
         },
-        itemBuilder: (context, String? suggestion) {
-          return ListTile(
-            title: Text(suggestion!),
-          );
-        },
-        suggestionsCallback: (String pattern) {
-          return clientList.where((element) {
-            return element.contains(pattern);
-          });
-        },
-        noItemsFoundBuilder: (context) => Container(
-          height: 30.0,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text('  новый заказчик'),
+        child: TypeAheadFormField<String?>(
+          onSuggestionSelected: (String? suggestion) {
+            context
+                .read(providerCommonOrderProvider)
+                .clientTextCtrl
+                .text = suggestion!;
+          },
+          itemBuilder: (context, String? suggestion) {
+            return ListTile(
+              title: Text(suggestion!),
+            );
+          },
+          suggestionsCallback: (String pattern) {
+            return clientList.where((element) {
+              return element.contains(pattern);
+            });
+          },
+          noItemsFoundBuilder: (context) => Container(
+            height: 30.0,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text('  новый заказчик'),
+            ),
           ),
-        ),
-        textFieldConfiguration: TextFieldConfiguration(
-          controller: context
-              .read(createEntryProvider.notifier)
-              .clientController,
-          decoration: InputDecoration(
-            labelText: 'Заказчик',
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: context
+                .read(providerCommonOrderProvider)
+                .clientTextCtrl,
+            decoration: InputDecoration(
+              labelText: 'Заказчик',
+            ),
+            onEditingComplete: () => context
+                .read(providerCommonOrderProvider).clientTextEditComplete(),
+
           ),
         ),
       ),

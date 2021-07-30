@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:four_one/four_one/edit_order/ui/views/edit_order_screen.dart';
 import 'package:four_one/four_one/security/security_view_model.dart';
 import 'package:four_one/four_one/security/security_widget.dart';
 import 'package:four_one/four_one/ui/create_entry_widget.dart';
@@ -27,7 +28,7 @@ class TableScreenBig extends StatelessWidget {
         backgroundColor: canCreateOrder ? Colors.blue : Colors.grey,
         onPressed: canCreateOrder
             ? () {
-                context.vxNav.push(Uri(path: CreateEntryWidget.path));
+                context.vxNav.push(Uri(path: EditOrderScreen.path));
               }
             : null,
         child: Icon(Icons.add),
